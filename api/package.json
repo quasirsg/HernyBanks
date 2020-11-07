@@ -26,9 +26,11 @@
   },
   "dependencies": {
     "moleculer": "^0.14.10",
-    "moleculer-db": "^0.8.4",
+    "moleculer-db": "^0.8.10",
     "moleculer-db-adapter-mongo": "^0.4.7",
+    "moleculer-db-adapter-mongoose": "^0.8.8",
     "moleculer-web": "^0.9.0",
+    "mongoose": "^5.10.13",
     "nats": "^1.4.12"
   },
   "engines": {

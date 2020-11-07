@@ -44,6 +44,19 @@ services:
     networks:
       - internal
 
+    # users:
+    #   build:
+    #     context: .
+    #   image: moleculer-demo
+    #   env_file: docker-compose.env
+    #   environment:
+    #     SERVICES: users
+    #   depends_on:
+    #     - mongo
+    #     - nats
+    #   networks:
+    #     - internal
+
   mongo:
     image: mongo:4
     volumes:
