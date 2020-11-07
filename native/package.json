@@ -22,8 +22,12 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
+<<<<<<< HEAD
     "react-native-web": "~0.13.12",
     "expo-font": "~8.3.0"
+=======
+    "react-native-web": "~0.13.12"
+>>>>>>> 9ac71ba3b43bbf6efc9c2e975909ba707b34e638
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
