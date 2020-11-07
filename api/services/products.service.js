@@ -3,74 +3,72 @@
 const DbMixin = require("../mixins/db.mixin");
 
 /**
- * @typedef {import('moleculer').Context} Context Moleculer's Context
+ * @typedef {import('moleculer').Context} Context Moleculer's Context 
  */
 
 module.exports = {
 	name: "products",
-	// version: 1
 
-	/**
-	 * Mixins
-	 */
+	/* * * * * * 
+	 * Mixins  *
+	 * * * * * */
 	mixins: [DbMixin("products")],
 
-	/**
-	 * Settings
-	 */
+	/* * * * * * * 
+	 * Settings  *
+	 * * * * * * */
 	settings: {
-		// Available fields in the responses
+		// Campos disponibles en la respuesta 
 		fields: [
 			"_id",
 			"name",
 			"quantity",
 			"price"
 		],
-
-		// Validator for the `create` & `insert` actions.
+		// Validador para las acciones `create` & `insert`.
 		entityValidator: {
 			name: "string|min:3",
 			price: "number|positive"
 		}
 	},
 
-	/**
-	 * Action Hooks
-	 */
+	/* * * * * * * * *
+	 * Action Hooks  *
+	 * * * * * * * * */
 	hooks: {
 		before: {
-			/**
-			 * Register a before hook for the `create` action.
-			 * It sets a default value for the quantity field.
-			 *
-			 * @param {Context} ctx
-			 */
+			/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+			 * Register a before hook for the `create` action.   *
+			 * It sets a default value for the quantity field.   *
+			 *													 *
+			 * @param {Context} ctx								 *
+			 * * * * * * * * * * * * * * * * * * * * * * * * * * */
 			create(ctx) {
 				ctx.params.quantity = 0;
 			}
 		}
 	},
 
-	/**
-	 * Actions
-	 */
+	/* * * * * * * * * * * * * * * *
+	 * Definición de las acciones  *
+	 * * * * * * * * * * * * * * * */
 	actions: {
-		/**
-		 * The "moleculer-db" mixin registers the following actions:
-		 *  - list
-		 *  - find
-		 *  - count
-		 *  - create
-		 *  - insert
-		 *  - update
-		 *  - remove
-		 */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * The "moleculer-db" mixin registers the following actions:   *
+		 *  - list													   *
+		 *  - find													   *
+		 *  - count													   *
+		 *  - create												   *
+		 *  - insert												   *
+		 *  - update									   			   *
+		 *  - remove												   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 		// --- ADDITIONAL ACTIONS ---
 
-		/**
-		 * Increase the quantity of the product item.
-		 */
+	   	/* * * * * * * * * * * * * * * * * * * * * * * *
+		 * Increase the quantity of the product item.  *
+		 * * * * * * * * * * * * * * * * * * * * * * * */
 		increaseQuantity: {
 			rest: "PUT /:id/quantity/increase",
 			params: {
@@ -86,9 +84,9 @@ module.exports = {
 			}
 		},
 
-		/**
-		 * Decrease the quantity of the product item.
-		 */
+	   /* * * * * * * * * * * * * * * * * * * * * * * *
+		* Decrease the quantity of the product item.  *
+		* * * * * * * * * * * * * * * * * * * * * * * */
 		decreaseQuantity: {
 			rest: "PUT /:id/quantity/decrease",
 			params: {
@@ -106,28 +104,29 @@ module.exports = {
 		}
 	},
 
-	/**
-	 * Methods
-	 */
+	/* * * * * * * * * * * * * * * *
+	 * Definición de los métodos   *
+	 * * * * * * * * * * * * * * * */
 	methods: {
-		/**
-		 * Loading sample data to the collection.
-		 * It is called in the DB.mixin after the database
-		 * connection establishing & the collection is empty.
-		 */
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+		 * Cargado data de ejemplo a la colección.						   *
+		 * Se llama en DB.mixin después de que se establece la conexión a  *
+		 * la base de datos y la colección está vacía  					   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		async seedDB() {
 			await this.adapter.insertMany([
-				{ name: "Samsung Galaxy S10 Plus", quantity: 10, price: 704 },
-				{ name: "iPhone 11 Pro", quantity: 25, price: 999 },
+				{ name: "Samsung Galaxy", quantity: 10, price: 704 },
+				{ name: "iPhone 11 Pro",  quantity: 25, price: 999 },
 				{ name: "Huawei P30 Pro", quantity: 15, price: 679 },
 			]);
 		}
 	},
 
-	/**
-	 * Fired after database connection establishing.
-	 */
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 * Se activa después de establecer la conexión a la base de datos  *
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	async afterConnected() {
 		// await this.adapter.collection.createIndex({ name: 1 });
+		console.log('Connected');
 	}
 };
