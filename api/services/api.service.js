@@ -9,13 +9,13 @@ const ApiGateway = require("moleculer-web");
  */
 
 module.exports = {
-	
 	name: "api",
-
 	mixins: [ApiGateway],
 
 	// More info about settings: https://moleculer.services/docs/0.14/moleculer-web.html
 	settings: {
+		
+
 		// Exposed port
 		port: process.env.PORT || 3000,
 
@@ -24,14 +24,13 @@ module.exports = {
 
 		// Global Express middlewares. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Middlewares
 		use: [],
-
 		routes: [
 			{
+
 				path: "/api",
 
-				// whitelist: [
-				// 	"**"
-				// ],
+				// Set CORS headers
+				cors: true,
 
 				// Route-level Express middlewares. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Middlewares
 				use: [],
@@ -50,7 +49,7 @@ module.exports = {
 				autoAliases: true,
 
 				aliases: {
-
+					//Users
 					"GET /getUsers": "users.getUser",
 					"GET /nameUser": "users.nameUser",
 					"POST /createdUser" : "users.createdUser",
@@ -58,8 +57,8 @@ module.exports = {
 					"GET /users" : "users.list",
 					"DELETE /users/:id" : "users.remove",
 					"PUT /users/:id" : "users.update"
-
 				},
+
 
 				/** 
 				 * Before call hook. You can check the request.
