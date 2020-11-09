@@ -27,34 +27,34 @@ const UserSchema = new Schema({
     name: {
         type: String,
         lowercase: true,
-        required: "name is missing",
+        //required: "name is missing",
         trim: true
     },
     lastname: {
         type: String,
         lowercase: true,
-        required: "lastname is missing",
+        //required: "lastname is missing",
         trim: true
     },
     dni: {
         type: Number,
-        required: "DNI is missing",
+        //required: "DNI is missing",
         trim: true
     },
     phone: {
         type: String,
-        required: "DNI is missing",
+        //required: "DNI is missing",
         trim: true
     },
     address: {
         type: String,
         lowercase: true,
-        required: "residence address is missing",
+        //required: "residence address is missing",
         trim: true
     },
     dob: {
         type: Date,
-        required: "day of birth is missing",
+        //required: "day of birth is missing",
         trim: true
     },
     auth: {

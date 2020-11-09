@@ -1,10 +1,12 @@
 "use strict";
+require('dotenv').config();
 
 const DbService = require("moleculer-db");
 const mongoose = require("mongoose");
 const User = require("../models/user.model");
 const bcrypt = require('bcrypt');
 const { MoleculerClientError } = require("moleculer").Errors;
+const { DATABASE } = process.env;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 * Definición de los tipos de errores CRUD  usuarios	     *
@@ -43,10 +45,6 @@ module.exports = {
 		}
 	},
 
-	asyncafterConnected() {
-        console.log('afterConnected')
-    },
-
 	actions: {
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -75,6 +73,8 @@ module.exports = {
 
 					}
 				};
+
+
 				/*  * * * * * * * * * * * * * * * * *
 				* Encryptación de contraseña		*
 				* * * * *  * * * * * * * *  * * * * */
@@ -95,7 +95,8 @@ module.exports = {
 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		get_all_users: {
 			rest: "GET /all",
-			async handler(){
+			async handler(ctx){
+				ctx.call('emails.send_email');
 				const users = await User.find();
 				return users
 			}
@@ -191,7 +192,7 @@ module.exports = {
 		/* * * * * * * * * * * * * * * * * * * *
 		 * Conexión a la base de datos 		   *
 		 * * * * * * * * * * * * * * * * * * * */
-		mongoose.connect("mongodb://localhost/henrybank", { 
+		mongoose.connect(DATABASE, { 
 			useCreateIndex: true,
 			useNewUrlParser: true, 
 			useFindAndModify: true,
