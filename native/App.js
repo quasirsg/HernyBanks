@@ -19,12 +19,12 @@ function MyStack(){
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={Register} />
-      <Stack.Screen name="Estatistics" component={Estatistics}/>
+      {/* <Stack.Screen name="Estatistics" component={Estatistics}/>
       <Stack.Screen name="Login" component={Login}/>
       <Stack.Screen name="PosConsolidada" component={PosConsolidada}/>
       <Stack.Screen name="RechargeScreen" component={RechargeScreen}/>
       <Stack.Screen name="SendMonyScreen" component={SendMonyScreen}/>
-      <Stack.Screen name="Transactions" component={Transactions}/>
+      <Stack.Screen name="Transactions" component={Transactions}/> */}
     </Stack.Navigator>
   )
 }

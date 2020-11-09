@@ -9,12 +9,15 @@ export function createUser(userData) {
         console.log(userData);
         axios.post(`http://${url}/api/users`, userData)
             .then(res => {
-                console.log(res.data)
+                //console.log(res.data)
                 dispatch({
                     type: CREATE_USER,
                     users: res.data || {},
                     createUserSuccess: true,
                 });
+            })
+            .catch(res=>{
+                console.log(res)
             })
     }
 };

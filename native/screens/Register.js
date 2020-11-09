@@ -25,7 +25,7 @@ const Register = ({createUSerP, userP}) => {
 
         return (
             <>
-            <h1>Register</h1>
+            <Text>Register</Text>
             <SafeAreaView style={styles.container}>
               <ScrollView style={styles.scrollView}>
                     <View>
