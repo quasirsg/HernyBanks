@@ -7,9 +7,9 @@ const url =  'localhost:3000' || '192.168.1.84:3000';
 export function createUser(userData) {
     return(dispatch) => {
         console.log(userData);
-        axios.post(`http://${url}/api/users`, userData)
+        axios.post(`http://${url}/api/users/create`, userData)
             .then(res => {
-                //console.log(res.data)
+                console.log(res.data)
                 dispatch({
                     type: CREATE_USER,
                     users: res.data || {},
