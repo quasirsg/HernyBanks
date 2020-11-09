@@ -1,10 +1,38 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React from "react";
+import { useFormik } from "formik";
 
-export default function Login() {
-    return (
-        <View>
-            <Text></Text>
-        </View>
-    )
-}
+const Login = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      
+    },
+  });
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <label htmlFor="email">Email Address</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        onChange={formik.handleChange}
+        value={formik.values.email}
+      />
+      
+      <label htmlFor="password">Password</label>
+      <input
+        id="password"
+        name="password"
+        type="text"
+        onChange={formik.handleChange}
+        value={formik.values.password}
+      />
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+export default Login
