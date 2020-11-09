@@ -1,247 +1,209 @@
-
 "use strict";
+require('dotenv').config();
 
-/**
- * @typedef {import('moleculer').Context} Context Moleculer's Context
- */
-const { MoleculerClientError } = require("moleculer").Errors;
-//const DbService = require('"../mixins/db.mixin"');
 const DbService = require("moleculer-db");
-const MongooseAdapter = require("moleculer-db-adapter-mongoose");
-const User = require("../models/user.model");
 const mongoose = require("mongoose");
+const User = require("../models/user.model");
+const bcrypt = require('bcrypt');
+const { MoleculerClientError } = require("moleculer").Errors;
+const { DATABASE } = process.env;
 
-// USER.service.js
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* Definición de los tipos de errores CRUD  usuarios	     *
+* * * * ** * * * * * * * * * * * * * * * * * * * * * * * */
+const usernameError = new MoleculerClientError("username already exists!", 422, "Username error!");
+const emailError    = new MoleculerClientError("email already exists!", 422, "Email error!");
+const userNotFound  = new MoleculerClientError("user does not exist!", 404, "Finding error!");
+
 module.exports = {
-	name: "users",
-	// mixins: [ 
-	// 	DbService ("users"), 
-	//   ], 
-	mixin: [DbService],
-	adapter: new MongooseAdapter(process.env.MONGO_URI || "mongodb://localhost/henrybank", { useNewUrlParser: true, useUnifiedTopology: true }),
-    model: User,
-	  
-	settings: {
-	/** Public fields */
-		fields: ["_id", "name", "password", "email"],
-	/** Validator schema for entity */
-		// entityValidator: {
-		//  name: { type: "string"},
-		//  password: { type: "string"},
-		// }
-	 },
 
-	 afterConnected() {
-        console.log('connnect ok')
-    },
+	name: "users",
+
+	/* * * * * * 
+	 * Mixins  *
+	 * * * * * */
+	mixin: [DbService],
+
+	/* * * * * * 
+	 * Model   *
+	 * * * * * */
+	model: User,
+
+	/* * * * * * * 
+	 * Settings  *
+	 * * * * * * */
+	settings: {
+		// Campos disponibles en la respuesta 
+		fields: [
+			"_id",
+			"name",
+	
+		],
+		// Validador para las acciones `create` & `insert`.
+		entityValidator: {
+			name: "string|min:3",
+		}
+	},
 
 	actions: {
-	    getUsers(ctx) {
-	        return 'Hola User';
-		},
-		nameUser(ctx) {
-			console.log('AQUI ES ID !!', ctx)
-	        return 'Hola User whit name ' + ctx;
-		},
 
-		list: {
-			async handler(){
-				 const users = await User.find({});
-				 return users
-			}
-		},
-
-		
-		remove: {
-			async handler(ctx){
-				let {id} = ctx.params;
-				// const users = await this.adapter.remove({ _id: id }));
-				const userDeleted = await User.findByIdAndRemove({ _id: id })
-				console.log(id)
-				return userDeleted
-			}
-		},
-
-		update: {
-			async handler(ctx){
-				let {id, name, password} = ctx.params;
-
-				const userUpdated = await User.findByIdAndUpdate({ _id: id }, {name, password})
-				return userUpdated
-			}
-		},
-		
-		create: {
-			// params: {
-			// 	user: { type: "object" }
-			// },
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para la creación de un nuevo usuario			   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		create_user: {
+			rest: "POST /create",
 			async handler(ctx) {
-                let entity = ctx.params;
-                console.log('data', entity)
-				//await this.validateEntity(entity);
-				if (entity.name) {
-					//return 'Hola POST'
-					const found = await User.findOne({ name: entity.name });
-					if (found)
-						return Promise.reject(
-							new MoleculerClientError("Name exists!", 422, "Name exists!", [{ field: "name", message: "Name exists"}])
-						);
-				}
-				// entity.password = bcrypt.hashSync(entity.password, 10);
-				entity.password = entity.password || "";
-                entity.name = entity.name || ""
-                entity.email = entity.email || ""
-				const doc = await User.create(entity);
+
+				const entity = ctx.params;
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				* Validación de username o email (creación de usuario único)     	     *
+				* * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+				if (entity.username) {
+					
+					const found = await User.findOne({ $or: [{ username: entity.username }, { email: entity.email }] });
+					
+					if (found) {
+						
+						if (found.username === entity.username.toLowerCase()) {
+							return Promise.reject(usernameError);
+						}
+						else if (found.email === entity.email.toLowerCase()) {
+							return Promise.reject(emailError);
+						} 
+
+					}
+				};
+
+
+				/*  * * * * * * * * * * * * * * * * *
+				* Encryptación de contraseña		*
+				* * * * *  * * * * * * * *  * * * * */
+				entity.password = bcrypt.hashSync(entity.password, 10);
+				entity.password = entity.password;
+
+				/*  * * * * * * * * * * * * * * * * *
+				* Creación del nuevo usuario		*
+				* * * * *  * * * * * * * *  * * * * */
+				const created = await User.create(entity);
 				//const user = await this.transformDocuments(ctx, {}, doc);
-				return doc
-			    }
+				return created;
 			},
 		},
 
-	created() {
-		mongoose.connect("mongodb://localhost/henryBank", { useNewUrlParser: true, useUnifiedTopology: true })
-		.then(() => console.log('DB Connected!'))
-			.catch(err => {
-		console.log(Error, err.message);
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para la obtención de todos los usuarios		   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		get_all_users: {
+			rest: "GET /all",
+			async handler(ctx){
+				ctx.call('emails.send_email');
+				const users = await User.find();
+				return users
+			}
+		},
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para la obtención de un usuario por email	   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		get_user_by_email: {
+			rest: "GET /by-email",
+			async handler(ctx){
+
+				const user = ctx.params;
+				const found = await User.findOne( { email: user.email });
+
+				if (found) return found;
+				return Promise.reject(userNotFound);
+			}
+		},
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para la obtención de un usuario por username	   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		get_user_by_username: {
+			rest: "GET /by-username",
+			async handler(ctx){
+				const user = ctx.params;
+				const found = await User.findOne( { username: user.username });
+
+				if (found) return found;
+				return Promise.reject(userNotFound);
+			}
+		},
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para la obtención de un usuario por id   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		get_user_by_id: {
+			rest: "GET /by-id",
+			async handler(ctx){
+				const user = ctx.params;
+
+				if(mongoose.Types.ObjectId.isValid(user._id)) { 
+					const found = await User.findById({ _id: user._id });
+
+					if (found) return found;
+				};
+
+				return Promise.reject(userNotFound);
+			}
+		},
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para eliminación de un usuario 		   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		remove_user: {
+			rest: "DELETE /remove",
+			async handler(ctx){
+				const user = ctx.params;
+
+				if(mongoose.Types.ObjectId.isValid(user._id)) { 
+					const removed = await User.findByIdAndRemove({ _id: user._id });
+
+					if (removed) return removed;
+				};
+
+				return Promise.reject(userNotFound);
+			}
+		},
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para actualización de un usuario 	   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		update_user: {
+			rest: "PUT /update",
+			async handler(ctx){
+				const { _id, name, lastname, dni, phone, address, dob } = ctx.params;
+
+				if(mongoose.Types.ObjectId.isValid(_id)) { 
+					await User.findByIdAndUpdate({ _id },{ name, lastname, dni, phone, address, dob });
+
+					const updated = await User.findById({ _id });
+					return updated
+				}
+
+				return Promise.reject(userNotFound);
+			}
+		},	
+	},
+
+	started() {
+
+		/* * * * * * * * * * * * * * * * * * * *
+		 * Conexión a la base de datos 		   *
+		 * * * * * * * * * * * * * * * * * * * */
+		mongoose.connect(DATABASE, { 
+			useCreateIndex: true,
+			useNewUrlParser: true, 
+			useFindAndModify: true,
+			useUnifiedTopology: true
+		})
+		.then(() => {
+			console.log('Data base is connected');
+		})
+		.catch(error => {		
+			console.error(error);
 		});
 	},
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use strict";
-
-// const DbService = require("moleculer-db");
-// const User = require("../models/user.model");
-// const mongoose = require("mongoose");
-// const { MoleculerClientError } = require("moleculer").Errors;
-// //const MongooseAdapter = require("moleculer-db-adapter-mongoose");
-
-// module.exports = {
-
-// 	name: "users",
-
-// 	mixin: [DbService],
-
-// 	model: User,
-	  
-// 	settings: {
-// 	/** Public fields */
-// 		fields: ["_id", "username", "password"],
-// 	/** Validator schema for entity */
-// 		entityValidator: {
-// 		 username: { type: "string"},
-// 		 password: { type: "number"},
-// 		}
-// 	},
-
-// 	afterConnected() {
-//         console.log('afterConnected')
-//     },
-
-// 	actions: {
-// 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// 		 * The "moleculer-db" mixin registers the following actions:   *
-// 		 *  - list													   *
-// 		 *  - find													   *
-// 		 *  - count													   *
-// 		 *  - create												   *
-// 		 *  - insert												   *
-// 		 *  - update									   			   *
-// 		 *  - remove												   *
-// 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-// 	    getUsers(ctx) {
-// 	        return 'Hola User';
-// 		},
-// 		nameUser(ctx) {
-// 			console.log('AQUI ES ID !!', ctx)
-// 	        return 'Hola User whit name ' + ctx;
-// 		},
-
-// 		list: {
-// 			async handler(){
-// 				 const users = await User.find({});
-// 				 return users
-// 			}
-// 		},
-
-// 		remove: {
-// 			async handler(ctx){
-// 				let {id} = ctx.params;
-// 				// const users = await this.adapter.remove({ _id: id }));
-// 				const userDeleted = await User.findByIdAndRemove({ _id: id })
-// 				console.log(id)
-// 				return userDeleted
-// 			}
-// 		},
-
-// 		update: {
-// 			async handler(ctx){
-// 				let {id, username, password} = ctx.params;
-
-// 				const userUpdated = await User.findByIdAndUpdate({ _id: id }, {username, password})
-// 				return userUpdated
-// 			}
-// 		},
-		
-// 		create: {
-// 			// params: {
-// 			// 	user: { type: "object" }
-// 			// },
-// 			async handler(ctx) {
-// 				let entity = ctx.params;
-// 				//await this.validateEntity(entity);
-// 				if (entity.name) {
-// 					//return 'Hola POST'
-// 					const found = await User.findOne({ name: entity.name });
-// 					if (found)
-// 						return Promise.reject(
-// 							new MoleculerClientError("Name exists!", 422, "Name exists!", [{ field: "name", message: "Name exists"}])
-// 						);
-// 				}
-// 				// entity.password = bcrypt.hashSync(entity.password, 10);
-// 				entity.password = entity.password || "";
-// 		 		entity.name = entity.name || ""
-
-// 				const doc = await User.create(entity);
-// 				//const user = await this.transformDocuments(ctx, {}, doc);
-// 				return doc
-// 			    }
-// 			},
-// 		},
-
-// 	created() {
-
-// 		mongoose.connect("mongodb://localhost/henrybankDB", { 
-// 			useCreateIndex: true,
-// 			useNewUrlParser: true, 
-// 			useFindAndModify: true,
-// 			useUnifiedTopology: true
-// 		})
-// 		.then(() => {
-// 			console.log('DATABASE IS CONNECTED');
-// 		})
-// 		.catch(error => {		
-// 			console.error(error);
-// 		});
-// 	}
-// }
