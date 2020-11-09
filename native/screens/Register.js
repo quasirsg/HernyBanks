@@ -1,83 +1,83 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, Button, SafeAreaView } from 'react-native';
-import {connect} from 'react-redux';
-import {createUser} from '../store/actions/userActions'
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  Button,
+  SafeAreaView,
+} from "react-native";
+import { Formik, Form, Field } from "formik";
 
+import { useDispatch } from "react-redux";
 
-const Register = ({createUSerP, userP}) => {
+import { createUser } from "../store/actions/userActions";
 
-    console.log(userP)
-    const [user, setUser] = useState({
-        email: "",
-        name: "",
-        password: ""
-    })
+const Register = ({ id, name,email, password }) => {
+  const dispatch = useDispatch();
 
-    const handlerInput = (name, value)=>{
-        return setUser({...user, [name]: value})
-    }
+  return (
+    <View>
+      <Formik
+        initialValues={{
+          name,
+          email,
+          password,
+        }}
+        onSubmit={async(values, { setSubmitting, resetForm }) => {
+          dispatch(createUser(values)).then((response) => {
+            resetForm();
+            setSubmitting(false);
+          });
+        }}
+      >
+        {({handleChange, handleSubmit, values }) => (
+          <View>
+            <TextInput
+              placeholder="name"
+              onChangeText={handleChange("name")}
+              style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+              value={values.name}
+            />
+            <TextInput
+              placeholder="email"
+              onChangeText={handleChange("email")}
+              style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+              value={values.email}
+            />
 
-    const handlerSubmit = () => {
-        createUSerP(user)
-    }
-
-    
-
-        return (
-            <>
-            <h1>Register</h1>
-            <SafeAreaView style={styles.container}>
-              <ScrollView style={styles.scrollView}>
-                    <View>
-                        <TextInput placeholder='name'onChangeText={(value)=> handlerInput('name', value)}/>
-                    </View>
-                    <View>
-                        <TextInput placeholder='email'onChangeText={(value)=> handlerInput('email', value)}/>
-                    </View>
-                    <View>
-                        <TextInput placeholder='password'  onChangeText={(value)=> handlerInput('password', value)}/>
-                    </View>
-                    <View>
-                        <Button secureTextEntry={true} title="Register" color="#841584" onPress={handlerSubmit}/>
-                    </View>
-                    <View>         
-                        {userP.map((x, index) => {
-                        return <p key={index}>{x.name}</p>
-                        })}
-                    </View>
-                    
-              </ScrollView>
-            </SafeAreaView>
-            </>
-    )
-}
+            <TextInput
+              placeholder="password"
+              onChangeText={handleChange("password")}
+              style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+              value={values.password}
+            />
+            <Button
+              secureTextEntry={true}
+              title="Register"
+              color="#841584"
+              onPress={handleSubmit}
+            />
+          </View>
+        )}
+      </Formik>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginTop: 10,
-    },
-    scrollView: {
-      backgroundColor: 'white',
-      marginHorizontal: 20,
-    },
-    text: {
-      fontSize: 42,
-    },
-  });
+  container: {
+    flex: 1,
+    marginTop: 10,
+  },
+  scrollView: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+  },
+  text: {
+    fontSize: 42,
+  },
+});
 
-  function mapStateToProps(state){
-    return {
-        userP : state.users,
-    }
-}
-
-function mapDispatchToProps(dispatch){
-    return {
-       createUSerP : (user) => dispatch(createUser(user))
-    }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
-
+export default Register;

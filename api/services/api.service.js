@@ -49,14 +49,7 @@ module.exports = {
 				autoAliases: true,
 
 				aliases: {
-					//Users
-					"GET /getUsers": "users.getUser",
-					"GET /nameUser": "users.nameUser",
-					"POST /createdUser" : "users.createdUser",
-					"POST /users": "users.create",
-					"GET /users" : "users.list",
-					"DELETE /users/:id" : "users.remove",
-					"PUT /users/:id" : "users.update"
+
 				},
 
 

@@ -10,7 +10,7 @@ import Estatistics from './screens/Estatistics';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
 import RechargeScreen from './screens/RechargeScreen';
-
+import Welcome from './screens/welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
 const Stack = createStackNavigator()//contiene la navegacion
@@ -18,7 +18,8 @@ const Stack = createStackNavigator()//contiene la navegacion
 function MyStack(){
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Register} />
+      <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
+      <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Estatistics" component={Estatistics}/>
       <Stack.Screen name="Login" component={Login}/>
       <Stack.Screen name="PosConsolidada" component={PosConsolidada}/>
