@@ -127,6 +127,6 @@ module.exports = {
 	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 	async afterConnected() {
 		// await this.adapter.collection.createIndex({ name: 1 });
-		console.log('Connected');
+		//console.log('Connected');
 	}
 };
