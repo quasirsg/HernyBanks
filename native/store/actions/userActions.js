@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CREATE_USER } from '../constans/constans';
 
-const url = 'localhost:3000';
+const url =  'localhost:3000' || '192.168.1.84:3000';
 
 // CREAR USUARIO
 export function createUser(userData) {
@@ -15,9 +15,9 @@ export function createUser(userData) {
                     users: res.data || {},
                     createUserSuccess: true,
                 });
-            })
-            .catch(res=>{
-                console.log(res)
-            })
+            }).catch((error)=>{
+                console.log("Api call error");
+                alert(error.message);
+             });
     }
 };

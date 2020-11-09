@@ -99,7 +99,7 @@ module.exports = {
 		},
 
 	created() {
-		mongoose.connect("mongodb://localhost/henrybank", { useNewUrlParser: true, useUnifiedTopology: true })
+		mongoose.connect("mongodb://localhost/henryBank", { useNewUrlParser: true, useUnifiedTopology: true })
 		.then(() => console.log('DB Connected!'))
 			.catch(err => {
 		console.log(Error, err.message);
