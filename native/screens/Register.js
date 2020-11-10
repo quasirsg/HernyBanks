@@ -9,6 +9,9 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Formik, Form, Field } from "formik";
+import { Link } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import * as Yup from "yup";
 
@@ -21,6 +24,10 @@ const Register = ({ id, name, email, password,passwordConfirmation }) => {
 
   return (
     <View style={styles.loginContainer}>
+                  <View>
+                   <Link to="/Welcome">
+                   <Icon name="angle-left" color="#422C63" size={50} /></Link>
+                   </View>
       <Formik
         initialValues={{
           name,
