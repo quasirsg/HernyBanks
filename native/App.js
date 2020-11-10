@@ -25,7 +25,7 @@ function MyStack(){
       <Stack.Screen name="PosConsolidada" component={PosConsolidada}/>
       <Stack.Screen name="RechargeScreen" component={RechargeScreen}/>
       <Stack.Screen name="SendMonyScreen" component={SendMonyScreen}/>
-      <Stack.Screen name="Transactions" component={Transactions}/>
+      <Stack.Screen name="Transactions" component={Transactions}/> 
     </Stack.Navigator>
   )
 }
