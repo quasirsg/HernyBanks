@@ -4,6 +4,7 @@ require('dotenv').config();
 const DbService = require("moleculer-db");
 const mongoose = require("mongoose");
 const User = require("../models/user.model");
+const Token = require('../models/token.model');
 const bcrypt = require('bcrypt');
 const { MoleculerClientError } = require("moleculer").Errors;
 const { DATABASE } = process.env;
@@ -33,12 +34,8 @@ module.exports = {
 	 * Settings  *
 	 * * * * * * */
 	settings: {
-		// Campos disponibles en la respuesta 
-		fields: [
-			"_id",
-			"name",
-	
-		],
+		// Campos disponibles en la respuesta (**No está funcionando porque no se usa adapter)
+		fields: [ "_id", "username", "email" ],
 		// Validador para las acciones `create` & `insert`.
 		entityValidator: {
 			name: "string|min:3",
@@ -70,22 +67,29 @@ module.exports = {
 						else if (found.email === entity.email.toLowerCase()) {
 							return Promise.reject(emailError);
 						} 
-
 					}
 				};
-
-
+					
 				/*  * * * * * * * * * * * * * * * * *
 				* Encryptación de contraseña		*
 				* * * * *  * * * * * * * *  * * * * */
 				entity.password = bcrypt.hashSync(entity.password, 10);
-				entity.password = entity.password;
-
+				
 				/*  * * * * * * * * * * * * * * * * *
 				* Creación del nuevo usuario		*
 				* * * * *  * * * * * * * *  * * * * */
 				const created = await User.create(entity);
-				//const user = await this.transformDocuments(ctx, {}, doc);
+
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				* Generación de token para enviar confirmación al mail del nuevo usuario *
+				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
+				const token = await Token.create({ _userId: created._id, token: bcrypt.hashSync(created.username, 10) });
+
+				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+				* Llamado al servicio de emails para hacer verificación de la cuenta *
+				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * */
+				await ctx.call('emails.send_email', { email: created.email, token: token._id });
+
 				return created;
 			},
 		},
@@ -95,8 +99,7 @@ module.exports = {
 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		get_all_users: {
 			rest: "GET /all",
-			async handler(ctx){
-				ctx.call('emails.send_email');
+			async handler(){
 				const users = await User.find();
 				return users
 			}
@@ -185,10 +188,29 @@ module.exports = {
 				return Promise.reject(userNotFound);
 			}
 		},	
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para verificación de un usuario 	   *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * */
+		verify_user: {
+			async handler(ctx) {
+				const { _id } = ctx.params;
+
+				if(mongoose.Types.ObjectId.isValid(_id)) { 
+
+					await User.findByIdAndUpdate({ _id }, { verified: true });
+					const verified = await User.findById({ _id });
+			
+					return { username: verified.username, email: verified.email, verified: verified.verified }
+				}
+
+				return Promise.reject(userNotFound);
+			}
+		},
+		
 	},
 
 	started() {
-
 		/* * * * * * * * * * * * * * * * * * * *
 		 * Conexión a la base de datos 		   *
 		 * * * * * * * * * * * * * * * * * * * */
