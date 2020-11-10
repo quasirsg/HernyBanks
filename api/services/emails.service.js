@@ -54,7 +54,7 @@ module.exports = {
 			rest: "GET /confirm/:token",
 			async handler(ctx){ 
 
-				const token = await Token.findById({ _id: ctx.params.token });
+				const token = await Token.findOne({ token: ctx.params.token });
 
 				if(token) {
 					
