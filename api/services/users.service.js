@@ -83,12 +83,15 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Generación de token para enviar confirmación al mail del nuevo usuario *
 				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
-				const token = await Token.create({ _userId: created._id, token: bcrypt.hashSync(created.username, 10) });
+				const rdm = () => ( Math.random().toString(36).substr(2) );
+				const tokenGen = () => ( rdm() + rdm() + rdm() );
+
+				const token = await Token.create({ _userId: created._id, token: tokenGen() });
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Llamado al servicio de emails para hacer verificación de la cuenta *
 				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * */
-				await ctx.call('emails.send_email', { email: created.email, token: token._id });
+				await ctx.call('emails.send_email', { email: created.email, token: token.token });
 
 				return created;
 			},
