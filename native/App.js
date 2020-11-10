@@ -13,6 +13,7 @@ import RechargeScreen from './screens/RechargeScreen';
 import Welcome from './screens/welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
+import RegisterModal from './components/RegisterModal';
 const Stack = createStackNavigator()//contiene la navegacion
 //stack.screen contiene la pantalla
 function MyStack(){
@@ -26,6 +27,7 @@ function MyStack(){
       <Stack.Screen name="RechargeScreen" component={RechargeScreen}/>
       <Stack.Screen name="SendMonyScreen" component={SendMonyScreen}/>
       <Stack.Screen name="Transactions" component={Transactions}/> 
+      <Stack.Screen name="RegisterModal" component={RegisterModal}/> 
     </Stack.Navigator>
   )
 }
