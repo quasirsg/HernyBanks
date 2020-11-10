@@ -28,34 +28,7 @@ const Register = ({ id, name, email, password,passwordConfirmation }) => {
           password,
           passwordConfirmation
         }}
-        validationSchema={Yup.object({
-          name: Yup.string()
-            .min(4, "Debe tener al menos 4 caracteres")
-            .max(50, "Debe tener 50 caracteres o menos")
-            .required("Debes completar este campo"),
-          email: Yup.string()
-            .email("Introduzca un email valido por favor")
-            .required("Debes completar este campo"),
-          address: Yup.string()
-            .min(6, "Debe tener al menos 4 caracteres")
-            .max(50, "Debe tener 50 caracteres o menos")
-            .required("Debes completar este campo"),
-          phoneNumber: Yup.string()
-            .required("Please Enter your Phone Number")
-            .matches(
-              /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-              "Phone number is not valid"
-            ),
-          password: Yup.string()
-            .required("Please Enter your password")
-            .matches(
-              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-              "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-            ),
-          passwordConfirmation: Yup.string()
-            .oneOf([Yup.ref("password"), null], "La contraseña no coincide")
-            .required("Password confirm is required"),
-        })}
+
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           dispatch(createUser(values)).then((response) => {
             resetForm();
