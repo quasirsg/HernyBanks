@@ -50,7 +50,7 @@ module.exports = {
 		create_user: {
 			rest: "POST /create",
 			async handler(ctx) {
-
+				
 				const entity = ctx.params;
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Validación de username o email (creación de usuario único)     	     *
@@ -75,6 +75,7 @@ module.exports = {
 				* * * * *  * * * * * * * *  * * * * */
 				entity.password = bcrypt.hashSync(entity.password, 10);
 				
+				
 				/*  * * * * * * * * * * * * * * * * *
 				* Creación del nuevo usuario		*
 				* * * * *  * * * * * * * *  * * * * */
@@ -83,7 +84,7 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Generación de token para enviar confirmación al mail del nuevo usuario *
 				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
-				const token = await Token.create({ _userId: created._id, token: bcrypt.hashSync(created.username, 10) });
+				const token = await Token.create({ _userId: created._id, token: "56156dfsf562f1sd56f1sd5" });
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Llamado al servicio de emails para hacer verificación de la cuenta *
