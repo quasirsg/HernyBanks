@@ -94,9 +94,12 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Generación de token para enviar confirmación al mail del nuevo usuario *
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
+				const rdm = () => Math.random().toString(36).substr(2);
+				const tokenGen = () => rdm() + rdm() + rdm();
+
 				const token = await Token.create({
 					_userId: created._id,
-					token: "56156dfsf562f1sd56f1sd5",
+					token: tokenGen(),
 				});
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -104,7 +107,7 @@ module.exports = {
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * */
 				await ctx.call("emails.send_email", {
 					email: created.email,
-					token: token._id,
+					token: token.token,
 				});
 
 				return created;
