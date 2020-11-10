@@ -96,7 +96,7 @@ module.exports = {
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
 				const token = await Token.create({
 					_userId: created._id,
-					token: bcrypt.hashSync(created.username, 10),
+					token: "56156dfsf562f1sd56f1sd5",
 				});
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
