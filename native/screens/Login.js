@@ -20,13 +20,12 @@ const image = {
     "https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png",
 };
 
-const Login = () => {
+const Login = (userName, email, password) => {
   const dispatch = useDispatch();
 
-  const onSubmit=()=>{
-    dispatch(loginUser(email,)).then((response) => {
-      resetForm();
-  }  )}
+  const onSubmit=(values, action)=>{
+    action.resetForm();
+    dispatch(loginUser(values)) )}
 
   return (
     <View style={styles.container}>
@@ -35,8 +34,9 @@ const Login = () => {
             initialValues= {{
             email: "",
             password: "",
+            password:""
           }}
-          >
+          >{({handleChange, handleSubmit, values, errors}) =>{
               <View>
               <Text htmlFor="email">Email Address</Text>
               <TextInput
@@ -60,10 +60,10 @@ const Login = () => {
                 secureTextEntry={true}
                 title="Register"
                 color="#841584"
-                onPress={onSubmit}
+                onPress={handleSubmit}
               />
             </View>
-          
+          }}
         </Formik>
       </ImageBackground>
     </View>
