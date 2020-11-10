@@ -20,7 +20,7 @@ import { createUser } from "../store/actions/userActions";
 
 import Background from "../components/Background";
 import Logo from '../components/Logo';
-
+import Header from '../components/Header';
 
 const Register = ({
   id,
