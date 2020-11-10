@@ -1,38 +1,93 @@
 import React from "react";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { Formik, Form, Field } from "formik";
+import { loginUser } from "../store/actions/userActions";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  Button,
+  SafeAreaView,
+  ImageBackground,
+} from "react-native";
+
+
+const image = {
+  uri:
+    "https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png",
+};
 
 const Login = () => {
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: (values) => {
-      
-    },
-  });
-  return (
-    <form onSubmit={formik.handleSubmit}>
-      <label htmlFor="email">Email Address</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        onChange={formik.handleChange}
-        value={formik.values.email}
-      />
-      
-      <label htmlFor="password">Password</label>
-      <input
-        id="password"
-        name="password"
-        type="text"
-        onChange={formik.handleChange}
-        value={formik.values.password}
-      />
+  const dispatch = useDispatch();
 
-      <button type="submit">Submit</button>
-    </form>
+  const onSubmit=()=>{
+    dispatch(loginUser(email,)).then((response) => {
+      resetForm();
+  }  )}
+
+  return (
+    <View style={styles.container}>
+      <ImageBackground source={image} style={styles.image}>
+        <Formik
+            initialValues= {{
+            email: "",
+            password: "",
+          }}
+          >
+              <View>
+              <Text htmlFor="email">Email Address</Text>
+              <TextInput
+                placeholder="email"
+                name="email"
+                type="email"
+                onChange={handleChange("email")}
+                value={values.email}
+              />
+
+              <Text htmlFor="password">Password</Text>
+              <TextInput
+                 placeholder="password"
+                name="password"
+                type="text"
+                onChange={handleChange("password")}
+                value={values.password}
+              />
+
+              <Button
+                secureTextEntry={true}
+                title="Register"
+                color="#841584"
+                onPress={onSubmit}
+              />
+            </View>
+          
+        </Formik>
+      </ImageBackground>
+    </View>
   );
 };
-export default Login
+export default Login;
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#1D3448",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
+  button: {
+    borderWidth: 0.1,
+    alignItems: "center",
+    backgroundColor: "purple",
+    padding: 50,
+    borderRadius: 20,
+  },
+});
