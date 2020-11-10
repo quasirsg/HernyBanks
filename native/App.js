@@ -13,19 +13,26 @@ import RechargeScreen from './screens/RechargeScreen';
 import Welcome from './screens/welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
+import Header from './screens/header';
+import Menu from './screens/menu';
+import FAQ from './screens/FAQ';
+​
 const Stack = createStackNavigator()//contiene la navegacion
 //stack.screen contiene la pantalla
 function MyStack(){
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="Estatistics" component={Estatistics}/>
-      <Stack.Screen name="Login" component={Login}/>
-      <Stack.Screen name="PosConsolidada" component={PosConsolidada}/>
-      <Stack.Screen name="RechargeScreen" component={RechargeScreen}/>
-      <Stack.Screen name="SendMonyScreen" component={SendMonyScreen}/>
-      <Stack.Screen name="Transactions" component={Transactions}/> 
+    <Stack.Screen name="Welcome" component={Welcome} options={{headerShown:false}}/>
+    <Stack.Screen name="Menu" component={Menu} options={{headerShown:false}}/>
+      <Stack.Screen name="Register" component={Register} options={{headerShown:false}}/>
+      <Stack.Screen name="Estatistics" component={Estatistics} options={{headerShown:false}}/>
+      <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
+      <Stack.Screen name="Header" component={Header} options={{headerShown:false}}/>
+      <Stack.Screen name="PosConsolidada" component={PosConsolidada} options={{headerShown:false}}/>
+      <Stack.Screen name="RechargeScreen" component={RechargeScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="SendMonyScreen" component={SendMonyScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Transactions" component={Transactions} options={{headerShown:false}}/>
+      <Stack.Screen name="FAQ" component={FAQ} options={{headerShown:false}}/>
     </Stack.Navigator>
   )
 }
