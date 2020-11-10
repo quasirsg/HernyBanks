@@ -1,9 +1,10 @@
 "use strict";
 require('dotenv').config();
 
+const { Span } = require('moleculer');
 const nodemailer = require('nodemailer');
 const Token = require('../models/token.model');
-const { ADMIN_EMAIL, PASSW_EMAIL, VERIFICATION_URL } = process.env;
+const { ADMIN_EMAIL, PASSW_EMAIL, VERIFICATION_URL, URL_CONTINUE_VERIFY } = process.env;
 
 module.exports = {
 
@@ -31,7 +32,8 @@ module.exports = {
 				from: ADMIN_EMAIL,
 				to: ctx.params.email,
 				subject: 'Account Verification Token',
-				text: 'Hola,\n\n' + 'Por favor verifica tu cuenta dando clic al siguente enlace:\n' + VERIFICATION_URL + ctx.params.token	 
+				// text: 'Hola,\n\n' + 'Por favor verifica tu cuenta dando clic al siguente enlace:\n' + VERIFICATION_URL + ctx.params.token
+				text: 'Hola,\n\n' + 'Por favor verifica tu cuenta dando clic al siguente enlace:\n' + ctx.params.token	 
 			};
 			
 			transporter.sendMail(mailOptions, (error, info) => {
@@ -54,15 +56,17 @@ module.exports = {
 			rest: "GET /confirm/:token",
 			async handler(ctx){ 
 
-				const token = await Token.findById({ _id: ctx.params.token });
-
+				const token = await Token.findOne({ token: ctx.params.token });
+				console.log(token)
 				if(token) {
 					
 					const confirm = await ctx.call("users.verify_user", token._userId )
 
-					if (confirm) return confirm;					
+
+					if (confirm) return  confirm ;					
 					else console.log('Falta esta opción'); //falta terminar
 				}
+
 				 
 			}
 

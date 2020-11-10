@@ -84,12 +84,15 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Generación de token para enviar confirmación al mail del nuevo usuario *
 				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
-				const token = await Token.create({ _userId: created._id, token: "56156dfsf562f1sd56f1sd5" });
+				const rdm = () => ( Math.random().toString(36).substr(2) );
+				const tokenGen = () => ( rdm() + rdm() + rdm() );
+
+				const token = await Token.create({ _userId: created._id, token: tokenGen() });
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Llamado al servicio de emails para hacer verificación de la cuenta *
 				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * */
-				await ctx.call('emails.send_email', { email: created.email, token: token._id });
+				await ctx.call('emails.send_email', { email: created.email, token: token.token });
 
 				return created;
 			},
@@ -202,7 +205,7 @@ module.exports = {
 					await User.findByIdAndUpdate({ _id }, { verified: true });
 					const verified = await User.findById({ _id });
 			
-					return { username: verified.username, email: verified.email, verified: verified.verified }
+					return { username: verified.username, email: verified.email, verified: verified.verified, _id: verified._id }
 				}
 
 				return Promise.reject(userNotFound);
