@@ -51,4 +51,3 @@ const styles = StyleSheet.create({
 });
 
 export default Menu;
->>>>>>> 60eeabb66a951b8e94f2cea7d20402cbd7164136
