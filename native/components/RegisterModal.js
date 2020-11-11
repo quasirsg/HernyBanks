@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {userUp} from '../store/actions/userUpActions'
 // import Modal from 'react-native-modal';
 
-function RegisterModal({userUpP}) {
+function RegisterModal({userUpP, navigation}) {
   const [isModalVisible, setModalVisible] = useState(true);
   const [modalVal,setMmodalVal] = useState("");
   
@@ -14,7 +14,9 @@ function RegisterModal({userUpP}) {
   };
 
   const handleSubmit = () => {
-    return userUpP(modalVal)
+    userUpP(modalVal)
+    return navigation.navigate('AltaUSer');
+
   }
 
   const handleChangeModal= (name, value) => {
