@@ -3,7 +3,9 @@ import { CREATE_USER, LOGIN_USER } from '../constans/constans';
 
 const url =  'localhost:3000' || '192.168.1.84:3000';
 
-// CREAR USUARIO
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Acción para crear usuario (Desde Register Screen) *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function createUser(userData) {
     const dataUser = {
         username:userData.username,
@@ -25,6 +27,27 @@ export function createUser(userData) {
                 alert(error.message);
              });
     }
+};
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Acción para completar registro usuario(Desde AltaUser Screen) *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+export function completeUserRegister(userData) {
+
+  const { name, lastname, dni, phone, address, dob } = userData;
+  const dataUser = { name, lastname, dni, phone, address, dob };
+
+  return(dispatch) => {
+    axios.put(`http://localhost:3000/api/users/update`, dataUser)
+    .then(res => {
+      console.log('User updated', res.data);
+      dispatch({ type: UPDATE_USER, users: res.data });  
+    })
+    .catch((error)=>{
+      console.log("Error when updating user");
+      alert(error.message);
+    });
+  }
 };
 
 // export const loginUser = (email, password) => (dispatch) => {
