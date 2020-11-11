@@ -27,7 +27,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const Login = ({ id, email, password, isValid, navigation }) => {
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
-  console.log(session);
+
   return (
     <Background>
       <Logo />

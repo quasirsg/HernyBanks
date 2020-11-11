@@ -1,26 +1,34 @@
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
-import { USER_LOGIN,USER_LOGIN_ERROR } from '../constans/constans';
+import {
+  USER_LOGIN,
+  USER_LOGIN_ERROR,
+  CURRENT_USER,
+} from "../constans/constans";
 
-const url =  'http://localhost:3000' || 'http://192.168.1.84:3000';
+const url = "http://localhost:3000" || "http://192.168.1.84:3000";
 
 //loguin  -> funciona loguin correcto e incorrecto.
 export const loguinUser = (email, password) => (dispatch) => {
   try {
-    axios.post(`${url}/api/auth/login`, {
+    axios
+      .post(`${url}/api/auth/login`, {
         email: email,
         password: password,
       })
       .then((res) => {
         console.log(res);
         const token = res.data;
+        var decoded = jwt_decode(token);
+        console.log(decoded.id);
         // console.log('soy el token',token);
         if (token) {
           localStorage.setItem("token", token);
           dispatch({
             type: USER_LOGIN,
           });
-          // dispatch(getCurrentUser(token));
+          dispatch(getCurrentUser(token));
           // Swal.fire({
           //   position: "center",
           //   icon: "success",
@@ -29,13 +37,13 @@ export const loguinUser = (email, password) => (dispatch) => {
           //   timer: 2000,
           // });
         }
-      })
-      // .catch((error) => {
-      //   Toast.fire({
-      //     icon: "error",
-      //     title: "Error: email o contraseña no válidos",
-      //   });
-      // });
+      });
+    // .catch((error) => {
+    //   Toast.fire({
+    //     icon: "error",
+    //     title: "Error: email o contraseña no válidos",
+    //   });
+    // });
   } catch {
     dispatch({
       type: actionTypes.USER_LOGIN_ERROR,
@@ -47,29 +55,33 @@ export const loguinUser = (email, password) => (dispatch) => {
 //obtener información del usuario logueado
 export const getCurrentUser = (token) => async (dispatch) => {
   //Headers con Token
-  let config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-
-  await axios.get(`${url}/users/me/`, config).then((res) => {
-    dispatch({
-      type: actionTypes.CURRENT_USER,
-      user: res.data,
+  var decoded = jwt_decode(token);
+  console.log(typeof decoded.id);
+  axios
+    .get(`${url}/api/users/by-id`, {
+      params: {
+        _id: decoded.id,
+      },
+    })
+    .then((res) => {
+      dispatch({
+        type: CURRENT_USER,
+        user: res.data,
+      });
     });
-  });
 };
 
-// export const verifySession = () => (dispatch) => {
-//   const { token } = localStorage;
-//   if (token) {
-//     dispatch(getCurrentUser(token));
-//   } else {
-//     dispatch({
-//       type: actionTypes.NOT_CURRENT_USER,
-//       message: "No hay un usuario logueado.",
-//     });
-//   }
-// };
+export const verifySession = () => (dispatch) => {
+  const { token } = localStorage;
+  if (token) {
+    dispatch(getCurrentUser(token));
+  } else {
+    dispatch({
+      type: actionTypes.NOT_CURRENT_USER,
+      message: "No hay un usuario logueado.",
+    });
+  }
+};
 
 // //logout
 // export const logoutUser = (path) => (dispatch) => {
