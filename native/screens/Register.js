@@ -25,7 +25,7 @@ import { theme } from "../core/theme";
 
 const Register = ({
   id,
-  userName,
+  username,
   email,
   password,
   passwordConfirmation,
@@ -43,13 +43,13 @@ const Register = ({
       <View style={styles.loginContainer}>
         <Formik
           initialValues={{
-            userName: "",
+            username: "",
             email: "",
             password: "",
             passwordConfirmation: "",
           }}
           validationSchema={Yup.object({
-            userName: Yup.string()
+            username: Yup.string()
               .min(4, "Debe tener al menos 4 caracteres")
               .max(50, "Debe tener 50 caracteres o menos")
               .required("Debes completar este campo"),
@@ -76,7 +76,8 @@ const Register = ({
             <View>
               <CustomInput
                 label="Username"
-                onChangeText={handleChange("userName")}
+                name="username"
+                onChangeText={handleChange("username")}
                 value={values.userName}
               />
               {errors.name && (
@@ -86,6 +87,7 @@ const Register = ({
               )}
               <CustomInput
                 label="Email"
+                name="email"
                 returnKeyType="next"
                 onChangeText={handleChange("email")}
                 value={values.email}
@@ -101,6 +103,7 @@ const Register = ({
               )}
               <CustomInput
                 label="Password"
+                name="password"
                 returnKeyType="done"
                 onChangeText={handleChange("password")}
                 value={values.password}
@@ -112,8 +115,9 @@ const Register = ({
                 </Text>
               )}
               <CustomInput
+                label="Confirm Password"
                 name="passwordConfirmation"
-                placeholder="Confirm password"
+
                 onChangeText={handleChange("passwordConfirmation")}
                 style={styles.textInput}
                 value={values.passwordConfirmation}

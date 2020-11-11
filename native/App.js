@@ -15,8 +15,8 @@ import SendMonyScreen from "./screens/SendMonyScreen";
 import Transactions from "./screens/Transactions";
 import RegisterModal from "./components/RegisterModal";
 
-// import Header from './screens/header';
-// import Menu from './screens/menu';
+import Header from './screens/header';
+import Menu from './screens/menu';
 
 import FAQ from "./screens/FAQ";
 const Stack = createStackNavigator(); //contiene la navegacion
@@ -29,56 +29,56 @@ function MyStack() {
         component={Welcome}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Menu"
         component={Menu}
-        options={{ headerShown: false }}
-      /> */}
+        // options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Register"
         component={Register}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Estatistics"
         component={Estatistics}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Header"
         component={Header}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Stack.Screen
         name="PosConsolidada"
         component={PosConsolidada}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
       <Stack.Screen
         name="RechargeScreen"
         component={RechargeScreen}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
       <Stack.Screen
         name="SendMonyScreen"
         component={SendMonyScreen}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Transactions"
         component={Transactions}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
       <Stack.Screen name="RegisterModal" component={RegisterModal} />
       <Stack.Screen
         name="FAQ"
         component={FAQ}
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
