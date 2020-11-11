@@ -87,6 +87,7 @@ module.exports = {
 				const tokenGen = () => ( rdm() + rdm() + rdm() );
 
 				const token = await Token.create({ _userId: created._id, token: tokenGen() });
+				console.log(token)
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Llamado al servicio de emails para hacer verificación de la cuenta *
