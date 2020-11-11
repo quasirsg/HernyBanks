@@ -10,15 +10,23 @@ import {
 } from "react-native";
 import { Formik, Form, Field } from "formik";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { createUser } from "../store/actions/userActions";
 
 const AltaUser = ({ name,lastname, dni, phone, address,dob }) => {
   const dispatch = useDispatch();
+  const stateUser = useSelector(state => state.userUp)
+  console.log('*************userUp***************')
+  console.log(stateUser.userUp)
+  const userUp = stateUser.userUp
 
   return (
+   
     <View>
+      {Object.keys(userUp).length === 0 ?
+        <Text>Tu Codigo es incorrecto. Vuleve atras e intentalo nuevamente.</Text>
+      :
       <Formik
         initialValues={{
           name,
@@ -83,6 +91,7 @@ const AltaUser = ({ name,lastname, dni, phone, address,dob }) => {
           </View>
         )}
       </Formik>
+      }
     </View>
   );
 };

@@ -5,9 +5,14 @@ const url =  'localhost:3000' || '192.168.1.84:3000';
 
 // CREAR USUARIO
 export function createUser(userData) {
+    const dataUser = {
+        username:userData.username,
+        email:userData.email,
+        password:userData.password
+    }
     return(dispatch) => {
-        console.log(userData);
-        axios.post(`http://${url}/api/users/create`, userData)
+        console.log(dataUser);
+        axios.post(`http://${url}/api/users/create`, dataUser)
             .then(res => {
                 console.log(res.data)
                 dispatch({
