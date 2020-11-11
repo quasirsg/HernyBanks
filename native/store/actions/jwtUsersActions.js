@@ -74,6 +74,7 @@ export const getCurrentUser = (token) => async (dispatch) => {
 export const verifySession = () => (dispatch) => {
   const { token } = localStorage;
   if (token) {
+    alert("usuario logeado");
     dispatch(getCurrentUser(token));
   } else {
     dispatch({
