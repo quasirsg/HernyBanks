@@ -9,12 +9,15 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Formik, Form, Field } from "formik";
+import { Link } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { completeUserRegister } from "../store/actions/userActions";
 
-const AltaUser = ({ name,lastname, dni, phone, address,dob, navigation }) => {
+const AltaUser = ({ name,lastname, dni, phone, address,dob }) => {
   const dispatch = useDispatch();
   const stateUser = useSelector(state => state.userUp);
   console.log('*************userUp***************')
@@ -23,12 +26,21 @@ const AltaUser = ({ name,lastname, dni, phone, address,dob, navigation }) => {
   //const userId = useSelector(state => state.users[0]._id);
 
   return (
-   
+
     <View>
       {
         Object.keys(userUp).length === 0 ?
-
-        <Text> Tu código es incorrecto. Vuelve atrás e inténtalo nuevamente. </Text>  :
+                  <View><View>
+                  <Link to="/RegisterModal">
+                  <Icon name="angle-left" color="#422C63" size={50} /></Link>
+                  </View>
+        <Text style={{
+          fontSize: 30,
+          fontWeight:'bold',
+          color: 'purple',
+          border: null,
+          textAlign:'center',
+        }}> Tu código es incorrecto. Vuelve atrás e inténtalo nuevamente. </Text></View>  :
 
         <Formik
           initialValues = {{
@@ -38,17 +50,17 @@ const AltaUser = ({ name,lastname, dni, phone, address,dob, navigation }) => {
             phone,
             address,
             dob,
-            _id: userUp._id
           }}
           onSubmit = {
             async(values, { setSubmitting, resetForm }) => {
+
                 dispatch(completeUserRegister(values))
                 navigation.navigate('Login');
+
                 resetForm();
                 setSubmitting(false);
-                return             
+              });
             }
-           
           }
         >
           { ({ handleChange, handleSubmit, values }) => (
@@ -82,7 +94,7 @@ const AltaUser = ({ name,lastname, dni, phone, address,dob, navigation }) => {
                 onChangeText={handleChange("phone")}
                 style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
                 value={values.password}
-              /> 
+              />
               <TextInput
                 placeholder="Fecha de nacimiento"
                 onChangeText={handleChange("dob")}
