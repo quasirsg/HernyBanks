@@ -3,17 +3,14 @@ import {View, Text, ScrollView, StyleSheet, TouchableOpacity, ImageBackground} f
 import { Link } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
-​
 function Accordian({title, data}) {
   const [state, setState]= React.useState({
     data: data,
     expanded: false
   })
-​
   function toggleExpand(){
     state.expanded ? setState({expanded: false}) : setState({expanded: true})
   }
-​
     return (
         <View style={styles.container}>
 ​
@@ -30,7 +27,6 @@ function Accordian({title, data}) {
         </View>
     )
 }
-​
 export default function FAQ(){
     function renderAccordians(){
       const items = [];
@@ -65,10 +61,6 @@ export default function FAQ(){
       </View>
     );
   }
-​
-​
-​
-​
 const styles = StyleSheet.create({
   container:{
     backgroundColor: 'transparent',
@@ -93,7 +85,6 @@ const styles = StyleSheet.create({
         color: 'grey',
     },
 });
-​
 const faqText=[
   {title: '¿En cuánto tiempo verifican mi cuenta bancaria?',
     data: ' Ni bien ingreses tus datos, el tiempo de verificación de la cuenta bancaria es de 24 horas hábiles.'

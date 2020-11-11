@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {View, Button, Text, ScrollView, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
-​
 const image = { uri: "https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png" };
-​
 function Welcome({navigation}) {
 const onPressLogin = () => {navigation.navigate('Login');}
 const onPressRegister = () => {navigation.navigate('Register');}
 const onPressFAQ = () => {navigation.navigate('FAQ');}
-​
-​
 return (
 <View style={styles.container}>
 <ImageBackground source={image} style={styles.image}>
@@ -53,7 +49,6 @@ return (
 </View>
 );
 }
-​
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -77,5 +72,4 @@ const styles = StyleSheet.create({
       marginTop:10,
     },
 });
-​
 export default Welcome;
