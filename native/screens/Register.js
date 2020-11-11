@@ -4,13 +4,11 @@ import {
   Text,
   View,
   ScrollView,
-  TextInput,
-  Button,
-  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import { Formik, Form, Field } from "formik";
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import * as Yup from "yup";
 
@@ -19,8 +17,11 @@ import { useDispatch } from "react-redux";
 import { createUser } from "../store/actions/userActions";
 
 import Background from "../components/Background";
-import Logo from '../components/Logo';
-import Header from '../components/Header';
+import Logo from "../components/Logo";
+import Button from "../components/Button";
+import Header from "../components/Header";
+import CustomInput from "../components/CustomInput";
+import { theme } from "../core/theme";
 
 const Register = ({
   id,
@@ -29,14 +30,15 @@ const Register = ({
   password,
   passwordConfirmation,
   isValid,
-  navigation
+  navigation,
 }) => {
   const dispatch = useDispatch();
 
   return (
     <Background>
+      <Logo />
 
-       <Logo />
+      <Header>Create Account</Header>
 
       <View style={styles.loginContainer}>
         <Formik
@@ -67,15 +69,14 @@ const Register = ({
           onSubmit={(values, action) => {
             action.resetForm();
             dispatch(createUser(values));
-            navigation.navigate('RegisterModal');
+            navigation.navigate("RegisterModal");
           }}
         >
           {({ handleChange, handleSubmit, values, errors }) => (
             <View>
-              <TextInput
-                placeholder="userName"
+              <CustomInput
+                label="Username"
                 onChangeText={handleChange("userName")}
-                style={styles.textInput}
                 value={values.userName}
               />
               {errors.name && (
@@ -83,12 +84,14 @@ const Register = ({
                   {errors.name}
                 </Text>
               )}
-              <TextInput
-                name="email"
-                placeholder="email"
+              <CustomInput
+                label="Email"
+                returnKeyType="next"
                 onChangeText={handleChange("email")}
-                style={styles.textInput}
                 value={values.email}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                textContentType="emailAddress"
                 keyboardType="email-address"
               />
               {errors.email && (
@@ -96,11 +99,10 @@ const Register = ({
                   {errors.email}
                 </Text>
               )}
-              <TextInput
-                name="password"
-                placeholder="Password"
+              <CustomInput
+                label="Password"
+                returnKeyType="done"
                 onChangeText={handleChange("password")}
-                style={styles.textInput}
                 value={values.password}
                 secureTextEntry={true}
               />
@@ -109,7 +111,7 @@ const Register = ({
                   {errors.password}
                 </Text>
               )}
-              <TextInput
+              <CustomInput
                 name="passwordConfirmation"
                 placeholder="Confirm password"
                 onChangeText={handleChange("passwordConfirmation")}
@@ -123,10 +125,23 @@ const Register = ({
                 </Text>
               )}
               <Button
+                mode="contained"
                 secureTextEntry={true}
                 title="Register"
+                style={styles.button}
                 onPress={handleSubmit}
-              />
+              >
+                Sign Up
+              </Button>
+
+              <View style={styles.row}>
+                <Text style={styles.label}>Already have an account? </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  <Text style={styles.link}>Login</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </Formik>
@@ -136,22 +151,19 @@ const Register = ({
 };
 
 const styles = StyleSheet.create({
-  loginContainer: {
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "white",
-    padding: 10,
-    elevation: 10,
-    backgroundColor: "#e6e6e6",
+  label: {
+    color: theme.colors.secondary,
   },
-  textInput: {
-    height: 40,
-    width: "100%",
-    margin: 10,
-    backgroundColor: "white",
-    borderColor: "gray",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 10,
+  button: {
+    marginTop: 24,
+  },
+  row: {
+    flexDirection: "row",
+    marginTop: 4,
+  },
+  link: {
+    fontWeight: "bold",
+    color: theme.colors.primary,
   },
 });
 
