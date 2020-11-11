@@ -4,14 +4,11 @@ import {
   Text,
   View,
   ScrollView,
-  TextInput,
-  Button,
-  SafeAreaView,
-  Modal
+  TouchableOpacity,
 } from "react-native";
 import { Formik, Form, Field } from "formik";
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import * as Yup from "yup";
 
@@ -20,8 +17,11 @@ import { useDispatch } from "react-redux";
 import { createUser } from "../store/actions/userActions";
 
 import Background from "../components/Background";
-import Logo from '../components/Logo';
-
+import Logo from "../components/Logo";
+import Button from "../components/Button";
+import Header from "../components/Header";
+import CustomInput from "../components/CustomInput";
+import { theme } from "../core/theme";
 
 const Register = ({
   id,
@@ -30,23 +30,15 @@ const Register = ({
   password,
   passwordConfirmation,
   isValid,
-  navigation
+  navigation,
 }) => {
   const dispatch = useDispatch();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVal,setMmodalVal] = useState({
-    code : ""
-  });
-
-  const handleChangeModal= (name, value) => {
-    console.log(name, value)
-  }
 
   return (
-    <>
     <Background>
+      <Logo />
 
-       <Logo />
+      <Header>Create Account</Header>
 
       <View style={styles.loginContainer}>
         <Formik
@@ -77,17 +69,15 @@ const Register = ({
           onSubmit={(values, action) => {
             action.resetForm();
             dispatch(createUser(values));
-            navigation.navigate('RegisterModal');
-            //setMmodalVal(true)
-            return
+            navigation.navigate("RegisterModal");
           }}
         >
           {({ handleChange, handleSubmit, values, errors }) => (
             <View>
-              <TextInput
-                placeholder="username"
+              <CustomInput
+                label="Username"
+                name="username"
                 onChangeText={handleChange("username")}
-                style={styles.textInput}
                 value={values.userName}
               />
               {errors.name && (
@@ -95,12 +85,15 @@ const Register = ({
                   {errors.name}
                 </Text>
               )}
-              <TextInput
+              <CustomInput
+                label="Email"
                 name="email"
-                placeholder="email"
+                returnKeyType="next"
                 onChangeText={handleChange("email")}
-                style={styles.textInput}
                 value={values.email}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                textContentType="emailAddress"
                 keyboardType="email-address"
               />
               {errors.email && (
@@ -108,11 +101,11 @@ const Register = ({
                   {errors.email}
                 </Text>
               )}
-              <TextInput
+              <CustomInput
+                label="Password"
                 name="password"
-                placeholder="Password"
+                returnKeyType="done"
                 onChangeText={handleChange("password")}
-                style={styles.textInput}
                 value={values.password}
                 secureTextEntry={true}
               />
@@ -121,9 +114,10 @@ const Register = ({
                   {errors.password}
                 </Text>
               )}
-              <TextInput
+              <CustomInput
+                label="Confirm Password"
                 name="passwordConfirmation"
-                placeholder="Confirm password"
+
                 onChangeText={handleChange("passwordConfirmation")}
                 style={styles.textInput}
                 value={values.passwordConfirmation}
@@ -135,56 +129,45 @@ const Register = ({
                 </Text>
               )}
               <Button
+                mode="contained"
                 secureTextEntry={true}
                 title="Register"
+                style={styles.button}
                 onPress={handleSubmit}
-              />
+              >
+                Sign Up
+              </Button>
+
+              <View style={styles.row}>
+                <Text style={styles.label}>Already have an account? </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("LoginScreen")}
+                >
+                  <Text style={styles.link}>Login</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </Formik>
       </View>
     </Background>
-    {/* /*************************************MODAL*************************************** */ }
-    <Modal
-    animationType="slide"
-    transparent={true}
-    isVisible={true}
-    onRequestClose={() => {
-      Alert.alert("Modal has been closed.");
-    }}
-  >
-    <View style={styles.centeredView}>
-      <View style={styles.modalView}>
-        <Text style={styles.modalText}>Copia el Aqui el codigo que enviamos a tu Email!</Text>
-        <TextInput
-                placeholder="Code"
-                onChangeText={(value) => handleChangeModal("code", value)}
-                style={styles.textInput}
-              />
-      </View>
-    </View>
-  </Modal>
-  </>
   );
 };
 
 const styles = StyleSheet.create({
-  loginContainer: {
-    width: "100%",
-    alignItems: "center",
-    backgroundColor: "white",
-    padding: 10,
-    elevation: 10,
-    backgroundColor: "#e6e6e6",
+  label: {
+    color: theme.colors.secondary,
   },
-  textInput: {
-    height: 40,
-    width: "100%",
-    margin: 10,
-    backgroundColor: "white",
-    borderColor: "gray",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 10,
+  button: {
+    marginTop: 24,
+  },
+  row: {
+    flexDirection: "row",
+    marginTop: 4,
+  },
+  link: {
+    fontWeight: "bold",
+    color: theme.colors.primary,
   },
 });
 
