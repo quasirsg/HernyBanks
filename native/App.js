@@ -18,7 +18,6 @@ import RegisterModal from './components/RegisterModal';
 import Header from './screens/header';
 import Menu from './screens/menu';
 import FAQ from './screens/FAQ';
-​
 
 const Stack = createStackNavigator()//contiene la navegacion
 //stack.screen contiene la pantalla
