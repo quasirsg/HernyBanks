@@ -12,6 +12,7 @@ import { Formik, Form, Field } from "formik";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
+
 import * as Yup from "yup";
 
 import { loguinUser } from "../store/actions/jwtUsersActions";
@@ -27,7 +28,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const Login = ({ id, email, password, isValid, navigation }) => {
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
-  console.log(session);
+
   return (
     <Background>
       <Logo />
@@ -48,13 +49,19 @@ const Login = ({ id, email, password, isValid, navigation }) => {
             password: Yup.string().required("Please Enter your password"),
           })}
           onSubmit={(values, action) => {
-            let user = {...values};
-            
-            //To lower case (wtf?)
-            user.email = user.email.toLowerCase();
 
-            action.resetForm();
-            dispatch(loguinUser(user.email,user.password));
+            try{
+              let user = {...values};
+            
+              //To lower case (wtf?)
+              user.email = user.email.toLowerCase();
+  
+              action.resetForm();
+              dispatch(loguinUser(user.email,user.password));
+              setTimeout(function(){ navigation.navigate("RechargeScreen"); }, 2000);
+            }catch{
+              alert("error");
+            }
             // navigation.navigate("RegisterModal");
           }}
         >
