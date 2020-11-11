@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de usuario</title>
+
+    <style type="text/css">
+    .container {
+        background-color: rgb(225, 225, 225);
+        padding: 1rem;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .title {
+        background-color: rgb(51, 51, 51);
+        color: rgb(148, 148, 148);
+        padding: 1rem;
+        text-align: center;
+    }
+    .content{
+        background-color: rgb(255, 255, 255);
+        background-image: url('');
+        text-align: center;
+        padding: 1.5rem;
+    }
+    .hello {
+        color: rgb(103, 103, 103);
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .instruction {
+        background-color: transparent;
+        color: rgb(148, 148, 148);
+        padding: 1rem;
+    }
+    button {
+        border: 1px solid transparent;
+        border-radius: .5rem;
+        padding: .5rem;
+        color: white;
+        font-weight: bold;
+        font-size: 90%;
+        min-width: 20%;
+        background-color: rgb(174, 0, 205);
+        cursor: pointer;
+    }
+    .explain {
+        text-align: center;
+        padding: 1rem;
+        background-color: white;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .explain p {
+        font-size: 90%;
+        color: rgb(148, 148, 148);
+    }
+    .line {
+        background-color: rgb(174, 0, 205);
+        height: .3rem;
+    }
+    .foot {
+        background-color: rgb(51, 51, 51);
+        color: rgb(148, 148, 148);
+        padding: 1rem;
+        font-size: 70%;
+        text-align: center;
+    }
+    .main {
+        margin: .7rem 0 .7rem 0;
+        border: solid white;
+        border-radius: 10px;
+    }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="title">HBank</div>
+
+        <div class="main">
+
+            <div class="content">
+                <div class="hello">¡Hola {{username}}!</div>
+                <div class="instruction">Por favor copia el siguiente código de verificación</div>
+                <button>{{token}}</button>
+            </div>
+            <div class="explain">
+                <b>Verificación de cuenta</b>
+                <p>Una vez que hayas copiado el código, abre tu app de Hbank nuevamente y pégalo para que activar tu cuenta. <br><br> ¡Bienvenido a Hbank!</p>
+            </div>
+            
+        </div>
+        <div class="line"></div>
+        <div class="foot">Este correo es enviado por HBank. Un proyecto HENRY - 2020</div>
+    </div>
+</body>
+<script>
+
+</script>
+</html>
