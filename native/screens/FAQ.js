@@ -8,12 +8,14 @@ function Accordian({title, data}) {
     data: data,
     expanded: false
   })
+
   function toggleExpand(){
     state.expanded ? setState({expanded: false}) : setState({expanded: true})
   }
+
     return (
         <View style={styles.container}>
-​
+
             <View>
               <TouchableOpacity onPress={toggleExpand}>
                 <View style={styles.row}>
@@ -23,7 +25,7 @@ function Accordian({title, data}) {
               </TouchableOpacity>
               {state.expanded ? <View style={styles.child}><Text style={styles.data}>{data}</Text></View> : null}
             </View>
-​
+
         </View>
     )
 }
@@ -61,6 +63,10 @@ export default function FAQ(){
       </View>
     );
   }
+
+
+
+
 const styles = StyleSheet.create({
   container:{
     backgroundColor: 'transparent',

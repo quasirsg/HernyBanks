@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {View, Button, Text, ScrollView, StyleSheet, ImageBackground, TouchableOpacity} from 'react-native';
+
 const image = { uri: "https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png" };
+
 function Welcome({navigation}) {
 const onPressLogin = () => {navigation.navigate('Login');}
 const onPressRegister = () => {navigation.navigate('Register');}
 const onPressFAQ = () => {navigation.navigate('FAQ');}
+
+
 return (
 <View style={styles.container}>
 <ImageBackground source={image} style={styles.image}>
@@ -15,7 +19,7 @@ return (
   color: '#fff',
   fontWeight: 'bold',
 }}>HBank</Text>
-​
+
    <Text
      style={{
        backgroundColor: 'transparent',
