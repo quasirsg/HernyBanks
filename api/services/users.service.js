@@ -101,12 +101,14 @@ module.exports = {
 					_userId: created._id,
 					token: tokenGen(),
 				});
+				console.log(token);
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Llamado al servicio de emails para hacer verificación de la cuenta *
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * */
 				await ctx.call("emails.send_email", {
 					email: created.email,
+					username: created.username,
 					token: token.token,
 				});
 
@@ -206,6 +208,7 @@ module.exports = {
 					address,
 					dob,
 				} = ctx.params;
+				console.log(ctx.params);
 
 				if (mongoose.Types.ObjectId.isValid(_id)) {
 					await User.findByIdAndUpdate(
@@ -236,6 +239,7 @@ module.exports = {
 						username: verified.username,
 						email: verified.email,
 						verified: verified.verified,
+						_id: verified._id,
 					};
 				}
 

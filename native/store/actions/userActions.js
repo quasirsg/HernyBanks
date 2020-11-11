@@ -1,14 +1,21 @@
 import axios from 'axios';
-import { CREATE_USER, LOGIN_USER } from '../constans/constans';
+import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
 
 const url = 'localhost:3000' || '192.168.1.84:3000';
 
-// CREAR USUARIO
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Acción para crear usuario (Desde Register Screen) *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function createUser(userData) {
+	const dataUser = {
+		username: userData.username,
+		email: userData.email,
+		password: userData.password,
+	};
 	return (dispatch) => {
-		console.log(userData);
+		console.log(dataUser);
 		axios
-			.post(`http://${url}/api/users/create`, userData)
+			.post(`http://${url}/api/users/create`, dataUser)
 			.then((res) => {
 				console.log(res.data);
 				dispatch({
@@ -19,6 +26,28 @@ export function createUser(userData) {
 			})
 			.catch((error) => {
 				console.log('Api call error');
+				alert(error.message);
+			});
+	};
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Acción para completar registro usuario(Desde AltaUser Screen) *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+export function completeUserRegister(userData) {
+	console.log(userData);
+	const { name, lastname, dni, phone, address, dob, _id } = userData;
+	const dataUser = { name, lastname, dni, phone, address, dob, _id };
+
+	return (dispatch) => {
+		axios
+			.put(`http://localhost:3000/api/users/update`, dataUser)
+			.then((res) => {
+				console.log('User updated', res.data);
+				dispatch({ type: UPDATE_USER, users: res.data });
+			})
+			.catch((error) => {
+				console.log('Error when updating user');
 				alert(error.message);
 			});
 	};
