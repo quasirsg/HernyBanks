@@ -14,6 +14,7 @@ import Welcome from "./screens/welcome";
 import SendMonyScreen from "./screens/SendMonyScreen";
 import Transactions from "./screens/Transactions";
 import RegisterModal from "./components/RegisterModal";
+import AltaUSer from './screens/AltaUser'
 
 // import Header from './screens/header';
 // import Menu from './screens/menu';
@@ -75,6 +76,7 @@ function MyStack() {
         // options={{ headerShown: false }}
       />
       <Stack.Screen name="RegisterModal" component={RegisterModal} />
+      <Stack.Screen name="AltaUSer" component={AltaUSer} />
       <Stack.Screen
         name="FAQ"
         component={FAQ}
