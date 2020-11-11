@@ -3,6 +3,8 @@ require('dotenv').config();
 
 const nodemailer = require('nodemailer');
 const Token = require('../models/token.model');
+const handlebars = require("handlebars");
+const fs = require('fs')
 const { ADMIN_EMAIL, PASSW_EMAIL, VERIFICATION_URL } = process.env;
 
 module.exports = {
@@ -14,24 +16,32 @@ module.exports = {
 		 * Acción para el envío del correo de confirmación de cuenta   *
 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		send_email(ctx) {
+			console.log(ctx.params.token	);
+			const source = fs.readFileSync('./public/verify.html', 'utf-8').toString();
+			const template = handlebars.compile(source);
+			const replacements = {
+				username: ctx.params.username,
+				token: ctx.params.token	
+			};
+			const htmlToSend = template(replacements);
+
+			console.log(htmlToSend);
 			
-			let transporter = nodemailer.createTransport({
+			const transporter = nodemailer.createTransport({
 				service: 'gmail',
 				auth: {
 					user: ADMIN_EMAIL,
 					pass: PASSW_EMAIL
-				},
-				tls: {
-					rejectUnauthorized: false
 				}
 			});
 			
-			let mailOptions = {
+			const mailOptions = {
 
 				from: ADMIN_EMAIL,
 				to: ctx.params.email,
 				subject: 'Account Verification Token',
-				text: 'Hola,\n\n' + 'Por favor verifica tu cuenta dando clic al siguente enlace:\n' + VERIFICATION_URL + ctx.params.token	 
+				html: htmlToSend
+				//text: 'Hola,\n\n' + 'Por favor verifica tu cuenta dando clic al siguente enlace:\n' + VERIFICATION_URL + ctx.params.token	 
 			};
 			
 			transporter.sendMail(mailOptions, (error, info) => {

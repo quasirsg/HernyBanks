@@ -91,7 +91,7 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Llamado al servicio de emails para hacer verificación de la cuenta *
 				* * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * */
-				await ctx.call('emails.send_email', { email: created.email, token: token.token });
+				await ctx.call('emails.send_email', { email: created.email, username: created.username, token: token.token });
 
 				return created;
 			},
