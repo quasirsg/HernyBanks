@@ -16,3 +16,4 @@ export const NOT_CURRENT_USER = "NOT_CURRENT_USER";
 
 // Up User
 export const UP_USER = 'UP_USER'
+export const UPDATE_USER = 'UPDATE_USER'

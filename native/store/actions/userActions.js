@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CREATE_USER, LOGIN_USER } from '../constans/constans';
+import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
 
 const url =  'localhost:3000' || '192.168.1.84:3000';
 
@@ -34,10 +34,12 @@ export function createUser(userData) {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function completeUserRegister(userData) {
 
-  const { name, lastname, dni, phone, address, dob } = userData;
-  const dataUser = { name, lastname, dni, phone, address, dob };
+  console.log(userData)
+  const { name, lastname, dni, phone, address, dob, _id } = userData;
+  const dataUser = { name, lastname, dni, phone, address, dob, _id };
 
   return(dispatch) => {
+    
     axios.put(`http://localhost:3000/api/users/update`, dataUser)
     .then(res => {
       console.log('User updated', res.data);
