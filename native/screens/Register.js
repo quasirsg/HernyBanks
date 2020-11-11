@@ -22,6 +22,7 @@ import Button from "../components/Button";
 import Header from "../components/Header";
 import CustomInput from "../components/CustomInput";
 import { theme } from "../core/theme";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Register = ({
   id,
@@ -72,7 +73,7 @@ const Register = ({
             navigation.navigate("RegisterModal");
           }}
         >
-          {({ handleChange, handleSubmit, values, errors }) => (
+          {({ handleChange, handleSubmit, values, errors, touched }) => (
             <View>
               <CustomInput
                 label="Username"
@@ -80,11 +81,19 @@ const Register = ({
                 onChangeText={handleChange("username")}
                 value={values.userName}
               />
-              {errors.name && (
+
+              {values.username.length >= 4 && (
+                <Icon name="check" size={40} color="green" />
+              )}
+
+              {errors.username && (
                 <Text style={{ fontSize: 10, color: "red" }}>
-                  {errors.name}
+                  {errors.username}
                 </Text>
               )}
+
+              {/*  */}
+
               <CustomInput
                 label="Email"
                 name="email"
@@ -96,11 +105,19 @@ const Register = ({
                 textContentType="emailAddress"
                 keyboardType="email-address"
               />
+
+              {values.email.length >= 4 && !errors.email && (
+                <Icon name="check" size={40} color="green" />
+              )}
+
               {errors.email && (
                 <Text style={{ fontSize: 10, color: "red" }}>
                   {errors.email}
                 </Text>
               )}
+
+              {/*  */}
+
               <CustomInput
                 label="Password"
                 name="password"
@@ -109,25 +126,41 @@ const Register = ({
                 value={values.password}
                 secureTextEntry={true}
               />
+
+              {values.password.length >= 8 && !errors.password && (
+                <Icon name="check" size={40} color="green" />
+              )}
+
               {errors.password && (
                 <Text style={{ fontSize: 10, color: "red" }}>
                   {errors.password}
                 </Text>
               )}
+
+              {/*  */}
+
               <CustomInput
                 label="Confirm Password"
                 name="passwordConfirmation"
-
                 onChangeText={handleChange("passwordConfirmation")}
                 style={styles.textInput}
                 value={values.passwordConfirmation}
                 secureTextEntry={true}
               />
+
+              {values.passwordConfirmation.length >= 8 &&
+                !errors.passwordConfirmation && (
+                  <Icon name="check" size={40} color="green" />
+                )}
+
               {errors.passwordConfirmation && (
                 <Text style={{ fontSize: 10, color: "red" }}>
                   {errors.passwordConfirmation}
                 </Text>
               )}
+
+              {/*  */}
+
               <Button
                 mode="contained"
                 secureTextEntry={true}
@@ -138,10 +171,12 @@ const Register = ({
                 Sign Up
               </Button>
 
+              {/*  */}
+
               <View style={styles.row}>
                 <Text style={styles.label}>Already have an account? </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("LoginScreen")}
+                  onPress={() => navigation.navigate("Login")}
                 >
                   <Text style={styles.link}>Login</Text>
                 </TouchableOpacity>

@@ -7,7 +7,7 @@ import Register from "./screens/Register";
 import { Provider } from "react-redux";
 import { st } from "./store/store";
 import Estatistics from "./screens/Estatistics";
-// import Login from "./screens/Login";
+import Login from "./screens/Login";
 import PosConsolidada from "./screens/PosConsolidada";
 import RechargeScreen from "./screens/RechargeScreen";
 import Welcome from "./screens/welcome";
@@ -15,8 +15,8 @@ import SendMonyScreen from "./screens/SendMonyScreen";
 import Transactions from "./screens/Transactions";
 import RegisterModal from "./components/RegisterModal";
 
-import Header from './screens/header';
-import Menu from './screens/menu';
+// import Header from './screens/header';
+// import Menu from './screens/menu';
 import FAQ from './screens/FAQ';
 
 const Stack = createStackNavigator(); //contiene la navegacion
@@ -29,11 +29,11 @@ function MyStack() {
         component={Welcome}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Menu"
         component={Menu}
         // options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="Register"
         component={Register}
@@ -44,16 +44,16 @@ function MyStack() {
         component={Estatistics}
         // options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Login"
         component={Login}
         // options={{ headerShown: false }}
-      /> */}
-      <Stack.Screen
+      />
+      {/* <Stack.Screen
         name="Header"
         component={Header}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="PosConsolidada"
         component={PosConsolidada}
