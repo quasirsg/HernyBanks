@@ -7,7 +7,7 @@ import Register from './screens/Register';
 import { Provider } from 'react-redux';
 import  { st }  from './store/store';
 import Estatistics from './screens/Estatistics';
-import Login from './screens/Login';
+// import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
 import RechargeScreen from './screens/RechargeScreen';
 import Welcome from './screens/welcome';
@@ -17,7 +17,6 @@ import RegisterModal from './components/RegisterModal';
 import Header from './screens/header';
 import Menu from './screens/menu';
 import FAQ from './screens/FAQ';
-​
 
 const Stack = createStackNavigator()//contiene la navegacion
 //stack.screen contiene la pantalla
@@ -29,7 +28,7 @@ function MyStack(){
     <Stack.Screen name="Menu" component={Menu} options={{headerShown:false}}/> 
       <Stack.Screen name="Register" component={Register} options={{headerShown:false}}/>
       <Stack.Screen name="Estatistics" component={Estatistics} options={{headerShown:false}}/>
-      <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
+      {/* <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/> */}
       <Stack.Screen name="Header" component={Header} options={{headerShown:false}}/>
       <Stack.Screen name="PosConsolidada" component={PosConsolidada} options={{headerShown:false}}/>
       <Stack.Screen name="RechargeScreen" component={RechargeScreen} options={{headerShown:false}}/>

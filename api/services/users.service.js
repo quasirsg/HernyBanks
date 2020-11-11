@@ -50,7 +50,7 @@ module.exports = {
 		create_user: {
 			rest: "POST /create",
 			async handler(ctx) {
-				
+
 				const entity = ctx.params;
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				* Validación de username o email (creación de usuario único)     	     *
@@ -74,7 +74,6 @@ module.exports = {
 				* Encryptación de contraseña		*
 				* * * * *  * * * * * * * *  * * * * */
 				entity.password = bcrypt.hashSync(entity.password, 10);
-				
 				
 				/*  * * * * * * * * * * * * * * * * *
 				* Creación del nuevo usuario		*
@@ -205,7 +204,7 @@ module.exports = {
 					await User.findByIdAndUpdate({ _id }, { verified: true });
 					const verified = await User.findById({ _id });
 			
-					return { username: verified.username, email: verified.email, verified: verified.verified, _id: verified._id }
+					return { username: verified.username, email: verified.email, verified: verified.verified }
 				}
 
 				return Promise.reject(userNotFound);

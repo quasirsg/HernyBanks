@@ -7,6 +7,7 @@ import {
   TextInput,
   Button,
   SafeAreaView,
+  Modal
 } from "react-native";
 import { Formik, Form, Field } from "formik";
 import { NavigationContainer } from '@react-navigation/native';
@@ -24,7 +25,7 @@ import Logo from '../components/Logo';
 
 const Register = ({
   id,
-  userName,
+  username,
   email,
   password,
   passwordConfirmation,
@@ -32,8 +33,17 @@ const Register = ({
   navigation
 }) => {
   const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVal,setMmodalVal] = useState({
+    code : ""
+  });
+
+  const handleChangeModal= (name, value) => {
+    console.log(name, value)
+  }
 
   return (
+    <>
     <Background>
 
        <Logo />
@@ -41,13 +51,13 @@ const Register = ({
       <View style={styles.loginContainer}>
         <Formik
           initialValues={{
-            userName: "",
+            username: "",
             email: "",
             password: "",
             passwordConfirmation: "",
           }}
           validationSchema={Yup.object({
-            userName: Yup.string()
+            username: Yup.string()
               .min(4, "Debe tener al menos 4 caracteres")
               .max(50, "Debe tener 50 caracteres o menos")
               .required("Debes completar este campo"),
@@ -68,13 +78,15 @@ const Register = ({
             action.resetForm();
             dispatch(createUser(values));
             navigation.navigate('RegisterModal');
+            //setMmodalVal(true)
+            return
           }}
         >
           {({ handleChange, handleSubmit, values, errors }) => (
             <View>
               <TextInput
-                placeholder="userName"
-                onChangeText={handleChange("userName")}
+                placeholder="username"
+                onChangeText={handleChange("username")}
                 style={styles.textInput}
                 value={values.userName}
               />
@@ -132,6 +144,27 @@ const Register = ({
         </Formik>
       </View>
     </Background>
+    {/* /*************************************MODAL*************************************** */ }
+    <Modal
+    animationType="slide"
+    transparent={true}
+    isVisible={true}
+    onRequestClose={() => {
+      Alert.alert("Modal has been closed.");
+    }}
+  >
+    <View style={styles.centeredView}>
+      <View style={styles.modalView}>
+        <Text style={styles.modalText}>Copia el Aqui el codigo que enviamos a tu Email!</Text>
+        <TextInput
+                placeholder="Code"
+                onChangeText={(value) => handleChangeModal("code", value)}
+                style={styles.textInput}
+              />
+      </View>
+    </View>
+  </Modal>
+  </>
   );
 };
 
