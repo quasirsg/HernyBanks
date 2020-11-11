@@ -53,7 +53,10 @@ const AltaUser = ({ name,lastname, dni, phone, address,dob }) => {
           }}
           onSubmit = {
             async(values, { setSubmitting, resetForm }) => {
-              dispatch(completeUserRegister(values)).then((response) => {
+
+                dispatch(completeUserRegister(values))
+                navigation.navigate('Login');
+
                 resetForm();
                 setSubmitting(false);
               });
