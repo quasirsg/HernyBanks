@@ -7,7 +7,7 @@ import Register from "./screens/Register";
 import { Provider } from "react-redux";
 import { st } from "./store/store";
 import Estatistics from "./screens/Estatistics";
-import Login from "./screens/Login";
+// import Login from "./screens/Login";
 import PosConsolidada from "./screens/PosConsolidada";
 import RechargeScreen from "./screens/RechargeScreen";
 import Welcome from "./screens/welcome";
@@ -19,7 +19,6 @@ import Header from './screens/header';
 import Menu from './screens/menu';
 import FAQ from './screens/FAQ';
 
-import FAQ from "./screens/FAQ";
 const Stack = createStackNavigator(); //contiene la navegacion
 //stack.screen contiene la pantalla
 function MyStack() {
@@ -45,11 +44,11 @@ function MyStack() {
         component={Estatistics}
         // options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Login"
         component={Login}
         // options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="Header"
         component={Header}
