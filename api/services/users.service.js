@@ -181,6 +181,7 @@ module.exports = {
 			rest: "PUT /update",
 			async handler(ctx){
 				const { _id, name, lastname, dni, phone, address, dob } = ctx.params;
+				console.log(ctx.params)
 
 				if(mongoose.Types.ObjectId.isValid(_id)) { 
 					await User.findByIdAndUpdate({ _id },{ name, lastname, dni, phone, address, dob });
@@ -205,7 +206,7 @@ module.exports = {
 					await User.findByIdAndUpdate({ _id }, { verified: true });
 					const verified = await User.findById({ _id });
 			
-					return { username: verified.username, email: verified.email, verified: verified.verified }
+					return { username: verified.username, email: verified.email, verified: verified.verified, _id: verified._id}
 				}
 
 				return Promise.reject(userNotFound);
