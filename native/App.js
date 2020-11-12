@@ -24,9 +24,6 @@ const Stack = createStackNavigator(); //contiene la navegacion
 function MyStack() {
 	return (
 		<Stack.Navigator>
-			{/* Eliminar */}
-			<Stack.Screen name='PosConsolidada' component={PosConsolidada2} options={{ headerShown: false }} />
-			{/* Eliminar */}
 			<Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
 			{/* <Stack.Screen
         name="Menu"
@@ -53,11 +50,7 @@ function MyStack() {
         component={Header}
         options={{ headerShown: false }}
       /> */}
-			<Stack.Screen
-				name='PosConsolidada'
-				component={PosConsolidada}
-				// options={{ headerShown: false }}
-			/>
+			<Stack.Screen name='PosConsolidada' component={PosConsolidada} options={{ headerShown: false }} />
 			{/* <Stack.Screen
         name="RechargeScreen"
         component={RechargeScreen}
