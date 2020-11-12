@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faWallet, faMoneyBillWaveAlt, faUser, faChartLine, faExchangeAlt, faCubes, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 // Background Image
 const image = { uri: 'https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png' };
@@ -8,6 +10,16 @@ export default function PosConsolidada() {
 	return (
 		<ImageBackground source={image} style={styles.backgroundImage}>
 			<View style={styles.containerPrin}>
+				<TouchableOpacity
+					onPress={() => {
+						alert('Logout');
+					}}
+				>
+					<View style={{ flexDirection: 'row-reverse', alignItems: 'center', marginHorizontal: 20, marginTop: 15 }}>
+						<FontAwesomeIcon icon={faSignOutAlt} style={{ color: 'white', alignSelf: 'center', marginLeft: 10 }} size={22} />
+						<Text style={styles.text}>Salir</Text>
+					</View>
+				</TouchableOpacity>
 				<View
 					style={{
 						flex: 1,
@@ -88,7 +100,6 @@ export default function PosConsolidada() {
 						</View>
 					</View>
 				</View>
-
 				<View style={styles.mainActionsContainer}>
 					<View>
 						<TouchableOpacity
@@ -97,7 +108,9 @@ export default function PosConsolidada() {
 							}}
 							style={styles.largeButtonContainer}
 						>
-							<View style={styles.iconPlaceholderLarge}></View>
+							{/* <View style={styles.iconPlaceholderLarge}>
+							</View> */}
+							<FontAwesomeIcon icon={faWallet} style={{ color: 'white' }} size={44} />
 							<Text style={styles.text}>Recargar Dinero</Text>
 						</TouchableOpacity>
 					</View>
@@ -109,7 +122,8 @@ export default function PosConsolidada() {
 							}}
 							style={styles.largeButtonContainer}
 						>
-							<View style={styles.iconPlaceholderLarge}></View>
+							{/* <View style={styles.iconPlaceholderLarge}></View> */}
+							<FontAwesomeIcon icon={faMoneyBillWaveAlt} style={{ color: 'white' }} size={44} />
 							<Text style={styles.text}>Mandar Dinero</Text>
 						</TouchableOpacity>
 					</View>
@@ -128,7 +142,8 @@ export default function PosConsolidada() {
 								alert('Transacciones');
 							}}
 						>
-							<View style={styles.iconPlaceholderSmall}></View>
+							{/* <View style={styles.iconPlaceholderSmall}></View>*/}
+							<FontAwesomeIcon icon={faExchangeAlt} style={{ color: 'white', alignSelf: 'center' }} size={22} />
 							<Text style={styles.textMini}>Transacciones</Text>
 						</TouchableOpacity>
 					</View>
@@ -138,7 +153,8 @@ export default function PosConsolidada() {
 								alert('Estadisticas');
 							}}
 						>
-							<View style={styles.iconPlaceholderSmall}></View>
+							{/* <View style={styles.iconPlaceholderSmall}></View>*/}
+							<FontAwesomeIcon icon={faChartLine} style={{ color: 'white', alignSelf: 'center' }} size={22} />
 							<Text style={styles.textMini}>Estadisticas</Text>
 						</TouchableOpacity>
 					</View>
@@ -148,7 +164,8 @@ export default function PosConsolidada() {
 								alert('Mis Productos');
 							}}
 						>
-							<View style={styles.iconPlaceholderSmall}></View>
+							{/* <View style={styles.iconPlaceholderSmall}></View> */}
+							<FontAwesomeIcon icon={faCubes} style={{ color: 'white', alignSelf: 'center' }} size={22} />
 							<Text style={styles.textMini}>Mis Productos</Text>
 						</TouchableOpacity>
 					</View>
@@ -158,7 +175,8 @@ export default function PosConsolidada() {
 								alert('Mis Datos');
 							}}
 						>
-							<View style={styles.iconPlaceholderSmall}></View>
+							{/* <View style={styles.iconPlaceholderSmall}></View> */}
+							<FontAwesomeIcon icon={faUser} style={{ color: 'white', alignSelf: 'center' }} size={22} />
 							<Text style={styles.textMini}>Mis Datos</Text>
 						</TouchableOpacity>
 					</View>
@@ -200,6 +218,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		justifyContent: 'space-between',
+		alignItems: 'center',
 		height: 80,
 	},
 	buttonContainerLight: {
