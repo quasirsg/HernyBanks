@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, Button, SafeAreaView } from 'react-native';
-import { Formik, Form, Field } from 'formik';
-import { Link } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+  Button,
+  SafeAreaView,
+} from "react-native";
+import { Formik, Form, Field } from "formik";
+import { Link } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import { completeUserRegister } from '../store/actions/userActions';
+import { completeUserRegister } from "../store/actions/userActions";
 
 const AltaUser = ({ name, lastname, dni, phone, address, dob, navigation }) => {
 	const dispatch = useDispatch();
@@ -73,17 +81,17 @@ const AltaUser = ({ name, lastname, dni, phone, address, dob, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		marginTop: 10,
-	},
-	scrollView: {
-		backgroundColor: 'white',
-		marginHorizontal: 20,
-	},
-	text: {
-		fontSize: 42,
-	},
+  container: {
+    flex: 1,
+    marginTop: 10,
+  },
+  scrollView: {
+    backgroundColor: "white",
+    marginHorizontal: 20,
+  },
+  text: {
+    fontSize: 42,
+  },
 });
 
 export default AltaUser;
