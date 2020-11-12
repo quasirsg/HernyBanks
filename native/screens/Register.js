@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import { Formik, Form, Field } from 'formik';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Formik } from 'formik';
 
 import * as Yup from 'yup';
 
@@ -23,9 +21,9 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 
 	return (
 		<Background>
-			<Logo />
+			{/* <Logo /> */}
 
-			<Header>Create Account</Header>
+			<Header>Crear cuenta</Header>
 
 			<View style={styles.loginContainer}>
 				<Formik
@@ -48,12 +46,18 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 					onSubmit={(values, action) => {
 						action.resetForm();
 						dispatch(createUser(values));
-						navigation.navigate('RegisterModal');
+						//navigation.navigate('RegisterModal');
 					}}
 				>
 					{({ handleChange, handleSubmit, values, errors, touched }) => (
 						<View>
-							<CustomInput label='Username' name='username' onChangeText={handleChange('username')} value={values.userName} />
+							<CustomInput 
+								label='Username' 
+								name='username' 
+								onChangeText={handleChange('username')} 
+								value={values.userName} 
+								style={styles.input}
+							/>
 
 							{values.username.length >= 4 && <Icon name='check' size={40} color='green' />}
 
@@ -61,7 +65,18 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 
 							{/*  */}
 
-							<CustomInput label='Email' name='email' returnKeyType='next' onChangeText={handleChange('email')} value={values.email} autoCapitalize='none' autoCompleteType='email' textContentType='emailAddress' keyboardType='email-address' />
+							<CustomInput 
+								label='Correo' 
+								name='email' 
+								returnKeyType='next' 
+								onChangeText={handleChange('email')} 
+								value={values.email} 
+								autoCapitalize='none' 
+								autoCompleteType='email' 
+								textContentType='emailAddress' 
+								keyboardType='email-address' 
+								style={styles.input}
+							/>
 
 							{values.email.length >= 4 && !errors.email && <Icon name='check' size={40} color='green' />}
 
@@ -69,7 +84,15 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 
 							{/*  */}
 
-							<CustomInput label='Password' name='password' returnKeyType='done' onChangeText={handleChange('password')} value={values.password} secureTextEntry={true} />
+							<CustomInput 
+								label='Contraseña' 
+								name='password' 
+								returnKeyType='done' 
+								onChangeText={handleChange('password')} 
+								value={values.password} 
+								secureTextEntry={true} 
+								style={styles.input}
+							/>
 
 							{values.password.length >= 8 && !errors.password && <Icon name='check' size={40} color='green' />}
 
@@ -77,7 +100,14 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 
 							{/*  */}
 
-							<CustomInput label='Confirm Password' name='passwordConfirmation' onChangeText={handleChange('passwordConfirmation')} style={styles.textInput} value={values.passwordConfirmation} secureTextEntry={true} />
+							<CustomInput 
+								label='Confirmar contraseña' 
+								name='passwordConfirmation' 
+								onChangeText={handleChange('passwordConfirmation')} 
+								value={values.passwordConfirmation} 
+								secureTextEntry={true} 
+								style={styles.input}
+							/>
 
 							{values.passwordConfirmation.length >= 8 && !errors.passwordConfirmation && <Icon name='check' size={40} color='green' />}
 
@@ -85,16 +115,22 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 
 							{/*  */}
 
-							<Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
-								Sign Up
+							<Button 
+								mode='contained' 
+								secureTextEntry={true} 
+								title='Register' 
+								style={styles.createButton} 
+								onPress={handleSubmit}
+							>
+								Crear
 							</Button>
 
 							{/*  */}
 
 							<View style={styles.row}>
-								<Text style={styles.label}>Already have an account? </Text>
+								<Text style={styles.label}>¿Tienes una cuenta? </Text>
 								<TouchableOpacity onPress={() => navigation.navigate('Login')}>
-									<Text style={styles.link}>Login</Text>
+									<Text style={styles.link}>Ingresa aquí</Text>
 								</TouchableOpacity>
 							</View>
 						</View>
@@ -120,6 +156,10 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: theme.colors.primary,
 	},
+	input: {
+		height: 40,
+		backgroundColor: 'white'
+	}
 });
 
 export default Register;

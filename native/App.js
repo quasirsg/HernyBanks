@@ -34,22 +34,22 @@ function MyStack() {
         component={Menu}
         // options={{ headerShown: false }}
       /> */}
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        // options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Estatistics"
-        component={Estatistics}
-        // options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      {/* <Stack.Screen
+			<Stack.Screen
+				name='Register'
+				component={Register}
+				options={{ title: 'Registrarse' }}
+			/>
+			<Stack.Screen
+				name='Estatistics'
+				component={Estatistics}
+				// options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name='Login'
+				component={Login}
+				options={{ title: 'Iniciar sesión' }}
+			/>
+			{/* <Stack.Screen
         name="Header"
         component={Header}
         options={{ headerShown: false }}

@@ -29,8 +29,8 @@ const AltaUser = ({ name, lastname, dni, phone, address, dob, navigation }) => {
 						style={{
 							fontSize: 30,
 							fontWeight: 'bold',
-							// color: 'purple',
-							textAlign: 'center'
+							color: 'purple',
+							textAlign: 'center',
 						}}
 					>
 						{' '}

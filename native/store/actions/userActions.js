@@ -2,7 +2,7 @@ import axios from 'axios';
 import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
 
 // const url = 'http://localhost:3000' || 'http://192.168.0.20:3000';
-const url = 'http://192.168.0.20:3000';
+const url = 'http://192.168.0.25:3000';
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para crear usuario (Desde Register Screen) *

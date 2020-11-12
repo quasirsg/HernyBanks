@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';
 import * as actionTypes from '../constans/constans';
 
 // const url = 'http://localhost:3000' || 'http://192.168.0.20:3000';
-const url = 'http://192.168.0.20:3000';
+const url = 'http://192.168.0.25:3000';
 
 //loguin  -> funciona loguin correcto e incorrecto.
 export const loguinUser = (email, password) => (dispatch) => {

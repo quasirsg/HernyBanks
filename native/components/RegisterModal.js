@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight:'bold',
     color: 'purple',
-    // border: null,
     textAlign:'center',
   },
   textInput: {
