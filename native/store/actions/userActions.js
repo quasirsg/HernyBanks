@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
 
-const url = 'localhost:3000' || '192.168.1.84:3000';
+// const url = 'http://localhost:3000' || 'http://192.168.0.20:3000';
+const url = 'http://192.168.0.25:3000';
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para crear usuario (Desde Register Screen) *
@@ -15,7 +16,7 @@ export function createUser(userData) {
 	return (dispatch) => {
 		console.log(dataUser);
 		axios
-			.post(`http://${url}/api/users/create`, dataUser)
+			.post(`${url}/api/users/create`, dataUser)
 			.then((res) => {
 				console.log(res.data);
 				dispatch({
@@ -41,7 +42,7 @@ export function completeUserRegister(userData) {
 
 	return (dispatch) => {
 		axios
-			.put(`http://localhost:3000/api/users/update`, dataUser)
+			.put(`${url}/api/users/update`, dataUser)
 			.then((res) => {
 				console.log('User updated', res.data);
 				dispatch({ type: UPDATE_USER, users: res.data });

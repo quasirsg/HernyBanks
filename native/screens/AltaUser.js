@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { completeUserRegister } from '../store/actions/userActions';
 
-const AltaUser = ({ name, lastname, dni, phone, address, dob }) => {
+const AltaUser = ({ name, lastname, dni, phone, address, dob, navigation }) => {
 	const dispatch = useDispatch();
 	const stateUser = useSelector((state) => state.userUp);
 	console.log('*************userUp***************');
@@ -45,12 +45,12 @@ const AltaUser = ({ name, lastname, dni, phone, address, dob }) => {
 						dni,
 						phone,
 						address,
-						dob,
+            dob,
+            _id:userUp._id
 					}}
 					onSubmit={async (values, { setSubmitting, resetForm }) => {
 						dispatch(completeUserRegister(values));
 						navigation.navigate('Login');
-
 						resetForm();
 						setSubmitting(false);
 					}}

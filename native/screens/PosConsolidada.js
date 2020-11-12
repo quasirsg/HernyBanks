@@ -3,35 +3,42 @@ import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { verifySession } from '../store/actions/jwtUsersActions';
+import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faWallet, faMoneyBillWaveAlt, faUser, faChartLine, faExchangeAlt, faCubes, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faWallet, faMoneyBillWaveAlt, faUser, faChartLine, faExchangeAlt, faCubes, faSignOutAlt, faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons';
 
 // Background Image
 const image = { uri: 'https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png' };
 
-export default function RechargeScreen(navigation) {
+export default function RechargeScreen({navigation}) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 	useEffect(() => {
 		dispatch(verifySession());
 	}, []);
-	console.log('soy el user logeado', session);
+    console.log('soy el user logeado', session);
+    const logoutHandler = () => {
+        dispatch(logoutUser())
+        navigation.navigate('welcome');
+        return
+    }
 	return (
 		<View>
 			{session && (
 				<ImageBackground source={image} style={styles.backgroundImage}>
 					<View style={styles.containerPrin}>
-						<TouchableOpacity
+						{/* <TouchableOpacity
 							onPress={() => {
 								alert('Logout');
 							}}
-						>
+						> */}
 							<View style={styles.containerNameLogout}>
-								<FontAwesomeIcon icon={faSignOutAlt} style={{ color: 'darkorchid', alignSelf: 'center', marginLeft: 10 }} size={18} />
+								<TouchableOpacity onPress={logoutHandler}>
+								<FontAwesomeIcon icon={faSignOutAlt} style={{ color: 'darkorchid', alignSelf: 'center', marginLeft: 10 }} size={18}  />
+								</TouchableOpacity>
 								<Text style={styles.text}>Salir</Text>
 							</View>
-						</TouchableOpacity>
+						{/* </TouchableOpacity> */}
 						<Text style={styles.textBalance}>Hola {session.username || 'Usuario'}!</Text>
 						<View style={styles.containerInfoGeneral}>
 							<View style={styles.contAvatarSaldo}>
