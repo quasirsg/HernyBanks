@@ -9,9 +9,6 @@ import { st } from './store/store';
 import Estatistics from './screens/Estatistics';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
-import PosConsolidada2 from './screens/PosConsolidada2';
-
-import RechargeScreen from './screens/RechargeScreen';
 import Welcome from './screens/welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
@@ -56,16 +53,16 @@ function MyStack() {
         component={Header}
         options={{ headerShown: false }}
       /> */}
-			{/* <Stack.Screen
+			<Stack.Screen
 				name='PosConsolidada'
 				component={PosConsolidada}
-				options={{ headerShown: false }}
-			/> */}
-			<Stack.Screen
-				name='RechargeScreen'
-				component={RechargeScreen}
 				// options={{ headerShown: false }}
 			/>
+			{/* <Stack.Screen
+        name="RechargeScreen"
+        component={RechargeScreen}
+        // options={{ headerShown: false }}
+      /> */}
 			<Stack.Screen
 				name='SendMonyScreen'
 				component={SendMonyScreen}
