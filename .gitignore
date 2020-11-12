@@ -1,5 +1,3 @@
-native/.expo
-
 # Logs
 logs
 *.log
@@ -119,5 +117,4 @@ dist
 
 # cache de expo
 native/.expo/
-
 
