@@ -30,7 +30,6 @@ const AltaUser = ({ name, lastname, dni, phone, address, dob }) => {
 							fontSize: 30,
 							fontWeight: 'bold',
 							color: 'purple',
-							border: null,
 							textAlign: 'center',
 						}}
 					>

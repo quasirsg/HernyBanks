@@ -24,9 +24,9 @@ const Login = ({ id, email, password, isValid, navigation }) => {
 
 	return (
 		<Background>
-			<Logo />
+			{/* <Logo /> */}
 
-			<Header>Login</Header>
+			<Header>Iniciar sesión</Header>
 
 			<View style={styles.loginContainer}>
 				<Formik
@@ -58,26 +58,45 @@ const Login = ({ id, email, password, isValid, navigation }) => {
 				>
 					{({ handleChange, handleSubmit, values, errors, touched }) => (
 						<View>
-							<CustomInput label='Email' name='email' returnKeyType='next' onChangeText={handleChange('email')} value={values.email} autoCapitalize='none' autoCompleteType='email' textContentType='emailAddress' keyboardType='email-address' />
+							<CustomInput 
+								label='Correo' 
+								name='email' 
+								returnKeyType='next' 
+								onChangeText={handleChange('email')} 
+								value={values.email} 
+								autoCapitalize='none' 
+								autoCompleteType='email' 
+								textContentType='emailAddress' 
+								keyboardType='email-address'
+								style={styles.input} 
+							/>
 
 							{errors.email && <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>}
 							{/*  */}
 
-							<CustomInput label='Password' name='password' returnKeyType='done' onChangeText={handleChange('password')} value={values.password} secureTextEntry={true} />
+							<CustomInput 
+								label='Contraseña' 
+								name='password' 
+								returnKeyType='done' 
+								onChangeText={handleChange('password')} 
+								value={values.password} 
+								secureTextEntry={true} 
+								style={styles.input}
+							/>
 
 							{errors.password && <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>}
 							{/*  */}
 
 							<Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
-								Login
+								Ingresar
 							</Button>
 
 							{/*  */}
 
 							<View style={styles.row}>
-								<Text style={styles.label}>Don’t have an account? </Text>
+								<Text style={styles.label}>¿Aun no tienes una cuenta? </Text>
 								<TouchableOpacity onPress={() => navigation.navigate('Register')}>
-									<Text style={styles.link}>Sign up</Text>
+									<Text style={styles.link}>Regístrate aquí</Text>
 								</TouchableOpacity>
 							</View>
 						</View>
@@ -103,6 +122,10 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: theme.colors.primary,
 	},
+	input: {
+		height: 40,
+		backgroundColor: 'white'
+	}
 });
 
 export default Login;
