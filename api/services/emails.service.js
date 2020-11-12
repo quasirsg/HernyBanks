@@ -16,7 +16,7 @@ module.exports = {
 		 * Acción para el envío del correo de confirmación de cuenta   *
 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		send_email(ctx) {
-			console.log(ctx.params.token	);
+
 			const source = fs.readFileSync('./public/verify.html', 'utf-8').toString();
 			const template = handlebars.compile(source);
 			const replacements = {
@@ -24,8 +24,6 @@ module.exports = {
 				token: ctx.params.token	
 			};
 			const htmlToSend = template(replacements);
-
-			console.log(htmlToSend);
 			
 			const transporter = nodemailer.createTransport({
 				service: 'gmail',
