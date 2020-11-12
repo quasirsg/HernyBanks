@@ -6,7 +6,7 @@ const url = 'localhost:3000' || '192.168.1.84:3000';
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para crear usuario (Desde Register Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
-export function createUser(userData) {
+export function createUser(userData,onSuccess) {
 	const dataUser = {
 		username: userData.username,
 		email: userData.email,
@@ -23,6 +23,7 @@ export function createUser(userData) {
 					users: res.data || {},
 					createUserSuccess: true,
 				});
+				onSuccess();
 			})
 			.catch((error) => {
 				console.log('Api call error');
