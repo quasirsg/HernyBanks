@@ -3,7 +3,8 @@ import jwt_decode from 'jwt-decode';
 
 import * as actionTypes from '../constans/constans';
 
-const url = 'http://localhost:3000' || 'http://192.168.1.84:3000';
+// const url = 'http://localhost:3000' || 'http://192.168.0.20:3000';
+const url = 'http://192.168.0.25:3000';
 
 //loguin  -> funciona loguin correcto e incorrecto.
 export const loguinUser = (email, password) => (dispatch) => {
@@ -22,7 +23,7 @@ export const loguinUser = (email, password) => (dispatch) => {
 				if (token) {
 					localStorage.setItem('token', token);
 					dispatch({
-						type: USER_LOGIN,
+						type: actionTypes.USER_LOGIN,
 					});
 					dispatch(getCurrentUser(token));
 					// Swal.fire({
@@ -61,7 +62,7 @@ export const getCurrentUser = (token) => async (dispatch) => {
 		})
 		.then((res) => {
 			dispatch({
-				type: CURRENT_USER,
+				type: actionTypes.CURRENT_USER,
 				user: res.data,
 			});
 		});
@@ -80,33 +81,32 @@ export const verifySession = () => (dispatch) => {
 	}
 };
 
-// //logout
-// export const logoutUser = (path) => (dispatch) => {
-//   Swal.fire({
-//     html: `<h5>¿Deseas cerrar sesión?<h5/>`,
-//     width: "30%",
-//     icon: "info",
-//     showCancelButton: true,
-//     customClass: {
-//       confirmButton: "btn btn-sm btn-primary",
-//       cancelButton: "btn btn-sm btn-default border",
-//     },
-//     cancelButtonText: "Cancelar",
-//     confirmButtonText: "Cerrar sesión",
-//   }).then((res) => {
-//     if (res.isConfirmed) {
-//       Swal.fire("¡Has cerrado sesión!", `Hasta la proxima`, "info");
-//       dispatch({
-//         type: actionTypes.LOGOUT_USER,
-//       });
-//       dispatch({
-//         type: actionTypes.DELETE_ALL_CART,
-//       });
-//       localStorage.removeItem("token");
-//       path.push("/");
-//     }
-//   });
-// };
+//logout
+export const logoutUser = (path) => (dispatch) => {
+  // Swal.fire({
+  //   html: `<h5>¿Deseas cerrar sesión?<h5/>`,
+  //   width: "30%",
+  //   icon: "info",
+  //   showCancelButton: true,
+  //   customClass: {
+  //     confirmButton: "btn btn-sm btn-primary",
+  //     cancelButton: "btn btn-sm btn-default border",
+  //   },
+  //   cancelButtonText: "Cancelar",
+  //   confirmButtonText: "Cerrar sesión",
+  // }).then((res) => {
+    // if (res.isConfirmed) {
+      alert("¡Has cerrado sesión!", `Hasta la proxima`, "info");
+      dispatch({
+        type: actionTypes.LOGOUT_USER,
+      });
+      dispatch({
+        type: actionTypes.DELETE_ALL_CART,
+      });
+      localStorage.removeItem("token");
+    // }
+  // });
+};
 
 // export const passwordChange = (id, values) => (dispatch) => {
 //   return axios
