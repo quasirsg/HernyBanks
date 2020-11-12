@@ -25,7 +25,7 @@ function MyStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Welcome"
+        name="welcome"
         component={Welcome}
         options={{ headerShown: false }}
       />
@@ -47,7 +47,7 @@ function MyStack() {
       <Stack.Screen
         name="Login"
         component={Login}
-        // options={{ headerShown: false }}
+        options={{ headerShown: false }}
       />
       {/* <Stack.Screen
         name="Header"
@@ -57,7 +57,7 @@ function MyStack() {
       <Stack.Screen
         name="PosConsolidada"
         component={PosConsolidada}
-        // options={{ headerShown: false }}
+        options={{ headerShown: false }}
       />
       {/* <Stack.Screen
         name="RechargeScreen"
