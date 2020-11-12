@@ -101,7 +101,6 @@ module.exports = {
 					_userId: created._id,
 					token: tokenGen(),
 				});
-				console.log(token);
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Llamado al servicio de emails para hacer verificación de la cuenta *
@@ -208,7 +207,6 @@ module.exports = {
 					address,
 					dob,
 				} = ctx.params;
-				console.log(ctx.params);
 
 				if (mongoose.Types.ObjectId.isValid(_id)) {
 					await User.findByIdAndUpdate(
