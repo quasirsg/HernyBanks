@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
 
-// const url = 'http://localhost:3000' || 'http://192.168.0.20:3000';
-const url = 'http://192.168.0.25:3000';
+const url = 'http://localhost:3000' || 'http://192.168.0.20:3000';
+// const url = 'http://192.168.0.25:3000';
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para crear usuario (Desde Register Screen) *
@@ -36,7 +36,7 @@ export function createUser(userData,onSuccess) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para completar registro usuario(Desde AltaUser Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-export function completeUserRegister(userData) {
+export function completeUserRegister(userData,onSuccess) {
 	console.log(userData);
 	const { name, lastname, dni, phone, address, dob, _id } = userData;
 	const dataUser = { name, lastname, dni, phone, address, dob, _id };
@@ -47,6 +47,7 @@ export function completeUserRegister(userData) {
 			.then((res) => {
 				console.log('User updated', res.data);
 				dispatch({ type: UPDATE_USER, users: res.data });
+				onSuccess();
 			})
 			.catch((error) => {
 				console.log('Error when updating user');
