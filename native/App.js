@@ -33,7 +33,7 @@ function MyStack() {
 			<Stack.Screen
 				name='Register'
 				component={Register}
-				// options={{ headerShown: false }}
+				options={{ title: 'Registrarse' }}
 			/>
 			<Stack.Screen
 				name='Estatistics'
@@ -43,7 +43,7 @@ function MyStack() {
 			<Stack.Screen
 				name='Login'
 				component={Login}
-				// options={{ headerShown: false }}
+				options={{ title: 'Iniciar sesión' }}
 			/>
 			{/* <Stack.Screen
         name="Header"
