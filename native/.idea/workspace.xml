@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="66a63fae-daba-4d45-97e6-d584090d9698" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../api/data/products.db" beforeDir="false" afterPath="$PROJECT_DIR$/../api/data/products.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/packager-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/.expo/packager-info.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.expo/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/jwtUsersActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/jwtUsersActions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/userActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/userActions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/actions/userUpActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/store/actions/userUpActions.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1k9y2LXC7ydHtxZs5BU2EG0ZOh6" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="consents" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="66a63fae-daba-4d45-97e6-d584090d9698" name="Default Changelist" comment="" />
+      <created>1605126893793</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605126893793</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605139308050">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1605139308050" />
+    <state x="360" y="120" width="1200" height="800" key="AVDManager" timestamp="1605155160936">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="360" y="120" width="1200" height="800" key="AVDManager/0.0.1920.1040@0.0.1920.1040" timestamp="1605155160936" />
+    <state x="982" y="296" key="FileChooserDialogImpl" timestamp="1605131968620">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="982" y="296" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1605131968620" />
+    <state x="461" y="164" key="SettingsEditor" timestamp="1605137710765">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1605137710765" />
+  </component>
+</project>

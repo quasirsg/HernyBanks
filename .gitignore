@@ -118,3 +118,6 @@ dist
 # cache de expo
 native/.expo/
 
+#helper env native
+native/helper/env.js
+
