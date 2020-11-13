@@ -35,7 +35,7 @@ export function createUser(userData,onSuccess) {
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para completar registro usuario(Desde AltaUser Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-export function completeUserRegister(userData) {
+export function completeUserRegister(userData,onSuccess) {
 	console.log(userData);
 	const { name, lastname, dni, phone, address, dob, _id } = userData;
 	const dataUser = { name, lastname, dni, phone, address, dob, _id };
@@ -46,6 +46,7 @@ export function completeUserRegister(userData) {
 			.then((res) => {
 				console.log('User updated', res.data);
 				dispatch({ type: UPDATE_USER, users: res.data });
+				onSuccess();
 			})
 			.catch((error) => {
 				console.log('Error when updating user');
