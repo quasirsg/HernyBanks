@@ -129,32 +129,6 @@ module.exports = {
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * *
 		 * Acción/ruta para actualización de una tarjeta 	   *
 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-		update_card: {
-			rest: "PUT /update",
-			async handler(ctx) {
-				const {
-					_id,
-					name,
-					lastname,
-					dni,
-					phone,
-					address,
-					dob,
-				} = ctx.params;
-
-				if (mongoose.Types.ObjectId.isValid(_id)) {
-					await User.findByIdAndUpdate(
-						{ _id },
-						{ name, lastname, dni, phone, address, dob }
-					);
-
-					const updated = await User.findById({ _id });
-					return updated;
-				}
-
-				return Promise.reject(userNotFound);
-			},
-		},
 
 	},
 
