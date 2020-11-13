@@ -14,7 +14,7 @@ const cardSchema = new Schema({
         required: true
     },
     cardNumber: { 
-        type: String, 
+        type: Number, 
         required: true 
     },
     cardExpire: {
