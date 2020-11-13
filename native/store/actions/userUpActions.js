@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { CREATE_USER, UP_USER } from '../constans/constans';
-const env = require('../../helper/env.js')
+const env = require('../../env.js')
 
 const localhost= env.localhost;
 
