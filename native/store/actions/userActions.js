@@ -1,26 +1,21 @@
 import axios from 'axios';
 import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
-const env = require('../../env.js')
-
-const localhost= env.localhost;
-
-
-
+import { BACK_URL } from '../../env';
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para crear usuario (Desde Register Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function createUser(userData,onSuccess) {
-	console.log('LOCALHOST',env)
+
 	const dataUser = {
 		username: userData.username,
 		email: userData.email,
 		password: userData.password,
 	};
 	return (dispatch) => {
-		console.log(dataUser);
+
 		axios
-			.post(`${localhost}/api/users/create`, dataUser)
+			.post(`${BACK_URL}/api/users/create`, dataUser)
 			.then((res) => {
 				console.log(res.data);
 				dispatch({
@@ -47,7 +42,7 @@ export function completeUserRegister(userData) {
 
 	return (dispatch) => {
 		axios
-			.put(`${localhost}/api/users/update`, dataUser)
+			.put(`${BACK_URL}/api/users/update`, dataUser)
 			.then((res) => {
 				console.log('User updated', res.data);
 				dispatch({ type: UPDATE_USER, users: res.data });
