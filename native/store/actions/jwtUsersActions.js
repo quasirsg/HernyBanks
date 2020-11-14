@@ -1,18 +1,14 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-
-
 import * as actionTypes from '../constans/constans';
-const env = require('../../env.js')
-
-const localhost= env.localhost;
+import { BACK_URL } from '../../env';
 
 
 //loguin  -> funciona loguin correcto e incorrecto.
 export const loguinUser = (email, password) => (dispatch) => {
 	try {
 		axios
-			.post(`${localhost}/api/auth/login`, {
+			.post(`${BACK_URL}/api/auth/login`, {
 				email: email,
 				password: password,
 			})
@@ -57,7 +53,7 @@ export const getCurrentUser = (token) => async (dispatch) => {
 	var decoded = jwt_decode(token);
 	console.log(typeof decoded.id);
 	axios
-		.get(`${localhost}/api/users/by-id`, {
+		.get(`${BACK_URL}/api/users/by-id`, {
 			params: {
 				_id: decoded.id,
 			},

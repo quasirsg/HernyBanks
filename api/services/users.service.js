@@ -258,10 +258,10 @@ module.exports = {
 				useUnifiedTopology: true,
 			})
 			.then(() => {
-				console.log("Data base is connected");
+				console.log("Users service connected to DB");
 			})
 			.catch((error) => {
-				console.error(error);
+				console.error("Users service couldn't connect to DB");
 			});
 	},
 };
