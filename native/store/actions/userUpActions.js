@@ -1,10 +1,6 @@
 import axios from 'axios';
 import { CREATE_USER, UP_USER } from '../constans/constans';
-const env = require('../../env.js')
-
-const localhost= env.localhost;
-
-
+import { BACK_URL } from '../../env';
 
 // CREAR USUARIO
 export function userUp(code) {
@@ -13,7 +9,7 @@ export function userUp(code) {
     return(dispatch) => {
 
         console.log(code);
-        axios.get(`${localhost}/api/emails/confirm/${code}`)
+        axios.get(`${BACK_URL}/api/emails/confirm/${code}`)
             .then(res => {
                 console.log(res.data)
                 dispatch({

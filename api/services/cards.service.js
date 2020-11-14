@@ -144,10 +144,10 @@ module.exports = {
 				useUnifiedTopology: true,
 			})
 			.then(() => {
-				console.log("Data base is connected");
+				console.log("Cards service connected to DB");
 			})
 			.catch((error) => {
-				console.error(error);
+				console.error("Cards service couldn't connect to DB");
 			});
 	},
 };
