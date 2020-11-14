@@ -9,7 +9,7 @@ import { st } from "./store/store";
 import Estatistics from "./screens/Estatistics";
 import Login from "./screens/Login";
 import PosConsolidada from "./screens/PosConsolidada";
-import Welcome from "./screens/welcome";
+import Welcome from "./screens/Welcome";
 import SendMonyScreen from "./screens/SendMonyScreen";
 import Transactions from "./screens/Transactions";
 import RegisterModal from "./components/RegisterModal";

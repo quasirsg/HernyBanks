@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { CREATE_USER, UP_USER } from '../constans/constans';
+
 // const env = require('../../env.js')
 import  {BACK_URL}  from '../../env';
 
 //const {URL} = BACK_URL
 
 // const localhost= env.localhost;
+
 
 
 

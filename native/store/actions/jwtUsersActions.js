@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+
 import  {BACK_URL}  from '../../env';
 import  AsyncStorage  from 'react-native';
 
@@ -10,6 +11,7 @@ import * as actionTypes from '../constans/constans';
 // const env = require('../../env.js')
 
 // const localhost= env.localhost;
+
 
 
 //loguin  -> funciona loguin correcto e incorrecto.
