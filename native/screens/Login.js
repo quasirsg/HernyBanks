@@ -1,42 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { Formik, Form, Field } from 'formik';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
+import { Formik } from 'formik';
 import * as Yup from 'yup';
-
 import { loguinUser } from '../store/actions/jwtUsersActions';
-
-import Background from '../components/Background';
-import Logo from '../components/Logo';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import CustomInput from '../components/CustomInput';
 import { theme } from '../core/theme';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Logo from '../components/Logo';
 
-const Login = ({ id, email, password, isValid, navigation }) => {
+export default function Login({ id, email, password, isValid, navigation }) {
+
+	const [hidePassword, setHidePassword] = useState(false)
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 
 	return (
-		<Background>
-			{/* <Logo /> */}
+		<ScrollView contentContainerStyle={styles.container}>
+			<View>
+				{/* <Logo /> */}
+				<Text style={styles.title}>Iniciar sesión</Text>
 
-			<Header>Iniciar sesión</Header>
-
-			<View style={styles.loginContainer}>
 				<Formik
 					initialValues={{
 						email: '',
 						password: '',
 					}}
 					validationSchema={Yup.object({
-						email: Yup.string().email('Introduzca un email valido por favor').required('Debes completar este campo'),
-						password: Yup.string().required('Please Enter your password'),
+						email: Yup.string().email('Introduzca un email valido por favor').required('Ingresa tu correo'),
+						password: Yup.string().required('Ingresa tu contraseña'),
 					})}
 					onSubmit={(values, action) => {
 						try {
@@ -58,61 +51,90 @@ const Login = ({ id, email, password, isValid, navigation }) => {
 				>
 					{({ handleChange, handleSubmit, values, errors, touched }) => (
 						<View>
-							<CustomInput 
-								label='Correo' 
-								name='email' 
-								returnKeyType='next' 
-								onChangeText={handleChange('email')} 
-								value={values.email} 
-								autoCapitalize='none' 
-								autoCompleteType='email' 
-								textContentType='emailAddress' 
+							<CustomInput
+								label='Correo'
+								name='email'
+								returnKeyType='next'
+								onChangeText={handleChange('email')}
+								value={values.email}
+								autoCapitalize='none'
+								autoCompleteType='email'
+								textContentType='emailAddress'
 								keyboardType='email-address'
-								style={styles.input} 
-							/>
-
-							{errors.email && <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>}
-							{/*  */}
-
-							<CustomInput 
-								label='Contraseña' 
-								name='password' 
-								returnKeyType='done' 
-								onChangeText={handleChange('password')} 
-								value={values.password} 
-								secureTextEntry={true} 
 								style={styles.input}
 							/>
 
-							{errors.password && <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>}
-							{/*  */}
+							{
+								errors.email ? <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text> :
+								<Text style={{ fontSize: 10}}></Text>
+							}
 
-							<Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+							<CustomInput
+								label='Contraseña'
+								name='password'
+								returnKeyType='done'
+								onChangeText={handleChange('password')}
+								value={values.password}
+								secureTextEntry={true}
+								style={styles.input}
+							/>
+
+
+							{
+								errors.password ? <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text> :
+								<Text style={{ fontSize: 10}}></Text>
+							}
+
+							<Button
+								mode='contained'
+								secureTextEntry={true}
+								title='Register'
+								style={styles.button}
+								onPress={handleSubmit}>
 								Ingresar
 							</Button>
 
-							{/*  */}
-
 							<View style={styles.row}>
-								<Text style={styles.label}>¿Aun no tienes una cuenta? </Text>
+								<Text style={styles.label}>¿An no tienes una cuenta?  </Text>
 								<TouchableOpacity onPress={() => navigation.navigate('Register')}>
 									<Text style={styles.link}>Regístrate aquí</Text>
+								</TouchableOpacity>
+							</View>
+
+							<View>
+								<TouchableOpacity onPress={() => navigation.navigate('Register')}>
+									<Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
 								</TouchableOpacity>
 							</View>
 						</View>
 					)}
 				</Formik>
 			</View>
-		</Background>
+		</ScrollView>
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		backgroundColor: '#f7f7f7'
+	},
+	title: {
+		textAlign: 'center',
+		paddingTop: 200,
+		fontSize: 30,
+		paddingBottom: 20,
+		fontWeight: 'bold',
+		color: theme.colors.primary
+	},
 	label: {
 		color: theme.colors.secondary,
 	},
 	button: {
-		marginTop: 24,
+		marginTop: 20,
+		marginBottom: 30,
+		backgroundColor: theme.colors.primary,
 	},
 	row: {
 		flexDirection: 'row',
@@ -124,8 +146,16 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 40,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		borderColor: '#fff'
+	},
+	forgotPassword: {
+		color: theme.colors.secondary,
+		fontWeight: 'bold',
+		textAlign: 'center',
+		marginTop: 11,
+		color: theme.colors.primary,
 	}
 });
 
-export default Login;
+
