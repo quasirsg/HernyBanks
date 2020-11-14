@@ -1,11 +1,14 @@
 import axios from 'axios';
 import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
-import { BACK_URL } from '../../env';
+import  {BACK_URL}  from '../../env';
+
+// const {URL} = BACK_URL
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para crear usuario (Desde Register Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function createUser(userData,onSuccess) {
+	console.log(URL)
 
 	const dataUser = {
 		username: userData.username,
@@ -13,6 +16,7 @@ export function createUser(userData,onSuccess) {
 		password: userData.password,
 	};
 	return (dispatch) => {
+		console.log(BACK_URL)
 
 		axios
 			.post(`${BACK_URL}/api/users/create`, dataUser)

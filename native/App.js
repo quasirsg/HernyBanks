@@ -47,7 +47,8 @@ function MyStack() {
 			<Stack.Screen
 				name='Login'
 				component={Login}
-				options={{ title: 'Iniciar sesión' }}
+        options={{ title: 'Iniciar sesión' }}
+        options={{ headerShown: false }}
 			/>
 			{/* <Stack.Screen
         name="Header"

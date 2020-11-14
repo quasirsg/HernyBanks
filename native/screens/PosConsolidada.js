@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faWallet, faMoneyBillWaveAlt, faUser, faChartLine, faExchangeAlt, faCubes, faSignOutAlt, faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons';
-
+import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 // Background Image
 const image = { uri: 'https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png' };
 
@@ -18,9 +18,10 @@ export default function RechargeScreen({navigation}) {
 	}, []);
     console.log('soy el user logeado', session);
     const logoutHandler = () => {
-        dispatch(logoutUser())
-        navigation.navigate('welcome');
-        return
+        // dispatch(logoutUser())
+        // navigation.navigate('welcome');
+		// return
+		alert('funciona')
     }
 	return (
 		<View>
@@ -173,10 +174,11 @@ const styles = StyleSheet.create({
 		// justifyContent: 'center',
 	},
 	containerPrin: {
-		width: '100vw',
-		height: '100vh',
+		width: vw(100),
+		height: vh(100),
 		justifyContent: 'space-evenly',
 		alignItems: 'stretch',
+		paddingTop:80
 		// paddingHorizontal: 4,
 		// borderColor: 'black',
 		// borderWidth: 1,

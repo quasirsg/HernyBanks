@@ -1,104 +1,95 @@
-import React, {useState} from 'react';
-import {Button, Text, View, TextInput, Modal, StyleSheet, TouchableOpacity} from 'react-native';
-import { Link } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { Formik, Form, Field } from 'formik';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import * as Yup from 'yup';
+
+import { userUp } from '../store/actions/userUpActions';
+
+import Background from '../components/Background';
+import Logo from '../components/Logo';
+import Button from '../components/Button';
+import Header from '../components/Header';
+import CustomInput from '../components/CustomInput';
+import { theme } from '../core/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { State } from 'react-native-gesture-handler';
-import { connect } from 'react-redux';
-import {userUp} from '../store/actions/userUpActions';
-import { theme } from "../core/theme";
+
+const RegisterModal = ({ code, navigation }) => {
+	const dispatch = useDispatch();
+	const session = useSelector((state) => state.session.userDetail);
+
+	return (
+		<Background>
+			{/* <Logo /> */}
+
+			<Header>Validacion Codigo</Header>
+
+			<View style={styles.loginContainer}>
+				<Formik
+					initialValues={{
+            			code:""
+					}}
+
+					onSubmit={(values, action) => {
+						console.log('******VALUES*******')
+						
+						const { code } = values
+						console.log(code)
+						dispatch(userUp(code, () => navigation.navigate("Login")))
+									//navigation.navigate("Login");
+					}}
+				>
+					{({ handleChange, handleSubmit, values, errors, touched }) => (
+						<View>
+							<CustomInput 
+								label='code' 
+								name='code' 
+								returnKeyType='next' 
+								onChangeText={handleChange('code')} 
+								value={values.code} 
+								autoCapitalize='none' 
+								style={styles.input} 
+							/>
 
 
-// import Modal from 'react-native-modal';
+							<Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+								Validar
+							</Button>
 
-function RegisterModal({userUpP, navigation}) {
-  const [isModalVisible, setModalVisible] = useState(true);
-  const [modalVal,setMmodalVal] = useState("");
+							{/*  */}
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+						</View>
+					)}
+				</Formik>
+			</View>
+		</Background>
+	);
+};
 
-  const handleSubmit = () => {
-    userUpP(modalVal)
-    return navigation.navigate('AltaUSer');
-  }
-
-  const handleChangeModal= (name, value) => {
-    setMmodalVal(value)
-  }
-
-    return (
-      <View >
-                      <View>
-                      <Link to="/Welcome">
-                      <Icon name="angle-left" color="#422C63" size={50} /></Link>
-                      </View>
-      <View style={styles.container}>
-        <Modal visible={isModalVisible} animationType={'slide'} >
-        <View >
-        <Text style={styles.text}>Copia aqui el codigo que enviamos a tu Email!</Text>
-        </View>
-        <View>
-        <TextInput style={styles.textInput}
-                placeholder="Code"
-                onChangeText={(value) => handleChangeModal("code", value)}
-              /></View>
-        <View>
-        <TouchableOpacity
-                title="Validar"
-                onPress={handleSubmit}>
-        <Text style={styles.textBotton}>VALIDAR</Text>
-        </TouchableOpacity>
-
-        </View>
-        </Modal>
-        </View>
-      </View>
-    );
-}
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    backgroundColor:'white'
-  },
-  text: {
-    fontSize: 30,
-    fontWeight:'bold',
-    color: 'purple',
-    textAlign:'center',
-  },
-  textInput: {
-    height: 60,
-    borderColor: 'grey',
-    borderWidth: 2,
-    textAlign:'center',
-    borderRadius:10
-  },
-  textBotton:{
-    backgroundColor: 'purple',
-    fontSize: 30,
-    fontWeight:'bold',
-    textAlign:'center',
-    color: 'white',
-    borderRadius:10
-  }
-
+	label: {
+		color: theme.colors.secondary,
+	},
+	button: {
+		marginTop: 24,
+	},
+	row: {
+		flexDirection: 'row',
+		marginTop: 4,
+	},
+	link: {
+		fontWeight: 'bold',
+		color: theme.colors.primary,
+	},
+	input: {
+		height: 40,
+		width:100,
+		backgroundColor: 'white'
+	}
 });
-const mapStateToProps = state => {
-  return {
 
-  }
-}
-
-
-
-function mapDispatchToProps(dispatch){
-  return {
-      userUpP: (code) => dispatch(userUp(code)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps )(RegisterModal)
+export default RegisterModal;
