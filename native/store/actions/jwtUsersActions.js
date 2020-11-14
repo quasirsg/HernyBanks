@@ -1,18 +1,22 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import  {BACK_URL}  from '../../env';
+import  AsyncStorage  from 'react-native';
+
+// const {URL} = BACK_URL
 
 
 import * as actionTypes from '../constans/constans';
-const env = require('../../env.js')
+// const env = require('../../env.js')
 
-const localhost= env.localhost;
+// const localhost= env.localhost;
 
 
 //loguin  -> funciona loguin correcto e incorrecto.
 export const loguinUser = (email, password) => (dispatch) => {
 	try {
 		axios
-			.post(`${localhost}/api/auth/login`, {
+			.post(`${BACK_URL}/api/auth/login`, {
 				email: email,
 				password: password,
 			})
@@ -23,7 +27,7 @@ export const loguinUser = (email, password) => (dispatch) => {
 				console.log(decoded.id);
 				// console.log('soy el token',token);
 				if (token) {
-					localStorage.setItem('token', token);
+					AsyncStorage.setItem('@token', token);
 					dispatch({
 						type: actionTypes.USER_LOGIN,
 					});
@@ -57,7 +61,7 @@ export const getCurrentUser = (token) => async (dispatch) => {
 	var decoded = jwt_decode(token);
 	console.log(typeof decoded.id);
 	axios
-		.get(`${localhost}/api/users/by-id`, {
+		.get(`${BACK_URL}/api/users/by-id`, {
 			params: {
 				_id: decoded.id,
 			},
@@ -71,7 +75,7 @@ export const getCurrentUser = (token) => async (dispatch) => {
 };
 
 export const verifySession = () => (dispatch) => {
-	const { token } = localStorage;
+	const { token } = AsyncStorage;
 	if (token) {
 		alert('usuario logeado');
 		dispatch(getCurrentUser(token));
@@ -105,7 +109,7 @@ export const logoutUser = (path) => (dispatch) => {
       dispatch({
         type: actionTypes.DELETE_ALL_CART,
       });
-      localStorage.removeItem("token");
+      AsyncStorage.removeItem("@token");
     // }
   // });
 };

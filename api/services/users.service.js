@@ -66,11 +66,12 @@ module.exports = {
 				 * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 				if (entity.username) {
 					const found = await User.findOne({
-						$or: [
+						$and: [
 							{ username: entity.username },
 							{ email: entity.email },
 						],
 					});
+
 
 					if (found) {
 						if (found.username === entity.username.toLowerCase()) {
@@ -101,6 +102,7 @@ module.exports = {
 					_userId: created._id,
 					token: tokenGen(),
 				});
+				console.log(token)
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Llamado al servicio de emails para hacer verificación de la cuenta *
