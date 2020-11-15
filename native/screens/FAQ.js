@@ -22,9 +22,10 @@ const Tabs = ({ children }) => {
 /* * * * * * * * * * * * * * * * * 
  * Renderiza una sola tab        *
  * * * * * * * * * * * * * * * * */
-const Tab = ({ title, active }) => {
+const Tab = ({ title, active, icon_name }) => {
   return (
     <View style={[styles.tab, active ? styles.activeTab : {}]}>
+      <Icon name={icon_name} color={theme.colors.primary} size={20} />
       <Text style={styles.tabText}>
         {title}
       </Text>
@@ -56,7 +57,7 @@ const appUseOptions = [
     title: '¿Cómo protegerte de las estafas online?',
     data: 'Muchas ofertas que se presentan como negocios son en realidad estafas, tené cuidado de no ser víctima de fraude informático.Cuidate de las ofertas de negocios con ingresos rápidos y elevados. Si suena demasiado bueno para ser cierto, en general es porque es una estafa. Nunca permitas a terceros el uso de tu cuenta.'
   },
-  
+
 ]
 
 const accountOptions = [
@@ -179,16 +180,17 @@ export default function FAQ() {
 
         <Tabs>
 
-          <TouchableOpacity onPress={() => pressedTab('A')}>
-            <Tab title='Cuenta' active={tabState.account} />
+          <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('A')}>
+            
+            <Tab title='Cuenta' active={tabState.account} icon_name = {'user'}/>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => pressedTab('B')}>
-            <Tab title='Uso de la app' active={tabState.appUse} />
+          <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('B')}>
+            <Tab title='Uso de la app' active={tabState.appUse} icon_name = {'check-circle'}/>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => pressedTab('C')}>
-            <Tab title='Acerca de' active={tabState.about} />
+          <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('C')}>
+            <Tab title='Acerca de' active={tabState.about} icon_name = {'question-circle'}/>
           </TouchableOpacity>
 
         </Tabs>
@@ -209,7 +211,7 @@ export default function FAQ() {
  * * * * * * * * * * * * * * * */
 const styles = StyleSheet.create({
   tabs: {
-    height: 50,
+    height: 60,
     width: width,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
@@ -218,7 +220,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tab: {
-    height: 50,
+    height: 60,
     width: tabWidth,
     justifyContent: 'center',
     alignItems: 'center',
@@ -226,7 +228,8 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontWeight: 'bold',
-    color: theme.colors.secondary
+    color: theme.colors.secondary,
+    padding:5
   },
   activeTab: {
     borderBottomWidth: 2,
@@ -248,7 +251,7 @@ const styles = StyleSheet.create({
   },
   how: {
     textAlign: 'center',
-    padding: 30,
+    padding: 40,
     fontSize: 20,
     fontWeight: 'bold',
     color: theme.colors.secondary
@@ -258,6 +261,13 @@ const styles = StyleSheet.create({
     width: width,
     justifyContent: 'space-between',
     padding: 15
+  },
+  rowII: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   title: {
     fontSize: 15,
