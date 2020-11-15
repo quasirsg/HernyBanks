@@ -18,6 +18,7 @@ import AltaUSer from './screens/AltaUser'
 // import Header from './screens/header';
 // import Menu from './screens/menu';
 import FAQ from './screens/FAQ';
+import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator(); //contiene la navegacion
 //stack.screen contiene la pantalla
@@ -87,9 +88,11 @@ function MyStack() {
 }
 export default function App() {
   return (
+    
     <Provider store={st}>
       <NavigationContainer style={styles.container}>
         <MyStack />
+        < Toast  ref = { ( ref )  =>  Toast . setRef ( ref ) } />
       </NavigationContainer>
     </Provider>
   );

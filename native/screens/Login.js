@@ -46,10 +46,8 @@ const Login = ({ id, email, password, isValid, navigation }) => {
 							user.email = user.email.toLowerCase();
 
 							action.resetForm();
-							dispatch(loguinUser(user.email, user.password));
-							setTimeout(function () {
-								navigation.navigate('PosConsolidada');
-							}, 1000);
+							dispatch(loguinUser(user.email, user.password,()=>navigation.navigate('RegisterModal')));
+
 						} catch {
 							alert('error');
 						}
