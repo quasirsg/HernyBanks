@@ -37,6 +37,7 @@ function MainStack() {
         name='Register'
         component={Register}
         options={{ title: 'Registrarse' }}
+        options={{ headerShown: false }}
       />
 
       <Stack.Screen

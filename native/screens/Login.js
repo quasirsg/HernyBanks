@@ -95,7 +95,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
 							</Button>
 
 							<View style={styles.row}>
-								<Text style={styles.label}>¿An no tienes una cuenta?  </Text>
+								<Text style={styles.label}>¿Aún no tienes una cuenta?  </Text>
 								<TouchableOpacity onPress={() => navigation.navigate('Register')}>
 									<Text style={styles.link}>Regístrate aquí</Text>
 								</TouchableOpacity>
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		backgroundColor: '#f7f7f7'
+		backgroundColor: '#fff'
 	},
 	title: {
 		textAlign: 'center',
