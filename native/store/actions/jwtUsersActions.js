@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import { BACK_URL } from "../../env";
+import Toast from "react-native-toast-message";
 import AsyncStorage from "react-native";
 
 // const {URL} = BACK_URL
@@ -33,16 +34,6 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
         onSuccess();
       }
     });
-
-  Toast.show({
-    type: "error",
-    position: "top",
-    text1: "Error al loguearse",
-    visibilityTime: 6000,
-    autoHide: true,
-    topOffset: 30,
-    bottomOffset: 40,
-  });
 };
 
 //obtener información del usuario logueado
