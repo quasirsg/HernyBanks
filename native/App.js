@@ -12,8 +12,9 @@ import Welcome from "./screens/Welcome";
 import SendMonyScreen from "./screens/SendMonyScreen";
 import Transactions from "./screens/Transactions";
 import RegisterModal from "./components/RegisterModal";
-import AltaUSer from './screens/AltaUser'
-import FAQ from './screens/FAQ';
+import AltaUSer from "./screens/AltaUser";
+import FAQ from "./screens/FAQ";
+import Toast from "react-native-toast-message";
 
 const Stack = createStackNavigator(); //contiene la navegacion
 
@@ -27,23 +28,20 @@ function MainStack() {
       />
 
       <Stack.Screen
-        name='Login'
+        name="Login"
         component={Login}
-        options={{ title: 'Iniciar sesión' }}
+        options={{ title: "Iniciar sesión" }}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen
-        name='Register'
+        name="Register"
         component={Register}
-        options={{ title: 'Registrarse' }}
+        options={{ title: "Registrarse" }}
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
-        name='Estatistics'
-        component={Estatistics}
-      />
+      <Stack.Screen name="Estatistics" component={Estatistics} />
 
       <Stack.Screen
         name="PosConsolidada"
@@ -51,22 +49,12 @@ function MainStack() {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
-        name="SendMonyScreen"
-        component={SendMonyScreen}
-      />
+      <Stack.Screen name="SendMonyScreen" component={SendMonyScreen} />
 
-      <Stack.Screen
-        name="Transactions"
-        component={Transactions}
-
-      />
+      <Stack.Screen name="Transactions" component={Transactions} />
       <Stack.Screen name="RegisterModal" component={RegisterModal} />
       <Stack.Screen name="AltaUSer" component={AltaUSer} />
-      <Stack.Screen
-        name="FAQ"
-        component={FAQ}
-      />
+      <Stack.Screen name="FAQ" component={FAQ} />
     </Stack.Navigator>
   );
 }
@@ -74,7 +62,9 @@ export default function App() {
   return (
     <Provider store={st}>
       <NavigationContainer style={styles.container}>
+
         <MainStack />
+        <Toast ref={(ref) => Toast.setRef(ref)} />
       </NavigationContainer>
     </Provider>
   );
