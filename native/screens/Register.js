@@ -43,7 +43,7 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 					}}
 				>
 					{({ handleChange, handleSubmit, values, errors, touched }) => (
-						<View>
+						<View style={styles.containerII}>
 							<CustomInput
 								label='Username'
 								name='username'
@@ -119,7 +119,7 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 							</Button>
 
 							<View style={styles.row}>
-								<Text style={styles.label}> ¿Ya tienes una cuenta?  </Text>
+								<Text style={styles.label}> ¿Ya tienes una cuenta? </Text>
 								<TouchableOpacity onPress={() => navigation.navigate('Login')}>
 									<Text style={styles.link}>Ingresa aquí</Text>
 								</TouchableOpacity>
@@ -169,6 +169,9 @@ const styles = StyleSheet.create({
 	error: { 
 		fontSize: 10, 
 		color: 'red' 
+	},
+	containerII: {
+		alignItems: 'center',
 	}
 });
 

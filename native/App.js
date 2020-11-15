@@ -21,6 +21,7 @@ const Stack = createStackNavigator(); //contiene la navegacion
 function MainStack() {
   return (
     <Stack.Navigator>
+
       <Stack.Screen
         name="Welcome"
         component={Welcome}
@@ -41,7 +42,11 @@ function MainStack() {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen name="Estatistics" component={Estatistics} />
+      <Stack.Screen
+        name="RegisterModal"
+        component={RegisterModal}
+        options={{ headerShown: false }}
+      />
 
       <Stack.Screen
         name="PosConsolidada"
@@ -49,12 +54,17 @@ function MainStack() {
         options={{ headerShown: false }}
       />
 
+      <Stack.Screen name="Estatistics" component={Estatistics} />
       <Stack.Screen name="SendMonyScreen" component={SendMonyScreen} />
-
       <Stack.Screen name="Transactions" component={Transactions} />
-      <Stack.Screen name="RegisterModal" component={RegisterModal} />
       <Stack.Screen name="AltaUSer" component={AltaUSer} />
-      <Stack.Screen name="FAQ" component={FAQ} />
+
+      <Stack.Screen
+        name="FAQ"
+        component={FAQ}
+        options={{ headerShown: false }}
+      />
+
     </Stack.Navigator>
   );
 }

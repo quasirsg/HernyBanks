@@ -55,7 +55,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
           }}
         >
           {({ handleChange, handleSubmit, values, errors, touched }) => (
-            <View>
+            <View style={styles.containerII}>
               <CustomInput
                 label="Correo"
                 name="email"
@@ -173,4 +173,7 @@ const styles = StyleSheet.create({
     marginTop: 11,
     color: theme.colors.primary,
   },
+  containerII: {
+		alignItems: 'center',
+	}
 });
