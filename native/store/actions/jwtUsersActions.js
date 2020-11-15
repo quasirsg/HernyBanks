@@ -2,7 +2,9 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import { BACK_URL } from "../../env";
+
 import Toast from "react-native-toast-message";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const {URL} = BACK_URL
@@ -76,7 +78,7 @@ export const getCurrentUser = (token) => async (dispatch) => {
         bottomOffset: 40,
       });
     })
-    .catch((eror) => {
+    .catch((error) => {
       Toast.show({
         type: "error",
         position: "top",
