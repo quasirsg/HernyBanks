@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 
 import { BACK_URL } from "../../env";
 import Toast from "react-native-toast-message";
-import AsyncStorage from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const {URL} = BACK_URL
 
@@ -31,8 +31,22 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
           type: actionTypes.USER_LOGIN,
         });
         dispatch(getCurrentUser(token));
-        onSuccess();
+        setTimeout(function () {
+          onSuccess();
+        }, 1500);
       }
+    })
+    .catch((error) => {
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "Login incorrecto",
+        text2: `Email o password incorrecto`,
+        visibilityTime: 6000,
+        autoHide: true,
+        topOffset: 30,
+        bottomOffset: 40,
+      });
     });
 };
 
@@ -55,15 +69,12 @@ export const getCurrentUser = (token) => async (dispatch) => {
       Toast.show({
         type: "success",
         position: "top",
-        text1: `Bienvenido ${res.data.name} `,
+        text1: `Bienvenido ${res.data.username} `,
         visibilityTime: 6000,
         autoHide: true,
         topOffset: 30,
         bottomOffset: 40,
       });
-      setTimeout(function () {
-        onSuccess();
-      }, 3000);
     })
     .catch((eror) => {
       Toast.show({
@@ -94,19 +105,6 @@ export const verifySession = () => (dispatch) => {
 
 //logout
 export const logoutUser = (path) => (dispatch) => {
-  // Swal.fire({
-  //   html: `<h5>¿Deseas cerrar sesión?<h5/>`,
-  //   width: "30%",
-  //   icon: "info",
-  //   showCancelButton: true,
-  //   customClass: {
-  //     confirmButton: "btn btn-sm btn-primary",
-  //     cancelButton: "btn btn-sm btn-default border",
-  //   },
-  //   cancelButtonText: "Cancelar",
-  //   confirmButtonText: "Cerrar sesión",
-  // }).then((res) => {
-  // if (res.isConfirmed) {
   Toast.show({
     type: "info",
     position: "top",
@@ -123,8 +121,6 @@ export const logoutUser = (path) => (dispatch) => {
     type: actionTypes.DELETE_ALL_CART,
   });
   AsyncStorage.removeItem("@token");
-  // }
-  // });
 };
 
 // export const passwordChange = (id, values) => (dispatch) => {
