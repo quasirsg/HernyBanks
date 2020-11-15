@@ -48,18 +48,23 @@ function MainStack() {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen name="Estatistics" component={Estatistics} />
-
       <Stack.Screen
         name="PosConsolidada"
         component={PosConsolidada}
         options={{ headerShown: false }}
       />
 
+      <Stack.Screen name="Estatistics" component={Estatistics} />
       <Stack.Screen name="SendMonyScreen" component={SendMonyScreen} />
       <Stack.Screen name="Transactions" component={Transactions} />
       <Stack.Screen name="AltaUSer" component={AltaUSer} />
-      <Stack.Screen name="FAQ" component={FAQ} />
+
+      <Stack.Screen
+        name="FAQ"
+        component={FAQ}
+        options={{ headerShown: false }}
+      />
+
     </Stack.Navigator>
   );
 }
