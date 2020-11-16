@@ -66,12 +66,11 @@ module.exports = {
 				 * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 				if (entity.username) {
 					const found = await User.findOne({
-						$and: [
+						$or: [
 							{ username: entity.username },
 							{ email: entity.email },
 						],
 					});
-
 
 					if (found) {
 						if (found.username === entity.username.toLowerCase()) {
@@ -95,14 +94,13 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Generación de token para enviar confirmación al mail del nuevo usuario *
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
-				const rdm = () => Math.random().toString(36).substr(2);
-				const tokenGen = () => rdm() + rdm() + rdm();
+				const rdm = () => parseInt(Math.random() * 10).toString();
+				const tokenGen = () => rdm() + rdm() + rdm() + rdm() + rdm();
 
 				const token = await Token.create({
 					_userId: created._id,
 					token: tokenGen(),
 				});
-				console.log(token)
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Llamado al servicio de emails para hacer verificación de la cuenta *
