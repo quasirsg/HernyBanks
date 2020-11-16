@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
+  FlatList
 } from "react-native";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -22,6 +23,7 @@ import Header from "../components/Header";
 import CustomInput from "../components/CustomInput";
 import { theme } from "../core/theme";
 import Icon from "react-native-vector-icons/FontAwesome";
+import Axios from "axios";
 
 const AltaUser = ({
   id,
@@ -38,12 +40,26 @@ const AltaUser = ({
   console.log("*************userUp***************");
   console.log(stateUser.userUp);
   const userUp = stateUser.userUp;
+  const [provinces,setProvinces] =useState([]);
   //const userId = useSelector(state => state.users[0]._id);
+
+  useEffect(()=>{
+    getProvinces();
+  },[])
+
+  console.log('PROVINCES',provinces);
+
+  let getProvinces=()=>{
+    Axios.get('https://apis.datos.gob.ar/georef/api/provincias')
+    .then(res=>{
+      setProvinces(res.data.provincias);
+    })
+  }
 
   return (
     <Background>
       <View>
-        {Object.keys(userUp).length === 0 ? (
+        {1 === 0 ? (
           <View>
             <View>
               <Link to="/RegisterModal">
@@ -195,6 +211,7 @@ const AltaUser = ({
                   value={values.phone}
                   style={styles.input}
                 />
+                  
 
                 {values.phone.length >= 4 && !errors.phone && (
                   <Icon name="check" size={40} color="green" />
@@ -206,6 +223,16 @@ const AltaUser = ({
                   </Text>
                 )}
                 {/*  */}
+                  {provinces && (<Field
+                    component="select"
+                    id="province"
+                    name="province"
+                  >
+                    { provinces.map((province)=>{
+                      return <option value={province.nombre}>{province.nombre}</option>
+                    })}
+                  </Field>)}
+                  
 
                 {/* <CustomInput
                   placeholder="Fecha de nacimiento"

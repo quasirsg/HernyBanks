@@ -39,7 +39,7 @@ const RegisterModal = ({ code, navigation }) => {
 						
 						const { code } = values
 						console.log(code)
-						dispatch(userUp(code, () => navigation.navigate("Login")))
+						dispatch(userUp(code, () => navigation.navigate("AltaUSer")))
 									//navigation.navigate("Login");
 					}}
 				>
