@@ -55,7 +55,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
           }}
         >
           {({ handleChange, handleSubmit, values, errors, touched }) => (
-            <View style={styles.containerII}>
+            <View>
               <CustomInput
                 label="Correo"
                 name="email"
@@ -74,8 +74,8 @@ export default function Login({ id, email, password, isValid, navigation }) {
                   {errors.email}
                 </Text>
               ) : (
-                <Text style={{ fontSize: 10 }}></Text>
-              )}
+                  <Text style={{ fontSize: 10 }}></Text>
+                )}
 
               <CustomInput
                 label="Contraseña"
@@ -92,8 +92,8 @@ export default function Login({ id, email, password, isValid, navigation }) {
                   {errors.password}
                 </Text>
               ) : (
-                <Text style={{ fontSize: 10 }}></Text>
-              )}
+                  <Text style={{ fontSize: 10 }}></Text>
+                )}
 
               <Button
                 mode="contained"
@@ -105,23 +105,25 @@ export default function Login({ id, email, password, isValid, navigation }) {
                 Ingresar
               </Button>
 
-              <View style={styles.row}>
-                <Text style={styles.label}>¿Aún no tienes una cuenta? </Text>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Register")}
-                >
-                  <Text style={styles.link}>Regístrate aquí</Text>
-                </TouchableOpacity>
-              </View>
+              <View style={styles.down}>
+                <View style={styles.row}>
+                  <Text style={styles.label}>¿Aún no tienes una cuenta? </Text>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Register")}
+                  >
+                    <Text style={styles.link}>Regístrate aquí</Text>
+                  </TouchableOpacity>
+                </View>
 
-              <View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Register")}
-                >
-                  <Text style={styles.forgotPassword}>
-                    ¿Olvidaste tu contraseña?
+                <View>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Register")}
+                  >
+                    <Text style={styles.forgotPassword}>
+                      ¿Olvidaste tu contraseña?
                   </Text>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
     marginTop: 11,
     color: theme.colors.primary,
   },
-  containerII: {
-		alignItems: 'center',
-	}
+  down: {
+    alignItems: 'center',
+  }
 });

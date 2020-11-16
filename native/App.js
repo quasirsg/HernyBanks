@@ -30,9 +30,9 @@ function MainStack() {
 
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
 
-			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
+			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
 
-			<Stack.Screen name='RegisterModal' component={RegisterModal} options={{ headerShown: false }} />
+			<Stack.Screen name='AltaUser' component={AltaUSer} />
 
 			<Stack.Screen
 				name='PosConsolidada'
@@ -46,6 +46,10 @@ function MainStack() {
 					headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				}}
 			/>
+
+			<Stack.Screen name='Estatistics' component={Estatistics} />
+			<Stack.Screen name='SendMonyScreen' component={SendMonyScreen} />
+			<Stack.Screen name='Transactions' component={Transactions} />
 
 			<Stack.Screen name='Estatistics' component={Estatistics} />
 			<Stack.Screen name='SendMonyScreen' component={SendMonyScreen} />
