@@ -1,15 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faWallet, faMoneyBillWaveAlt, faUser, faChartLine, faExchangeAlt, faCubes, faSignOutAlt, faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -18,18 +12,6 @@ const deviceHeight = Dimensions.get('window').height;
 const background1 = require('../assets/background1.png');
 
 export default function RechargeScreen({ navigation }) {
-	const dispatch = useDispatch();
-	const session = useSelector((state) => state.session.userDetail);
-	useEffect(() => {
-		dispatch(verifySession());
-	}, []);
-	console.log('soy el user logeado', session);
-	const logoutHandler = () => {
-		// dispatch(logoutUser())
-		// navigation.navigate('welcome');
-		// return
-		alert('funciona');
-	};
 	return (
 		<View style={styles.containerPrin}>
 			{/* Imagen de fondo */}
