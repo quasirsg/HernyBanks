@@ -1,303 +1,452 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, Dimensions } from 'react-native';
 import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faWallet, faMoneyBillWaveAlt, faUser, faChartLine, faExchangeAlt, faCubes, faSignOutAlt, faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+// Dimensions
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
+
 // Background Image
-const image = { uri: 'https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png' };
+const background1 = require('../assets/background1.png');
 
-export default function RechargeScreen({navigation}) {
-	const dispatch = useDispatch();
-	const session = useSelector((state) => state.session.userDetail);
-	useEffect(() => {
-		dispatch(verifySession());
-	}, []);
-    console.log('soy el user logeado', session);
-    const logoutHandler = () => {
-        // dispatch(logoutUser())
-        // navigation.navigate('welcome');
-		// return
-		alert('funciona')
-    }
+export default function RechargeScreen({ navigation }) {
 	return (
-		<View>
+		<View style={styles.containerPrin}>
+			{/* Imagen de fondo */}
+			<Image source={require('../assets/background2.png')} style={{ position: 'absolute' }} />
 			{session && (
-				<ImageBackground source={image} style={styles.backgroundImage}>
-					<View style={styles.containerPrin}>
-						{/* <TouchableOpacity
-							onPress={() => {
-								alert('Logout');
-							}}
-						> */}
-							<View style={styles.containerNameLogout}>
-								<TouchableOpacity onPress={logoutHandler}>
-								<FontAwesomeIcon icon={faSignOutAlt} style={{ color: 'darkorchid', alignSelf: 'center', marginLeft: 10 }} size={18}  />
-								</TouchableOpacity>
-								<Text style={styles.text}>Salir</Text>
-							</View>
-						{/* </TouchableOpacity> */}
-						<Text style={styles.textBalance}>Hola {session.username || 'Usuario'}!</Text>
-						<View style={styles.containerInfoGeneral}>
-							<View style={styles.contAvatarSaldo}>
-								<View style={styles.avatarContainer}>
-									<Image source={{ uri: 'https://avatars.dicebear.com/api/avataaars/:seed.svg' }} style={{ width: 60, height: 60, alignSelf: 'center' }}></Image>
-								</View>
-								<View>
-									<Text style={styles.textBalance}>$ 12.000.000,23</Text>
-									<Text style={styles.text}>Saldo Actual</Text>
-								</View>
-							</View>
-
-							<View style={styles.containerGeneral}>
-								<Text style={styles.textTitle}>General</Text>
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'space-evenly',
-										alignItems: 'center',
-									}}
-								>
-									<View style={styles.containerIngresos}>
-										<Text style={styles.text}>Ingresos</Text>
-										<Text style={styles.textTitle}>$ 12345.23</Text>
-									</View>
-									<View style={styles.containerEngresos}>
-										<Text style={styles.text}>Egresos</Text>
-										<Text style={styles.textTitle}>$ 975.70</Text>
-									</View>
-								</View>
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'space-evenly',
-										alignItems: 'center',
-										height: 30,
-									}}
-								>
-									<Text style={styles.textMini}>1 dia</Text>
-									<Text style={styles.textMini}>7 dias</Text>
-									<Text style={styles.textMini}>1 mes</Text>
-									<Text style={styles.textMini}>6 meses</Text>
-								</View>
-							</View>
-						</View>
-
-						<View style={styles.mainActionsContainer}>
-							<View>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Recargar Dinero');
-									}}
-									style={styles.largeButtonContainer}
-								>
-									<FontAwesomeIcon icon={faWallet} style={{ color: 'white' }} size={44} />
-									<Text style={styles.text}>Recargar Dinero</Text>
-								</TouchableOpacity>
-							</View>
-
-							<View>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Mandar Dinero');
-									}}
-									style={styles.largeButtonContainer}
-								>
-									<FontAwesomeIcon icon={faMoneyBillWaveAlt} style={{ color: 'white' }} size={44} />
-									<Text style={styles.text}>Mandar Dinero</Text>
-								</TouchableOpacity>
-							</View>
-						</View>
-
-						<View
-							style={{
-								flexDirection: 'row',
-								justifyContent: 'space-evenly',
-								flexWrap: 'wrap',
-							}}
-						>
-							<View style={styles.buttonContainerLight}>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Transacciones');
-									}}
-								>
-									<FontAwesomeIcon icon={faExchangeAlt} style={{ color: 'darkorchid', alignSelf: 'center' }} size={22} />
-									<Text style={styles.textMini}>Transacciones</Text>
-								</TouchableOpacity>
-							</View>
-							<View style={styles.buttonContainerDark}>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Estadisticas');
-									}}
-								>
-									<FontAwesomeIcon icon={faChartLine} style={{ color: 'darkorchid', alignSelf: 'center' }} size={22} />
-									<Text style={styles.textMini}>Estadisticas</Text>
-								</TouchableOpacity>
-							</View>
-							<View style={styles.buttonContainerLight}>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Mis Productos');
-									}}
-								>
-									<FontAwesomeIcon icon={faCubes} style={{ color: 'darkorchid', alignSelf: 'center' }} size={22} />
-									<Text style={styles.textMini}>Mis Productos</Text>
-								</TouchableOpacity>
-							</View>
-							<View style={styles.buttonContainerDark}>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Mis Datos');
-									}}
-								>
-									<FontAwesomeIcon icon={faUser} style={{ color: 'darkorchid', alignSelf: 'center' }} size={22} />
-									<Text style={styles.textMini}>Mis Datos</Text>
-								</TouchableOpacity>
-							</View>
+				<ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+					{/* Container de SALDO de la cuenta */}
+					<View style={styles.saldoContainer}>
+						<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
+						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+							<Text style={styles.text_saldoCuenta}> $ 1.587</Text>
+							<TouchableOpacity
+								onPress={() => {
+									alert('Editar perfil');
+								}}
+							>
+								<Ionicons name='md-person' color='white' size={38} style={styles.avatar}></Ionicons>
+							</TouchableOpacity>
 						</View>
 					</View>
-				</ImageBackground>
+					{/* scrollview HORIZONTAL de balances de cuentas */}
+					<View
+						style={{
+							maxHeight: deviceHeight * 0.4,
+							minHeight: 200,
+							marginVertical: 0,
+							// backgroundColor: 'blue',
+						}}
+					>
+						<ScrollView
+							horizontal={true}
+							decelerationRate={0}
+							snapToInterval={deviceWidth} //your element width
+							snapToAlignment={'center'}
+							showsHorizontalScrollIndicator={false}
+							contentContainerStyle={styles.balance_horizontalScrollview}
+						>
+							{/* Container de BALANCE de la cuenta */}
+							<View style={styles.balanceContainer}>
+								<Text style={styles.textTitle}>Balance</Text>
+								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
+										<Text style={styles.text_ingresos}>$ 1.587</Text>
+									</View>
+									{/* Separador Vertical */}
+									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
+										<Text style={styles.text_egresos}>$ 20.319</Text>
+									</View>
+								</View>
+								{/* Separador Vertical */}
+								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
+								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+								<TouchableOpacity
+									style={{ alignItems: 'flex-end', marginTop: 0 }}
+									onPress={() => {
+										alert('Ver el detalle');
+									}}
+								>
+									<Text style={styles.text_link}>Ver el detalle</Text>
+								</TouchableOpacity>
+							</View>
+
+							{/* Container de BALANCE de la cuenta */}
+							<View style={styles.balanceContainer}>
+								<Text style={styles.textTitle}>Balance</Text>
+								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
+										<Text style={styles.text_ingresos}>$ 1.587</Text>
+									</View>
+									{/* Separador Vertical */}
+									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
+										<Text style={styles.text_egresos}>$ 20.319</Text>
+									</View>
+								</View>
+								{/* Separador Vertical */}
+								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+								<TouchableOpacity
+									style={{ alignItems: 'flex-end', marginTop: 0 }}
+									onPress={() => {
+										alert('Ver el detalle');
+									}}
+								>
+									<Text style={styles.text_link}>Ver el detalle</Text>
+								</TouchableOpacity>
+							</View>
+
+							{/* Container de BALANCE de la cuenta */}
+							<View style={styles.balanceContainer}>
+								<Text style={styles.textTitle}>Balance</Text>
+								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
+										<Text style={styles.text_ingresos}>$ 1.587</Text>
+									</View>
+									{/* Separador Vertical */}
+									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
+										<Text style={styles.text_egresos}>$ 20.319</Text>
+									</View>
+								</View>
+								{/* Separador Vertical */}
+								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+								<TouchableOpacity
+									style={{ alignItems: 'flex-end', marginTop: 0 }}
+									onPress={() => {
+										alert('Ver el detalle');
+									}}
+								>
+									<Text style={styles.text_link}>Ver el detalle</Text>
+								</TouchableOpacity>
+							</View>
+						</ScrollView>
+					</View>
+
+					{/* ACCIONES */}
+					<View style={styles.accionesContainer}>
+						<Text style={styles.textTitle}>Acciones</Text>
+						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+							<TouchableOpacity
+								onPress={() => {
+									alert('Recargar dinero');
+								}}
+								style={{ width: '30%' }}
+							>
+								<View style={{ alignItems: 'center' }}>
+									<View style={styles.mainActionIconContainer}>
+										<Ionicons name='ios-wallet' color='indigo' size={35}></Ionicons>
+									</View>
+									<Text style={styles.text_acciones}>Recargar Dinero</Text>
+								</View>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								onPress={() => {
+									alert('Mandar dinero');
+								}}
+								style={{ width: '30%' }}
+							>
+								<View style={{ alignItems: 'center' }}>
+									<View style={styles.mainActionIconContainer}>
+										<Ionicons name='ios-swap' color='indigo' size={35}></Ionicons>
+									</View>
+									<Text style={styles.text_acciones}>Mandar Dinero</Text>
+								</View>
+							</TouchableOpacity>
+							<TouchableOpacity
+								onPress={() => {
+									alert('Pagar');
+								}}
+								style={{ width: '30%' }}
+							>
+								<View style={{ alignItems: 'center' }}>
+									<View style={styles.mainActionIconContainer}>
+										<Ionicons name='ios-cart' color='indigo' size={35}></Ionicons>
+									</View>
+									<Text style={styles.text_acciones}>Pagar</Text>
+								</View>
+							</TouchableOpacity>
+						</View>
+						<TouchableOpacity
+							style={{ alignItems: 'flex-end', alignSelf: 'flex-end', marginTop: 10, paddingVertical: 10, marginRight: 5, maxWidth: '50%' }}
+							onPress={() => {
+								alert('Ver todas las acciones');
+							}}
+						>
+							<Text style={styles.text_link}>Ver todas las acciones</Text>
+						</TouchableOpacity>
+					</View>
+
+					{/* Container de ULTIMOS MOVIMIENTOS de la cuenta */}
+					<View style={{ marginVertical: 30 }}>
+						<View style={styles.ultimosMovimientosContainer}>
+							<Text style={styles.textTitle_ultimosMovimientos}>Úlitmos movimientos</Text>
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_ingresosUltimosMovimientos}> $ 415, 00</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_ingresosUltimosMovimientos}> $ 174.319, 21</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_egresosUltimosMovimientos}> - $ 4.821, 94</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_egresosUltimosMovimientos}> - $ 12.127, 00</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_egresosUltimosMovimientos}> - $ 17, 53</Text>
+								</View>
+							</View>
+							<TouchableOpacity
+								style={{ alignItems: 'flex-end', marginTop: 30 }}
+								onPress={() => {
+									alert('Ver mas movimientos');
+								}}
+							>
+								<Text style={styles.text_link}>Ver mas movimientos</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</ScrollView>
 			)}
 		</View>
 	);
 }
 // <---------------------------- ESTILOS ---------------------------->
+
 const styles = StyleSheet.create({
-	backgroundImage: {
+	containerPrin: {
 		flex: 1,
 		resizeMode: 'cover',
-		// justifyContent: 'center',
-	},
-	containerPrin: {
-		width: vw(100),
+		justifyContent: 'flex-start',
 		height: vh(100),
-		justifyContent: 'space-evenly',
-		alignItems: 'stretch',
-		paddingTop:80
-		// paddingHorizontal: 4,
-		// borderColor: 'black',
-		// borderWidth: 1,
-	},
-	containerNameLogout: {
-		flexDirection: 'row-reverse',
+		width: deviceWidth,
 		alignItems: 'center',
-		marginHorizontal: 20,
-		marginTop: 15,
+		paddingTop: 2,
 	},
-	containerInfoGeneral: {
-		flex: 1,
-		justifyContent: 'space-evenly',
-		margin: 18,
-		backgroundColor: 'rgba(30, 30, 30, 0.2)',
+	saldoContainer: {
+		width: 0.9 * deviceWidth,
+		// backgroundColor: 'cyan',
 		borderRadius: 20,
-		overflow: 'hidden',
+		// minHeight: 100,
+		padding: 0,
+		marginBottom: 10,
 	},
-	contAvatarSaldo: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems: 'center',
+	balance_horizontalScrollview: {
+		paddingVertical: 0,
+		// alignItems: 'center',
+		// backgroundColor: 'gold',
 	},
-	avatarContainer: {
+	balanceContainer: {
+		width: deviceWidth * 0.9,
+		height: '90%',
 		backgroundColor: 'white',
-		borderRadius: 1000,
+		borderRadius: 15,
+		paddingVertical: 10,
+		paddingHorizontal: 15,
+		// marginVertical: 10,
+		marginHorizontal: deviceWidth * 0.05,
+		shadowColor: '#000', // iOS
+		shadowOffset: { width: 0, height: 5 }, // iOS
+		shadowOpacity: 0.36, // iOS
+		shadowRadius: 6.68, // iOS
+		elevation: 11, // Android
+	},
+	accionesContainer: {
+		width: deviceWidth * 0.9,
+		marginHorizontal: deviceWidth * 0.05,
+	},
+	mainActionIconContainer: {
+		width: vw(15),
+		aspectRatio: 1,
+		borderRadius: 15,
+		backgroundColor: 'white',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 5,
+		shadowColor: '#000', // iOS
+		shadowOffset: { width: 0, height: 5 }, // iOS
+		shadowOpacity: 0.36, // iOS
+		shadowRadius: 6.68, // iOS
+		elevation: 11, // Android
+	},
+	ultimosMovimientosContainer: {
+		width: deviceWidth * 0.9,
+		marginHorizontal: deviceWidth * 0.05,
+		height: 'auto',
+		backgroundColor: 'white',
+		borderRadius: 15,
+		minHeight: 100,
+		padding: 15,
+		shadowColor: '#000', // iOS
+		shadowOffset: { width: 0, height: 5 }, // iOS
+		shadowOpacity: 0.36, // iOS
+		shadowRadius: 6.68, // iOS
+		elevation: 11, // Android
+	},
+	shopBrandLogosContainer: {
+		height: 30,
+		width: 30,
+		// backgroundColor: 'indigo',
+		borderColor: 'indigo',
+		borderWidth: 1,
+		borderRadius: 10,
 		overflow: 'hidden',
 	},
-	containerGeneral: {
-		justifyContent: 'center',
-		alignContent: 'center',
-		backgroundColor: 'rgba(30, 30, 30, 0.5)',
+
+	// <-------> Avatar <------->
+	avatar: {
+		marginRight: vh(7),
 	},
-	containerIngresos: {
-		flex: 1,
-		backgroundColor: 'darkorchid',
-		height: 70,
-		justifyContent: 'space-evenly',
-	},
-	containerEngresos: {
-		flex: 1,
-		backgroundColor: 'indigo',
-		height: 70,
-		justifyContent: 'space-evenly',
-	},
-	mainActionsContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems: 'center',
-		marginBottom: 30,
-		marginTop: 20,
-	},
-	largeButtonContainer: {
-		width: '100%',
-		height: '100%',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		height: 80,
-	},
-	buttonContainerLight: {
-		backgroundColor: 'rgb(30,30,30)',
-		height: 50,
-		width: '25%',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	buttonContainerDark: {
-		backgroundColor: 'rgb(20,20,20)',
-		height: 50,
-		width: '25%',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	iconPlaceholderSmall: {
-		height: 20,
-		width: 20,
-		borderRadius: 20,
-		borderWidth: 2,
-		borderColor: 'white',
-		// backgroundColor: 'white',
-		alignSelf: 'center',
-	},
-	iconPlaceholderLarge: {
-		height: 50,
-		width: 50,
-		borderRadius: 1000,
-		borderWidth: 2,
-		borderColor: 'white',
-		// backgroundColor: 'white',
-		alignSelf: 'center',
-	},
+	// <-------> Avatar <------->
 	// <-------> Text <------->
-	text: {
+	text_saldoCuentaTitle: {
 		color: 'white',
-		fontSize: 14,
-		textAlign: 'center',
-		fontFamily: 'trebuchet ms',
+		fontSize: 16,
+		// fontWeight: 'bold',
+	},
+	text_saldoCuenta: {
+		color: 'white',
+		fontSize: 36,
+		// fontWeight: 'bold',
 	},
 	textTitle: {
-		color: 'white',
+		color: 'rgb(30,30,30)',
 		fontSize: 18,
-		lineHeight: 32,
-		textAlign: 'center',
-		fontFamily: 'trebuchet ms',
+		marginBottom: 5,
 	},
-	textMini: {
-		color: 'white',
-		fontSize: 10,
-		marginTop: 5,
-		textAlign: 'center',
-		fontFamily: 'trebuchet ms',
+	text_ingresosEgresos: {
+		color: 'black',
+		fontSize: 16,
 	},
-	textBalance: {
-		color: 'white',
-		fontSize: 20,
-		lineHeight: 32,
+	text_ingresos: {
+		color: 'darkgreen',
+		fontSize: 24,
+	},
+	text_egresos: {
+		color: 'firebrick',
+		fontSize: 24,
+	},
+	text_body: {
+		color: 'rgb(30,30,30)', // Negro
+		fontSize: 14,
+		lineHeight: 22,
+	},
+	text_acciones: {
+		color: 'rgb(30,30,30)', // Negro
+		fontSize: 14,
+		// lineHeight: 22,
 		textAlign: 'center',
-		fontFamily: 'trebuchet ms',
+	},
+	text_link: {
+		color: 'steelblue',
+		fontSize: 14,
+	},
+	textTitle_ultimosMovimientos: {
+		color: 'rgb(30,30,30)',
+		fontSize: 18,
+		marginBottom: 12,
+	},
+	text_shopUltimosMovimientos: {
+		fontSize: 14,
+		color: 'black',
+	},
+	text_detailUltimosMovimientos: {
+		fontSize: 12,
+		color: 'darkgrey',
+	},
+	text_ingresosUltimosMovimientos: {
+		color: 'darkgreen',
+		fontSize: 14,
+	},
+	text_egresosUltimosMovimientos: {
+		color: 'firebrick',
+		fontSize: 14,
 	},
 	// <-------> Text <------->
 });
