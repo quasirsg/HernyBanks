@@ -61,12 +61,13 @@ module.exports = {
 			rest: "POST /create",
 			async handler(ctx) {
 				const entity = ctx.params;
+				console.log(entity)
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Validación de username o email (creación de usuario único)     	     *
 				 * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 				if (entity.username) {
 					const found = await User.findOne({
-						$and: [
+						$or: [
 							{ username: entity.username },
 							{ email: entity.email },
 						],
@@ -260,10 +261,10 @@ module.exports = {
 				useUnifiedTopology: true,
 			})
 			.then(() => {
-				console.log("Data base is connected");
+				console.log("Users service connected to DB");
 			})
 			.catch((error) => {
-				console.error(error);
+				console.error("Users service couldn't connect to DB");
 			});
 	},
 };

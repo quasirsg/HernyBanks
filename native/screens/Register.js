@@ -1,31 +1,25 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Formik } from 'formik';
-
-import * as Yup from 'yup';
-
 import { useDispatch } from 'react-redux';
-
 import { createUser } from '../store/actions/userActions';
-
-import Background from '../components/Background';
-import Logo from '../components/Logo';
 import Button from '../components/Button';
-import Header from '../components/Header';
 import CustomInput from '../components/CustomInput';
 import { theme } from '../core/theme';
+import * as Yup from 'yup';
+import Logo from '../components/Logo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Register = ({ id, username, email, password, passwordConfirmation, isValid, navigation }) => {
 	const dispatch = useDispatch();
 
 	return (
-		<Background>
-			{/* <Logo /> */}
+		<ScrollView contentContainerStyle={styles.container}>
+			<View >
 
-			<Header>Crear cuenta</Header>
+				{/* <Logo /> */}
+				<Text style={styles.title}>Crear cuenta</Text>
 
-			<View style={styles.loginContainer}>
 				<Formik
 					initialValues={{
 						username: '',
@@ -35,99 +29,97 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 					}}
 					validationSchema={Yup.object({
 						username: Yup.string().min(4, 'Debe tener al menos 4 caracteres').max(50, 'Debe tener 50 caracteres o menos').required('Debes completar este campo'),
-						email: Yup.string().email('Introduzca un email valido por favor').required('Debes completar este campo'),
+						email: Yup.string().email('Introduzca un correo válido por favor').required('Debes completar este campo'),
 						password: Yup.string()
-							.required('Please Enter your password')
-							.matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, 'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'),
+							.required('Ingresa tu contraseña')
+							.matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, 'No cumple con los requisitos'),
 						passwordConfirmation: Yup.string()
 							.oneOf([Yup.ref('password'), null], 'La contraseña no coincide')
-							.required('Password confirm is required'),
+							.required('Confirma tu contraseña'),
 					})}
 					onSubmit={(values, action) => {
 						action.resetForm();
-						dispatch(createUser(values,()=>navigation.navigate('RegisterModal')));
+						dispatch(createUser(values, () => navigation.navigate('RegisterModal')));
 					}}
 				>
 					{({ handleChange, handleSubmit, values, errors, touched }) => (
-						<View>
-							<CustomInput 
-								label='Username' 
-								name='username' 
-								onChangeText={handleChange('username')} 
-								value={values.userName} 
+						<View style={styles.containerII}>
+							<CustomInput
+								label='Username'
+								name='username'
+								onChangeText={handleChange('username')}
+								value={values.userName}
 								style={styles.input}
 							/>
 
-							{values.username.length >= 4 && <Icon name='check' size={40} color='green' />}
+							{
+								errors.username ? <Text style={styles.error}>{errors.username}</Text> :
+									values.username.length >= 4 ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> :
+										<Text style={{ fontSize: 10 }}></Text>
+							}
 
-							{errors.username && <Text style={{ fontSize: 10, color: 'red' }}>{errors.username}</Text>}
-
-							{/*  */}
-
-							<CustomInput 
-								label='Correo' 
-								name='email' 
-								returnKeyType='next' 
-								onChangeText={handleChange('email')} 
-								value={values.email} 
-								autoCapitalize='none' 
-								autoCompleteType='email' 
-								textContentType='emailAddress' 
-								keyboardType='email-address' 
+							<CustomInput
+								label='Correo'
+								name='email'
+								returnKeyType='next'
+								onChangeText={handleChange('email')}
+								value={values.email}
+								autoCapitalize='none'
+								autoCompleteType='email'
+								textContentType='emailAddress'
+								keyboardType='email-address'
 								style={styles.input}
 							/>
 
-							{values.email.length >= 4 && !errors.email && <Icon name='check' size={40} color='green' />}
+							{
+								errors.email ? <Text style={styles.error}>{errors.email}</Text> :
+									(values.email.length >= 4 && !errors.email) ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> :
+										<Text style={{ fontSize: 10 }}></Text>
+							}
 
-							{errors.email && <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>}
-
-							{/*  */}
-
-							<CustomInput 
-								label='Contraseña' 
-								name='password' 
-								returnKeyType='done' 
-								onChangeText={handleChange('password')} 
-								value={values.password} 
-								secureTextEntry={true} 
+							<CustomInput
+								label='Contraseña'
+								name='password'
+								returnKeyType='done'
+								onChangeText={handleChange('password')}
+								value={values.password}
+								secureTextEntry={true}
 								style={styles.input}
 							/>
 
-							{values.password.length >= 8 && !errors.password && <Icon name='check' size={40} color='green' />}
+							{
+								errors.password ? <Text style={styles.error}>{errors.password}</Text> :
+									(values.password.length >= 8 && !errors.password) ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> :
+										<Text style={{ fontSize: 10 }}></Text>
+							}
 
-							{errors.password && <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>}
-
-							{/*  */}
-
-							<CustomInput 
-								label='Confirmar contraseña' 
-								name='passwordConfirmation' 
-								onChangeText={handleChange('passwordConfirmation')} 
-								value={values.passwordConfirmation} 
-								secureTextEntry={true} 
+							<CustomInput
+								label='Confirmar contraseña'
+								name='passwordConfirmation'
+								onChangeText={handleChange('passwordConfirmation')}
+								value={values.passwordConfirmation}
+								secureTextEntry={true}
 								style={styles.input}
 							/>
 
-							{values.passwordConfirmation.length >= 8 && !errors.passwordConfirmation && <Icon name='check' size={40} color='green' />}
+							{
+								errors.passwordConfirmation ? <Text style={styles.error}>{errors.passwordConfirmation}</Text> :
+									(values.passwordConfirmation.length >= 8 && !errors.passwordConfirmation) ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> :
+										<Text style={{ fontSize: 10 }}></Text>
+							}
 
-							{errors.passwordConfirmation && <Text style={{ fontSize: 10, color: 'red' }}>{errors.passwordConfirmation}</Text>}
-
-							{/*  */}
-
-							<Button 
-								mode='contained' 
-								secureTextEntry={true} 
-								title='Register' 
-								style={styles.createButton} 
+							<Button
+								mode='contained'
+								secureTextEntry={true}
+								title='Register'
+								style={styles.button}
 								onPress={handleSubmit}
 							>
 								Crear
 							</Button>
 
-							{/*  */}
-
 							<View style={styles.row}>
-								<Text style={styles.label}>¿Tienes una cuenta? </Text>
+								<Text style={styles.label}> ¿Ya tienes una cuenta? </Text>
 								<TouchableOpacity onPress={() => navigation.navigate('Login')}>
 									<Text style={styles.link}>Ingresa aquí</Text>
 								</TouchableOpacity>
@@ -136,16 +128,31 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 					)}
 				</Formik>
 			</View>
-		</Background>
+		</ScrollView>
 	);
 };
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		backgroundColor: '#fff'
+	},
+	title: {
+		textAlign: 'center',
+		paddingTop: 140,
+		fontSize: 30,
+		paddingBottom: 20,
+		fontWeight: 'bold',
+		color: theme.colors.primary
+	},
 	label: {
 		color: theme.colors.secondary,
 	},
 	button: {
-		marginTop: 24,
+		marginTop: 20,
+		marginBottom: 30,
+		backgroundColor: theme.colors.primary,
 	},
 	row: {
 		flexDirection: 'row',
@@ -157,7 +164,14 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 40,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+	},
+	error: { 
+		fontSize: 10, 
+		color: 'red' 
+	},
+	containerII: {
+		alignItems: 'center',
 	}
 });
 
