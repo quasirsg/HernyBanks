@@ -8,7 +8,7 @@ const CustomInput = ({ errorText, ...props }) => (
     <Input
       style={styles.input}
       selectionColor={theme.colors.primary}
-      underlineColor="transparent"
+      underlineColor="red"
       mode="outlined"
       {...props}
     />
@@ -19,7 +19,7 @@ const CustomInput = ({ errorText, ...props }) => (
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginVertical: 12,
+    marginVertical: 3,
   },
   input: {
     backgroundColor: theme.colors.surface,

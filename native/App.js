@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; //instalar
 import { createStackNavigator } from '@react-navigation/stack'; //instalar
 import Register from './screens/Register';
@@ -9,40 +8,30 @@ import { st } from './store/store';
 import Estatistics from './screens/Estatistics';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
-import Welcome from './screens/welcome';
+import Welcome from './screens/Welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
 import RegisterModal from './components/RegisterModal';
 import AltaUSer from './screens/AltaUser';
 import FAQ from './screens/FAQ';
+import Toast from 'react-native-toast-message';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator(); //contiene la navegacion
-//stack.screen contiene la pantalla
-function MyStack() {
+
+function MainStack() {
 	return (
-		// <Stack.Navigator>
 		<Stack.Navigator initialRouteName='PosConsolidada'>
-			<Stack.Screen name='welcome' component={Welcome} options={{ headerShown: false }} />
-			{/* <Stack.Screen
-        name="Menu"
-        component={Menu}
-        // options={{ headerShown: false }}
-      /> */}
-			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} />
-			<Stack.Screen
-				name='Estatistics'
-				component={Estatistics}
-				// options={{ headerShown: false }}
-			/>
+			<Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
+
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
-			{/* <Stack.Screen
-        name="Header"
-        component={Header}
-        options={{ headerShown: false }}
-      /> */}
+
+			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
+
+			<Stack.Screen name='RegisterModal' component={RegisterModal} options={{ headerShown: false }} />
+
 			<Stack.Screen
 				name='PosConsolidada'
 				component={PosConsolidada}
@@ -55,28 +44,13 @@ function MyStack() {
 					headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				}}
 			/>
-			{/* <Stack.Screen
-        name="RechargeScreen"
-        component={RechargeScreen}
-        // options={{ headerShown: false }}
-      /> */}
-			<Stack.Screen
-				name='SendMonyScreen'
-				component={SendMonyScreen}
-				// options={{ headerShown: false }}
-			/>
-			<Stack.Screen
-				name='Transactions'
-				component={Transactions}
-				// options={{ headerShown: false }}
-			/>
-			<Stack.Screen name='RegisterModal' component={RegisterModal} />
+
+			<Stack.Screen name='Estatistics' component={Estatistics} />
+			<Stack.Screen name='SendMonyScreen' component={SendMonyScreen} />
+			<Stack.Screen name='Transactions' component={Transactions} />
 			<Stack.Screen name='AltaUSer' component={AltaUSer} />
-			<Stack.Screen
-				name='FAQ'
-				component={FAQ}
-				// options={{ headerShown: false }}
-			/>
+
+			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: false }} />
 		</Stack.Navigator>
 	);
 }
@@ -84,7 +58,8 @@ export default function App() {
 	return (
 		<Provider store={st}>
 			<NavigationContainer style={styles.container}>
-				<MyStack />
+				<MainStack />
+				<Toast ref={(ref) => Toast.setRef(ref)} />
 			</NavigationContainer>
 		</Provider>
 	);
