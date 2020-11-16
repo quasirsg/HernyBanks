@@ -11,7 +11,7 @@ import PosConsolidada from "./screens/PosConsolidada";
 import Welcome from "./screens/Welcome";
 import SendMonyScreen from "./screens/SendMonyScreen";
 import Transactions from "./screens/Transactions";
-import RegisterModal from "./components/RegisterModal";
+import CodeVerification from "./screens/CodeVerification";
 import AltaUSer from "./screens/AltaUser";
 import FAQ from "./screens/FAQ";
 import Toast from "react-native-toast-message";
@@ -43,9 +43,14 @@ function MainStack() {
       />
 
       <Stack.Screen
-        name="RegisterModal"
-        component={RegisterModal}
+        name="CodeVerification"
+        component={CodeVerification}
         options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="AltaUser"
+        component={AltaUSer}
       />
 
       <Stack.Screen
@@ -57,7 +62,6 @@ function MainStack() {
       <Stack.Screen name="Estatistics" component={Estatistics} />
       <Stack.Screen name="SendMonyScreen" component={SendMonyScreen} />
       <Stack.Screen name="Transactions" component={Transactions} />
-      <Stack.Screen name="AltaUSer" component={AltaUSer} />
 
       <Stack.Screen
         name="FAQ"
