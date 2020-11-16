@@ -39,11 +39,11 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 					})}
 					onSubmit={(values, action) => {
 						action.resetForm();
-						dispatch(createUser(values, () => navigation.navigate('RegisterModal')));
+						dispatch(createUser(values, () => navigation.navigate('CodeVerification')));
 					}}
 				>
 					{({ handleChange, handleSubmit, values, errors, touched }) => (
-						<View style={styles.containerII}>
+						<View>
 							<CustomInput
 								label='Username'
 								name='username'
@@ -170,9 +170,6 @@ const styles = StyleSheet.create({
 		fontSize: 10, 
 		color: 'red' 
 	},
-	containerII: {
-		alignItems: 'center',
-	}
 });
 
 export default Register;
