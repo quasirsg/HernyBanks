@@ -2,15 +2,18 @@ import React, { useState,useEffect } from "react";
 import {
   StyleSheet,
   Text,
+  Picker,
   View,
   ScrollView,
   TextInput,
   SafeAreaView,
   FlatList
+  
 } from "react-native";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { Link } from "@react-navigation/native";
+import * as Animatable from 'react-native-animatable';
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,7 +26,8 @@ import Header from "../components/Header";
 import CustomInput from "../components/CustomInput";
 import { theme } from "../core/theme";
 import Icon from "react-native-vector-icons/FontAwesome";
-import Axios from "axios";
+import axios from "axios";
+import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 const AltaUser = ({
   id,
@@ -41,23 +45,38 @@ const AltaUser = ({
   console.log(stateUser.userUp);
   const userUp = stateUser.userUp;
   const [provinces,setProvinces] =useState([]);
+  const [selectedProvince,setSelectedProvinces] =useState(provinces[0]);
+  const [localidades,setLocalidades] =useState([]);
+  const [selectedLocalidad,setSelectedLocalidad] =useState(localidades[0]);
   //const userId = useSelector(state => state.users[0]._id);
 
   useEffect(()=>{
     getProvinces();
+  },[]);
+
+  useEffect(()=>{
+    getLocalidades();
   },[])
 
-  console.log('PROVINCES',provinces);
+  
 
   let getProvinces=()=>{
-    Axios.get('https://apis.datos.gob.ar/georef/api/provincias')
+    axios.get('https://apis.datos.gob.ar/georef/api/provincias')
     .then(res=>{
       setProvinces(res.data.provincias);
     })
   }
 
+  let getLocalidades=(selectedProvince)=>{
+    axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${selectedProvince}&campos=id,nombre&max=5000`)
+    .then(res=>{
+      setLocalidades(res.data.municipios);
+    })
+  }
+
   return (
     <Background>
+    <View style={styles.altauser}> 
       <View>
         {1 === 0 ? (
           <View>
@@ -125,9 +144,9 @@ const AltaUser = ({
               );
             }}
           >
-            {({ handleChange, handleSubmit, values,errors }) => (
+            {({ handleChange, handleSubmit, values, errors }) => (
               <View>
-                <Header>Darse de alta</Header>
+                <Text style={styles.header}>Darse de alta</Text>
 
                 <CustomInput
                   label="Nombre"
@@ -211,7 +230,6 @@ const AltaUser = ({
                   value={values.phone}
                   style={styles.input}
                 />
-                  
 
                 {values.phone.length >= 4 && !errors.phone && (
                   <Icon name="check" size={40} color="green" />
@@ -223,16 +241,44 @@ const AltaUser = ({
                   </Text>
                 )}
                 {/*  */}
-                  {provinces && (<Field
-                    component="select"
-                    id="province"
-                    name="province"
-                  >
-                    { provinces.map((province)=>{
-                      return <option value={province.nombre}>{province.nombre}</option>
-                    })}
-                  </Field>)}
-                  
+                {provinces && (
+                  <Picker 
+                  style={styles.picker}
+                  selectedValue={selectedProvince} 
+                  onValueChange={(itemValue,itemIndex) => {setSelectedProvinces(itemValue);
+                  console.log(selectedProvince);
+                  getLocalidades(selectedProvince);
+                  }}>
+                    {provinces &&
+                      provinces.map((province, i) => {
+                        return (
+                          <Picker.Item
+                            key={i}
+                            label={province.nombre}
+                            value={province.nombre}
+                          ></Picker.Item>
+                        );
+                      })}
+                  </Picker>
+                )}
+                {localidades && (
+                  <Picker 
+                  style={styles.picker}
+                  selectedValue={selectedLocalidad} 
+                  onValueChange={(itemValue,itemIndex) => {setSelectedLocalidad(itemValue) 
+                  console.log(selectedLocalidad)}}>
+                    {localidades &&
+                      localidades.map((localidad, i) => {
+                        return (
+                          <Picker.Item
+                            key={i}
+                            label={localidad.nombre}
+                            value={localidad.nombre}
+                          ></Picker.Item>
+                        );
+                      })}
+                  </Picker>
+                )}
 
                 {/* <CustomInput
                   placeholder="Fecha de nacimiento"
@@ -267,6 +313,7 @@ const AltaUser = ({
           </Formik>
         )}
       </View>
+     </View>
     </Background>
   );
 };
@@ -274,9 +321,27 @@ const AltaUser = ({
 const styles = StyleSheet.create({
   label: {
     color: theme.colors.secondary,
+    //borderColor: 'darkorchid',
+  },
+  header: {
+    textAlign: 'center',
+    fontSize: 30,
+    color: 'darkorchid',
+    marginTop: 0
+  },
+  picker: {
+    backgroundColor: 'black',
+  },
+  altauser: {
+    width: vw(60),
+		height: vh(100),
+		justifyContent: 'space-evenly',
+		alignItems: 'stretch',
   },
   button: {
     marginTop: 24,
+    borderRadius: 90,
+    
   },
   row: {
     flexDirection: "row",
