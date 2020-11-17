@@ -1,0 +1,220 @@
+'use strict'
+
+//Imports from moleculer
+const { MoleculerClientError } = require('moleculer').Errors;
+
+//DbServices and Mongo
+//In this case i will use "db-moleculer" until we configure the db.mixin
+
+const DbService = require('moleculer-db');
+const Contact = require('../models/contact.model');
+const User = require('../models/user.model');
+const MongooseAdapter = require('moleculer-db-adapter-mongoose');
+const mongoose = require('mongoose');
+
+module.exports = {
+
+    name: 'contacts',
+
+    mixin: [DbService],
+
+    adapter: new MongooseAdapter(
+        'mongodb://localhost/henrybank', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    ),
+
+    model: Contact,
+
+    settings: {
+        rest: '/contacts',
+        fields: [
+            'userId',
+            'contactList'
+        ],
+        //Validators
+    },
+
+    actions: {
+        getContacts: {
+            //Return all contacts from our contact list
+            rest: 'GET /',
+            async handler(ctx) {
+                //We need the front-end to send us the id of the user who is currently logged in
+                const { id } = ctx.params;
+                const response = await User.findById(id)
+                //.populate('contacts')
+
+                if (!response) {
+                    throw new MoleculerClientError(
+                        'the user was not found!',
+                        422,
+                        '', [{ message: 'the user was not found!' }]
+                    )
+                }
+
+                return response;
+            }
+        },
+        updateUsername: {
+            //In our Contact List we only can change the username of our contact
+            //We take the email and the username edited from our ctx
+            rest: 'PUT /editusername',
+            async handler(ctx) {
+                const { idUserLoggedIn, email, username } = ctx.params;
+
+                const contact = await Contact.findOneAndUpdate({ email, fromUser: idUserLoggedIn }, { username })
+                if (!contact) {
+                    throw new MoleculerClientError(
+                        'Failed Uptade',
+                        422,
+                        '', [{ message: 'Failed Uptade!' }]
+                    )
+                }
+
+                return 'Updated'
+            }
+        },
+        addConcat: {
+            //To add a new contact we need first find  if this contact exist in our user db and has an
+            //acount with validate in true.
+            rest: 'POST /',
+            async handler(ctx) {
+                const { _id, contactId } = ctx.params;
+
+                //Find my two users
+                const user = await User.findById(_id)
+                const user2 = await User.findById(contactId, { username: true, phone: true, email: true, })
+
+                //handler Error
+                if (!user || !user2) {
+                    throw new MoleculerClientError(
+                        'the user was not found!',
+                        422,
+                        '', [{ message: 'the user was not found!' }]
+                    )
+                }
+
+                //Create new contact with the user 2
+                const contact = new Contact({
+                    username: user2.username,
+                    phone: user2.phone,
+                    email: user2.email,
+                    fromUser: user._id
+                })
+
+                //make the relationship
+                await contact.save()
+                user.contacts.push(contact);
+                await user.save();
+
+                return contact;
+
+            }
+        },
+        addContactByPhone: {
+            rest: 'POST /addbyphone',
+            async handler(ctx) {
+                const { phone, idUserLoggedIn } = ctx.params;
+
+                const userToContact = await User.findOne({ phone }, { username: true, phone: true, email: true, });
+                const userLoggedIn = await User.findById(idUserLoggedIn);
+
+                if (!userToContact || !userLoggedIn) {
+                    throw new MoleculerClientError(
+                        'the user was not found!',
+                        422,
+                        '', [{ message: 'the user was not found!' }]
+                    )
+                }
+
+                const contact = new Contact({
+                    username: userToContact.username,
+                    phone: userToContact.phone,
+                    email: userToContact.email,
+                    fromUser: userLoggedIn._id
+                })
+
+
+                //make the relationship
+                await contact.save()
+                userLoggedIn.contacts.push(contact);
+                await userLoggedIn.save();
+
+                return contact
+            }
+        },
+        inviteByWhatsapp: {
+            //Take the phone number from our context and send a whatsapp message to invite him/her.
+            //And send a link to start the registration process
+            rest: 'POST /whatsapp',
+            async handler(ctx) {
+
+
+            }
+        },
+        deletContact: {
+            //Delete a contact from our contactList , but not from our userDatabase.
+            //To delete this contact , we need an id from our ctx
+            rest: 'DELETE /',
+            async handler(ctx) {
+                const { id , idUserLoggedIn } = ctx.params;
+                const user = await User.findById(idUserLoggedIn)
+                await Contact.findByIdAndRemove(id)
+
+                //Removing from the contact list of our user logged in
+                let contact = user.contacts.indexOf(id)
+                if (contact !== -1) user.contacts.splice(contact,1)
+                await user.save()
+                
+                return 'Contact deleted'            
+            }
+        },
+    },
+
+    methods: {
+        async fillSeeds() {
+            //use this methods to test the contact service
+            await User.create({
+                username: "Robert",
+                name: "Roberto",
+                lastname: "Marth",
+                phone: '12312312',
+                email: 'roberto@roberto.com',
+                password: '123123',
+            })
+            await User.create({
+                username: "Jose",
+                name: "Manuel",
+                lastname: "Marth",
+                phone: '123122312',
+                email: 'manuel@rasdsa.com',
+                password: '1231232',
+            })
+            await User.create({
+                username: "Maria",
+                name: "Maria la",
+                lastname: "Del Barrio",
+                phone: '15152323',
+                email: 'maria@maria.com',
+                password: '123123',
+            })
+            return "Users have been created";
+        }
+    },
+
+    created() {
+        mongoose.connect(
+                'mongodb://localhost/henrybank', {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true
+                }
+            )
+            .then(() => console.log('Contact Service Online'))
+            .catch(err => console.log({
+                message: 'Error to connect DB',
+                error: err
+            }));
+    },
+}

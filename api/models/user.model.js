@@ -3,6 +3,7 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
+
 let UserSchema = new Schema(
 	{
 		username: {
@@ -56,6 +57,12 @@ let UserSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		contacts : [
+			{
+				type : Schema.Types.ObjectId,
+				ref: 'Contact'
+			}
+		]
 	},
 	{
 		timestamps: true,
