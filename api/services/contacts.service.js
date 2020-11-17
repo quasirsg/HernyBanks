@@ -150,7 +150,7 @@ module.exports = {
             //And send a link to start the registration process
             rest: 'POST /whatsapp',
             async handler(ctx) {
-
+                
 
             }
         },

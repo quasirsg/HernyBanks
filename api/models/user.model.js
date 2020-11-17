@@ -62,6 +62,12 @@ let UserSchema = new Schema(
 				type : Schema.Types.ObjectId,
 				ref: 'Contact'
 			}
+		],
+		accounts : [
+			{
+				type : Schema.Types.ObjectId,
+				ref: 'Account'
+			}
 		]
 	},
 	{
