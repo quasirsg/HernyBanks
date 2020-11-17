@@ -61,6 +61,7 @@ module.exports = {
 			rest: "POST /create",
 			async handler(ctx) {
 				const entity = ctx.params;
+				console.log(entity)
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Validación de username o email (creación de usuario único)     	     *
 				 * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -81,10 +82,23 @@ module.exports = {
 					}
 				}
 
-				/*  * * * * * * * * * * * * * * * * *
-				 * Encryptación de contraseña		*
-				 * * * * *  * * * * * * * *  * * * * */
+				/* * * * * * * * * * * * * * * * * *
+				 * Encryptación de contraseña      *
+				 * * * * * * * * * * * * * * * * * */
 				entity.password = bcrypt.hashSync(entity.password, 10);
+
+				/* * * * * * * * * * * * * *
+				 * Función generadora 	   *
+				 * * * * * * * * * * * * * */
+				const rdm = () => parseInt(Math.random() * 10).toString();
+
+				/* * * * * * * * * * * * *
+				 * Generación de CVU     *
+				 * * * * * * * * * * * * */
+				 const x = entity.dni.toString();
+				 const last4 = x.substring(x.length-4, x.length)
+
+				 entity.cvu = '00000000' + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + last4;
 
 				/*  * * * * * * * * * * * * * * * * *
 				 * Creación del nuevo usuario		*
@@ -94,13 +108,14 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Generación de token para enviar confirmación al mail del nuevo usuario *
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
-				const rdm = () => parseInt(Math.random() * 10).toString();
 				const tokenGen = () => rdm() + rdm() + rdm() + rdm() + rdm();
 
 				const token = await Token.create({
 					_userId: created._id,
 					token: tokenGen(),
 				});
+
+				console.log(token)
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Llamado al servicio de emails para hacer verificación de la cuenta *

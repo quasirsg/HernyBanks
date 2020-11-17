@@ -13,10 +13,11 @@ import welcome from './screens/welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
 import CodeVerification from './screens/CodeVerification';
-import AltaUSer from './screens/AltaUser';
+import AltaUser from './screens/AltaUser';
 import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
 import MenuLateral from './screens/MenuLateral';
+import Recharge from './screens/Recharge';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';

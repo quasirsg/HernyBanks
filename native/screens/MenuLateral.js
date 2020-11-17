@@ -9,7 +9,7 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-export default function MenuLateral({ showMenu, setShowMenu }) {
+export default function MenuLateral({ showMenu, setShowMenu, navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 	useEffect(() => {
@@ -18,8 +18,7 @@ export default function MenuLateral({ showMenu, setShowMenu }) {
 	console.log('soy el user logeado', session);
 	const logoutHandler = () => {
 		dispatch(logoutUser());
-		navigation.navigate('welcome');
-		alert('funciona');
+		navigation.navigate('Welcome')
 		return;
 	};
 	return (
@@ -94,10 +93,7 @@ export default function MenuLateral({ showMenu, setShowMenu }) {
 			</View>
 
 			<TouchableOpacity
-				onPress={() => {
-					alert('Log Out');
-					logoutHandler();
-				}}
+				onPress={logoutHandler}
 			>
 				<View style={{ marginVertical: 40 }}>
 					<Text style={styles.text_logout}>Salir de la cuenta</Text>
