@@ -7,7 +7,8 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
-  FlatList
+  FlatList,
+  Dimensions
   
 } from "react-native";
 import { Formik, Form, Field } from "formik";
@@ -28,6 +29,8 @@ import { theme } from "../core/theme";
 import Icon from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+
+const { height } = Dimensions.get('window');
 
 const AltaUser = ({
   id,
@@ -50,7 +53,10 @@ const AltaUser = ({
   const [selectedDepartamento,setSelectedDepartamento] =useState(departamentos[0]);
   const [localidades,setLocalidades] =useState([]);
   const [selectedLocalidad,setSelectedLocalidad] =useState(localidades[0]);
-  const [direccion,setDireccion] = useState('')
+  const [screenHeight,setScreenHeight] = useState(0)
+
+  const scrollEnabled = screenHeight > height;
+
   //const userId = useSelector(state => state.users[0]._id);
 
   useEffect(()=>{
@@ -58,6 +64,10 @@ const AltaUser = ({
     
   },[]);
 
+  function onContentSizeChange (contentWidth, contentHeight){
+    // Save the content height in state
+    setScreenHeight(contentHeight);
+  };
   
 
   
@@ -109,8 +119,11 @@ const AltaUser = ({
 
   }
 
+  
+
 
   return (
+    <ScrollView>
     <Background>
     <View style={styles.altauser}> 
       <View>
@@ -135,7 +148,7 @@ const AltaUser = ({
             </Text>
           </View>
         ) : (
-          <ScrollView>
+          
           <Formik
             initialValues={{
               name: "",
@@ -382,11 +395,12 @@ const AltaUser = ({
               </View>
             )}
           </Formik>
-          </ScrollView>
+          
         )}
       </View>
      </View>
     </Background>
+    </ScrollView>
   );
 };
 
