@@ -73,7 +73,6 @@ module.exports = {
 						],
 					});
 
-
 					if (found) {
 						if (found.username === entity.username.toLowerCase()) {
 							return Promise.reject(usernameError);
@@ -96,13 +95,14 @@ module.exports = {
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Generación de token para enviar confirmación al mail del nuevo usuario *
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
-				const rdm = () => Math.random().toString(36).substr(2);
-				const tokenGen = () => rdm() + rdm() + rdm();
+				const rdm = () => parseInt(Math.random() * 10).toString();
+				const tokenGen = () => rdm() + rdm() + rdm() + rdm() + rdm();
 
 				const token = await Token.create({
 					_userId: created._id,
 					token: tokenGen(),
 				});
+
 				console.log(token)
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
