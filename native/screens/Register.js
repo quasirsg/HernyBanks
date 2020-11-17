@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { createUser } from '../store/actions/userActions';
@@ -14,8 +15,8 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 	const dispatch = useDispatch();
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
-			<View >
+		<ScrollView backgroundColor={'white'}>
+			<View style={styles.container}>
 
 				{/* <Logo /> */}
 				<Text style={styles.title}>Crear cuenta</Text>
@@ -24,12 +25,14 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 					initialValues={{
 						username: '',
 						email: '',
+						dni: '',
 						password: '',
 						passwordConfirmation: '',
 					}}
 					validationSchema={Yup.object({
 						username: Yup.string().min(4, 'Debe tener al menos 4 caracteres').max(50, 'Debe tener 50 caracteres o menos').required('Debes completar este campo'),
 						email: Yup.string().email('Introduzca un correo válido por favor').required('Debes completar este campo'),
+						dni: Yup.number('Sólo números').required('Debes completar este campo').positive('Verifica el número ingresado').integer('Verifica el número ingresado'),
 						password: Yup.string()
 							.required('Ingresa tu contraseña')
 							.matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, 'No cumple con los requisitos'),
@@ -43,18 +46,33 @@ const Register = ({ id, username, email, password, passwordConfirmation, isValid
 					}}
 				>
 					{({ handleChange, handleSubmit, values, errors, touched }) => (
-						<View>
+						<View style={styles.form_container}>
 							<CustomInput
 								label='Username'
 								name='username'
 								onChangeText={handleChange('username')}
-								value={values.userName}
+								value={values.username}
 								style={styles.input}
 							/>
 
 							{
 								errors.username ? <Text style={styles.error}>{errors.username}</Text> :
 									values.username.length >= 4 ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> :
+										<Text style={{ fontSize: 10 }}></Text>
+							}
+
+							<CustomInput
+								label='CC/DNI'
+								name='dni'
+								onChangeText={handleChange('dni')}
+								value={values.dni}
+								style={styles.input}
+								keyboardType={'phone-pad'}
+							/>
+
+							{
+								errors.dni ? <Text style={styles.error}>{errors.dni}</Text> :
+									values.dni.length >= 7 ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> :
 										<Text style={{ fontSize: 10 }}></Text>
 							}
 
@@ -140,7 +158,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		textAlign: 'center',
-		paddingTop: 140,
+		paddingTop: 120,
 		fontSize: 30,
 		paddingBottom: 20,
 		fontWeight: 'bold',
@@ -148,6 +166,9 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		color: theme.colors.secondary,
+	},
+	form_container: {
+		width: '70%'
 	},
 	button: {
 		marginTop: 20,
@@ -166,9 +187,9 @@ const styles = StyleSheet.create({
 		height: 40,
 		backgroundColor: 'white',
 	},
-	error: { 
-		fontSize: 10, 
-		color: 'red' 
+	error: {
+		fontSize: 10,
+		color: 'red'
 	},
 });
 
