@@ -46,7 +46,7 @@ function LoginStack() {
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
 			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
 			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
-			<Stack.Screen name='AltaUSer' component={AltaUSer} />
+			<Stack.Screen name='AltaUser' component={AltaUser} />
 		</Stack.Navigator>
 	);
 }
@@ -68,6 +68,7 @@ function MainStack() {
 			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
 			<Drawer.Screen name='Transactions' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
+			<Drawer.Screen name='Recharge' component={Recharge} />
 		</Drawer.Navigator>
 	);
 }

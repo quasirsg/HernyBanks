@@ -172,7 +172,7 @@ export default function PosConsolidada({ navigation }) {
 						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 							<TouchableOpacity
 								onPress={() => {
-									alert('Recargar dinero');
+									navigation.navigate('Recharge');
 								}}
 								style={{ width: '30%' }}
 							>
