@@ -8,11 +8,11 @@ import Toast from "react-native-toast-message";
  * Acción para crear usuario (Desde Register Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function createUser(userData, onSuccess) {
-  console.log(URL);
 
   const dataUser = {
     username: userData.username,
     email: userData.email,
+    dni: userData.dni,
     password: userData.password,
   };
   return (dispatch) => {
