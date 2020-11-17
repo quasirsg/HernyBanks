@@ -14,10 +14,12 @@ const background1 = require('../assets/background1.png');
 export default function RechargeScreen({ navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
+	const bal = session.balance
 	useEffect(() => {
 		dispatch(verifySession());
 	}, []);
 	console.log('soy el user logeado', session);
+	console.log('Balance', session.balance);
 	const logoutHandler = () => {
 		dispatch(logoutUser());
 		navigation.navigate('welcome');
@@ -34,7 +36,7 @@ export default function RechargeScreen({ navigation }) {
 					<View style={styles.saldoContainer}>
 						<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
 						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-							<Text style={styles.text_saldoCuenta}> $ 1.587</Text>
+							<Text style={styles.text_saldoCuenta}> $ {bal}</Text>
 							<TouchableOpacity
 								onPress={() => {
 									alert('Editar perfil');

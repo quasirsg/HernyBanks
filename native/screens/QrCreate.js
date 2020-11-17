@@ -3,7 +3,7 @@
 
 // import React in our code
 import React, {useState} from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
 // import all the components we are going to use
 import {
   SafeAreaView,
@@ -17,21 +17,20 @@ import { theme } from '../core/theme';
 import QRCode from 'react-native-qrcode-svg';
 
 const Qrnative = () => {
+  const session = useSelector((state) => state.session.userDetail);
+  const cvuV = session.cvu
   const [inputText, setInputText] = useState({
-    cvu:'145465534156485',
+    cvu: cvuV,
     monto : '',
     type: 'codigo QR'
   });
   const [qrvalue, setQrvalue] = useState('');
 
-  const handlerChange = () => {
 
-  }
-
-  console.log(inputText)
-  console.log(qrvalue)
+  console.log(inputText);
 
   return (
+  
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <Text style={styles.titleStyle}>
