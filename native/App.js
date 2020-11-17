@@ -12,11 +12,13 @@ import welcome from './screens/welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
 import CodeVerification from './screens/CodeVerification';
-import AltaUSer from './screens/AltaUser';
+import AltaUser from './screens/AltaUser';
 import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
 import SideMenu from 'react-native-side-menu-updated';
 import MenuLateral from './screens/MenuLateral';
+import Recharge from './screens/Recharge';
+
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -26,12 +28,13 @@ const Stack = createStackNavigator(); //contiene la navegacion
 function MainStack() {
 	return (
 		<Stack.Navigator>
+    	
 			<Stack.Screen name='Welcome' component={welcome} options={{ headerShown: false }} />
-
+      <Stack.Screen name='AltaUser' component={AltaUser} />
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
 
 			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
-
+      <Stack.Screen name='MenuLateral' component={MenuLateral} />
 			<Stack.Screen
 				name='PosConsolidada'
 				component={PosConsolidada}
@@ -43,13 +46,16 @@ function MainStack() {
 					headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				}}
 			/>
-
+      <Stack.Screen name='Recharge' component={Recharge} />
 			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
+      
 
 			<Stack.Screen name='Estatistics' component={Estatistics} />
 			<Stack.Screen name='SendMonyScreen' component={SendMonyScreen} />
 			<Stack.Screen name='Transactions' component={Transactions} />
-			<Stack.Screen name='AltaUSer' component={AltaUSer} />
+
+      
+		
 
 			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: false }} />
 		</Stack.Navigator>

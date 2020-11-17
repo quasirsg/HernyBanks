@@ -61,6 +61,7 @@ module.exports = {
 			rest: "POST /create",
 			async handler(ctx) {
 				const entity = ctx.params;
+				console.log(entity)
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Validación de username o email (creación de usuario único)     	     *
 				 * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -113,6 +114,8 @@ module.exports = {
 					_userId: created._id,
 					token: tokenGen(),
 				});
+
+				console.log(token)
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Llamado al servicio de emails para hacer verificación de la cuenta *

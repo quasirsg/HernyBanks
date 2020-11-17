@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function MenuLateral({ showMenu, setShowMenu }) {
+export default function MenuLateral({ showMenu, setShowMenu, navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 	useEffect(() => {
@@ -13,8 +13,7 @@ export default function MenuLateral({ showMenu, setShowMenu }) {
 	console.log('soy el user logeado', session);
 	const logoutHandler = () => {
 		dispatch(logoutUser());
-		navigation.navigate('welcome');
-		alert('funciona');
+		navigation.navigate('Welcome')
 		return;
 	};
 	return (
@@ -32,10 +31,7 @@ export default function MenuLateral({ showMenu, setShowMenu }) {
 				></Ionicons>
 			</View>
 			<TouchableOpacity
-				onPress={() => {
-					alert('Log Out');
-					logoutHandler();
-				}}
+				onPress={logoutHandler}
 			>
 				<View style={{ marginVertical: 20 }}>
 					<Text>Log Out</Text>

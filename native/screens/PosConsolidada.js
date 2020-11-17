@@ -19,22 +19,22 @@ const session = true;
 // BORRAR
 
 export default function PosConsolidada({ navigation }) {
-	// const dispatch = useDispatch();
-	// const session = useSelector((state) => state.session.userDetail);
-	// useEffect(() => {
-	// 	dispatch(verifySession());
-	// }, []);
-	// console.log('soy el user logeado', session);
-	// const logoutHandler = () => {
-	// 	dispatch(logoutUser());
-	// 	navigation.navigate('welcome');
-	// 	alert('funciona');
-	// 	return;
-	// };
+const dispatch = useDispatch();
+const session = useSelector((state) => state.session.userDetail);
+const bal = session.balance
+useEffect(() => {
+	dispatch(verifySession());
+}, []);
+console.log('soy el user logeado', session);
+const logoutHandler = () => {
+	dispatch(logoutUser());
+	navigation.navigate('welcome');
+	return;
+};
 
 	const [showMenu, setShowMenu] = useState(false);
 
-	const menu = <MenuLateral showMenu={showMenu} setShowMenu={setShowMenu}></MenuLateral>;
+	const menu = <MenuLateral showMenu={showMenu} setShowMenu={setShowMenu} navigation={navigation}></MenuLateral>;
 
 	// console.log(showMenu);
 	return (
@@ -58,7 +58,7 @@ export default function PosConsolidada({ navigation }) {
 						<View style={styles.saldoContainer}>
 							<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
 							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-								<Text style={styles.text_saldoCuenta}> $ 1.587</Text>
+								<Text style={styles.text_saldoCuenta}> $ {bal}</Text>
 								<TouchableOpacity
 									onPress={() => {
 										alert('Editar perfil');
@@ -177,7 +177,7 @@ export default function PosConsolidada({ navigation }) {
 							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 								<TouchableOpacity
 									onPress={() => {
-										alert('Recargar dinero');
+										navigation.navigate('Recharge')
 									}}
 									style={{ width: '30%' }}
 								>
