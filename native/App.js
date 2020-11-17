@@ -25,7 +25,7 @@ const Stack = createStackNavigator(); //contiene la navegacion
 
 function MainStack() {
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator initialRouteName='PosConsolidada'>
 			<Stack.Screen name='Welcome' component={welcome} options={{ headerShown: false }} />
 
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />

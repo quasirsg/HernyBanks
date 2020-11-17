@@ -48,7 +48,7 @@ export default function PosConsolidada({ navigation }) {
 							name='ios-menu'
 							color='white'
 							size={30}
-							style={{ marginHorizontal: 15, alignSelf: 'flex-start' }}
+							style={{ marginHorizontal: 15, marginVertical: 5, alignSelf: 'flex-start' }}
 							onPress={() => {
 								// alert('menu lateral');
 								setShowMenu(true);
