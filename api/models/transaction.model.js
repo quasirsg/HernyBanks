@@ -8,7 +8,7 @@ let TransactionSchema = new Schema(
 	{
 		by: {
 			type : String,
-			enum : ['Debit Card','Credit Card','QR'],
+			enum : ['Debit Card','Credit Card','QR','Transfer'],
 			required : true
 		},
 		fromAccount: [

@@ -6,6 +6,7 @@ const { MoleculerClientError } = require('moleculer').Errors;
 //DbServices and Mongo
 const DbService = require('moleculer-db');
 const Account = require('../models/account.model');
+const Transaction = require ('../models/transaction.model');
 const User = require('../models/user.model');
 const MongooseAdapter = require('moleculer-db-adapter-mongoose');
 const mongoose = require('mongoose');
@@ -90,17 +91,82 @@ module.exports = {
 
             }
         },
+        //This actions its only to test
+        toDeposit: {
+            rest: 'POST /deposit',
+            async handler(ctx) {
+                const { amount , cvu } = ctx.params;
+                const account = await Account.findOne({ cvu })
+                const balance = account.balance + parseInt(amount , 10)
+                account.balance = balance;
+                account.save();
+
+                return account;
+            }
+        },
         //Transaction Actions
-        createdTransaction: {
-            rest: 'POST /transactions',
+        getTransactions: {
+            rest: 'GET /transactions',
+            async handler(ctx) {
+                const { cvu } = ctx.params; //account id
+                const account = await Account.findOne( { cvu } )
+
+                if (!account) {
+                    throw new MoleculerClientError(
+                        'there are not accounts for this user!',
+                        422,
+                        '', [{ message: 'there are not accounts for this user!' }]
+                    )
+                }
+
+                const transactions = await Transaction.find({ 
+                    $or: [ 
+                        { fromAccount : account._id },
+                        { toAccount : account._id }
+                    ] 
+                }).populate('fromAccount').populate('toAccount')
+
+                return transactions && transactions;
+            }
+        },
+        recharge: {
+            rest: 'POST /recharge',
             async handler(ctx) {
 
             }
         },
-        getTransactions: {
-            rest: 'GET /transactions',
+        transfer : {
+            rest : 'POST /transfer',
             async handler(ctx) {
+                const { from , to , amount , description } = ctx.params;
+                
+                const fromAccount = await Account.findOne( { cvu : from } )
+                const toAccount = await Account.findOne( { cvu : to } )
 
+                if(fromAccount.balance - parseInt(amount , 10) >= 0) {
+                    fromAccount.balance = fromAccount.balance - parseInt(amount , 10);
+                    toAccount.balance += parseInt(amount , 10);
+
+                    const transaction = await this.generateTransaction(
+                        'Transfer',
+                        fromAccount._id,
+                        toAccount._id,
+                        description,
+                        parseInt(amount , 10),
+                    );
+
+                    await transaction.save()
+
+                    fromAccount.transactions.push(transaction);
+                    toAccount.transactions.push(transaction);
+                    
+                    await fromAccount.save()
+                    await toAccount.save()
+                    
+                    return 'the transaction was succesful'
+                } else {
+                    return 'You do not have enough balance'
+                };
             }
         },
 
@@ -128,6 +194,23 @@ module.exports = {
                 )
             }
             return account
+        },
+        generateTransaction( by , fromAccount , toAccount , description , amount) {
+            const transaction = new Transaction({
+                by,
+                fromAccount,
+                toAccount,
+                description,
+                amount
+            })
+            if (!transaction) {
+                throw new MoleculerClientError(
+                    'there are not accounts for this user!',
+                    422,
+                    '', [{ message: 'there are not accounts for this user!' }]
+                )
+            }
+            return transaction
         }
     },
 
