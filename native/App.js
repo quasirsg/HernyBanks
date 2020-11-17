@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; //instalar
 import { createStackNavigator } from '@react-navigation/stack'; //instalar
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Register from './screens/Register';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { st } from './store/store';
@@ -15,54 +16,66 @@ import CodeVerification from './screens/CodeVerification';
 import AltaUSer from './screens/AltaUser';
 import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
-import SideMenu from 'react-native-side-menu-updated';
 import MenuLateral from './screens/MenuLateral';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator(); //contiene la navegacion
+const Drawer = createDrawerNavigator(); // Menu lateral
 
-function MainStack() {
+function RootStack() {
 	return (
-		<Stack.Navigator initialRouteName='PosConsolidada'>
-			<Stack.Screen name='Welcome' component={welcome} options={{ headerShown: false }} />
-
-			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
-
-			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
-
-			<Stack.Screen
-				name='PosConsolidada'
-				component={PosConsolidada}
-				options={{
-					headerShown: true,
-					headerTitleAlign: 'center',
-					headerStyle: { backgroundColor: 'indigo', shadowColor: 'indigo', elevation: 0 },
-					headerTitleStyle: { color: 'white', fontSize: 16 },
-					headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
-				}}
-			/>
-
-			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
-
-			<Stack.Screen name='Estatistics' component={Estatistics} />
-			<Stack.Screen name='SendMonyScreen' component={SendMonyScreen} />
-			<Stack.Screen name='Transactions' component={Transactions} />
-			<Stack.Screen name='AltaUSer' component={AltaUSer} />
-
-			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: false }} />
+		<Stack.Navigator initialRouteName='Login'>
+			<Stack.Screen name='Login' component={LoginStack} options={{ headerShown: false }} />
+			<Stack.Screen name='Mains' component={MainStack} options={{ headerShown: false }} />
 		</Stack.Navigator>
 	);
 }
+
+function LoginStack() {
+	return (
+		<Stack.Navigator
+			initialRouteName='Welcome'
+			screenOptions={{
+				headerShown: false,
+			}}
+		>
+			<Stack.Screen name='Welcome' component={welcome} options={{ headerShown: false }} />
+			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
+			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
+			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
+			<Stack.Screen name='AltaUSer' component={AltaUSer} />
+		</Stack.Navigator>
+	);
+}
+
+function MainStack() {
+	return (
+		<Drawer.Navigator
+			initialRouteName='PosConsolidada'
+			screenOptions={{
+				headerShown: true,
+				headerTitleAlign: 'center',
+				headerStyle: { backgroundColor: 'indigo', shadowColor: 'indigo', elevation: 0 },
+				headerTitleStyle: { color: 'white', fontSize: 16 },
+				headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
+			}}
+		>
+			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} />
+			<Drawer.Screen name='Estatistics' component={Estatistics} />
+			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
+			<Drawer.Screen name='Transactions' component={Transactions} />
+			<Drawer.Screen name='FAQ' component={FAQ} />
+		</Drawer.Navigator>
+	);
+}
+
 export default function App() {
-	// const showMenu = useSelector((state) => state.menuLateral.showMenu);
-	// const showMenu = useSelector((state) => state.menuLateral);
-	// console.log(showMenu);
 	return (
 		<Provider store={st}>
 			<NavigationContainer style={styles.container}>
-				<MainStack />
+				<RootStack />
 				<Toast ref={(ref) => Toast.setRef(ref)} />
 			</NavigationContainer>
 		</Provider>

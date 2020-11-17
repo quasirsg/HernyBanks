@@ -5,7 +5,6 @@ import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MenuLateral from './MenuLateral';
-import SideMenu from 'react-native-side-menu-updated';
 
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
@@ -32,306 +31,301 @@ export default function PosConsolidada({ navigation }) {
 	// 	return;
 	// };
 
-	const [showMenu, setShowMenu] = useState(false);
-
-	const menu = <MenuLateral showMenu={showMenu} setShowMenu={setShowMenu}></MenuLateral>;
+	const menu = <MenuLateral></MenuLateral>;
 
 	// console.log(showMenu);
 	return (
-		<SideMenu isOpen={showMenu} menu={menu}>
-			<View style={styles.containerPrin}>
-				{/* Imagen de fondo */}
-				<Image source={require('../assets/background2.png')} style={{ position: 'absolute' }} />
-				{session && (
-					<ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-						<Ionicons
-							name='ios-menu'
-							color='white'
-							size={30}
-							style={{ marginHorizontal: 15, marginVertical: 5, alignSelf: 'flex-start' }}
-							onPress={() => {
-								// alert('menu lateral');
-								setShowMenu(true);
-							}}
-						></Ionicons>
-						{/* Container de SALDO de la cuenta */}
-						<View style={styles.saldoContainer}>
-							<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-								<Text style={styles.text_saldoCuenta}> $ 1.587</Text>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Editar perfil');
-									}}
-								>
-									<Ionicons name='md-person' color='white' size={38} style={styles.avatar}></Ionicons>
-								</TouchableOpacity>
-							</View>
-						</View>
-						{/* scrollview HORIZONTAL de balances de cuentas */}
-						<View
-							style={{
-								maxHeight: deviceHeight * 0.4,
-								minHeight: 200,
-								marginVertical: 0,
-								// backgroundColor: 'blue',
-							}}
-						>
-							<ScrollView
-								horizontal={true}
-								decelerationRate={0}
-								snapToInterval={deviceWidth} //your element width
-								snapToAlignment={'center'}
-								showsHorizontalScrollIndicator={false}
-								contentContainerStyle={styles.balance_horizontalScrollview}
-							>
-								{/* Container de BALANCE de la cuenta */}
-								<View style={styles.balanceContainer}>
-									<Text style={styles.textTitle}>Balance</Text>
-									<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-										<View style={{ alignItems: 'center' }}>
-											<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
-											<Text style={styles.text_ingresos}>$ 1.587</Text>
-										</View>
-										{/* Separador Vertical */}
-										<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
-										<View style={{ alignItems: 'center' }}>
-											<Text style={styles.text_ingresosEgresos}> Egresos</Text>
-											<Text style={styles.text_egresos}>$ 20.319</Text>
-										</View>
-									</View>
-									{/* Separador Vertical */}
-									<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
-									<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-									<TouchableOpacity
-										style={{ alignItems: 'flex-end', marginTop: 0 }}
-										onPress={() => {
-											alert('Ver el detalle');
-										}}
-									>
-										<Text style={styles.text_link}>Ver el detalle</Text>
-									</TouchableOpacity>
-								</View>
-
-								{/* Container de BALANCE de la cuenta */}
-								<View style={styles.balanceContainer}>
-									<Text style={styles.textTitle}>Balance</Text>
-									<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-										<View style={{ alignItems: 'center' }}>
-											<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
-											<Text style={styles.text_ingresos}>$ 1.587</Text>
-										</View>
-										{/* Separador Vertical */}
-										<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
-										<View style={{ alignItems: 'center' }}>
-											<Text style={styles.text_ingresosEgresos}> Egresos</Text>
-											<Text style={styles.text_egresos}>$ 20.319</Text>
-										</View>
-									</View>
-									{/* Separador Vertical */}
-									<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-									<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-									<TouchableOpacity
-										style={{ alignItems: 'flex-end', marginTop: 0 }}
-										onPress={() => {
-											alert('Ver el detalle');
-										}}
-									>
-										<Text style={styles.text_link}>Ver el detalle</Text>
-									</TouchableOpacity>
-								</View>
-
-								{/* Container de BALANCE de la cuenta */}
-								<View style={styles.balanceContainer}>
-									<Text style={styles.textTitle}>Balance</Text>
-									<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-										<View style={{ alignItems: 'center' }}>
-											<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
-											<Text style={styles.text_ingresos}>$ 1.587</Text>
-										</View>
-										{/* Separador Vertical */}
-										<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
-										<View style={{ alignItems: 'center' }}>
-											<Text style={styles.text_ingresosEgresos}> Egresos</Text>
-											<Text style={styles.text_egresos}>$ 20.319</Text>
-										</View>
-									</View>
-									{/* Separador Vertical */}
-									<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-									<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-									<TouchableOpacity
-										style={{ alignItems: 'flex-end', marginTop: 0 }}
-										onPress={() => {
-											alert('Ver el detalle');
-										}}
-									>
-										<Text style={styles.text_link}>Ver el detalle</Text>
-									</TouchableOpacity>
-								</View>
-							</ScrollView>
-						</View>
-
-						{/* ACCIONES */}
-						<View style={styles.accionesContainer}>
-							<Text style={styles.textTitle}>Acciones</Text>
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Recargar dinero');
-									}}
-									style={{ width: '30%' }}
-								>
-									<View style={{ alignItems: 'center' }}>
-										<View style={styles.mainActionIconContainer}>
-											<Ionicons name='ios-wallet' color='indigo' size={35}></Ionicons>
-										</View>
-										<Text style={styles.text_acciones}>Recargar Dinero</Text>
-									</View>
-								</TouchableOpacity>
-
-								<TouchableOpacity
-									onPress={() => {
-										alert('Mandar dinero');
-									}}
-									style={{ width: '30%' }}
-								>
-									<View style={{ alignItems: 'center' }}>
-										<View style={styles.mainActionIconContainer}>
-											<Ionicons name='ios-swap' color='indigo' size={35}></Ionicons>
-										</View>
-										<Text style={styles.text_acciones}>Mandar Dinero</Text>
-									</View>
-								</TouchableOpacity>
-								<TouchableOpacity
-									onPress={() => {
-										alert('Pagar');
-									}}
-									style={{ width: '30%' }}
-								>
-									<View style={{ alignItems: 'center' }}>
-										<View style={styles.mainActionIconContainer}>
-											<Ionicons name='ios-cart' color='indigo' size={35}></Ionicons>
-										</View>
-										<Text style={styles.text_acciones}>Pagar</Text>
-									</View>
-								</TouchableOpacity>
-							</View>
+		<View style={styles.containerPrin}>
+			{/* Imagen de fondo */}
+			<Image source={require('../assets/background2.png')} style={{ position: 'absolute' }} />
+			{session && (
+				<ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+					<Ionicons
+						name='ios-menu'
+						color='white'
+						size={30}
+						style={{ marginHorizontal: 15, marginVertical: 5, alignSelf: 'flex-start' }}
+						onPress={() => {
+							alert('menu lateral');
+						}}
+					></Ionicons>
+					{/* Container de SALDO de la cuenta */}
+					<View style={styles.saldoContainer}>
+						<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
+						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+							<Text style={styles.text_saldoCuenta}> $ 1.587</Text>
 							<TouchableOpacity
-								style={{ alignItems: 'flex-end', alignSelf: 'flex-end', marginTop: 10, paddingVertical: 10, marginRight: 5, maxWidth: '50%' }}
 								onPress={() => {
-									alert('Ver todas las acciones');
+									alert('Editar perfil');
 								}}
 							>
-								<Text style={styles.text_link}>Ver todas las acciones</Text>
+								<Ionicons name='md-person' color='white' size={38} style={styles.avatar}></Ionicons>
 							</TouchableOpacity>
 						</View>
-
-						{/* Container de ULTIMOS MOVIMIENTOS de la cuenta */}
-						<View style={{ marginVertical: 30 }}>
-							<View style={styles.ultimosMovimientosContainer}>
-								<Text style={styles.textTitle_ultimosMovimientos}>Úlitmos movimientos</Text>
-
-								{/* fila de ULTIMO MOVIMIENTO */}
-								<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-									<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-										<View style={styles.shopBrandLogosContainer}>
-											<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-										</View>
-										<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-											<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-											<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-										</View>
-									</View>
+					</View>
+					{/* scrollview HORIZONTAL de balances de cuentas */}
+					<View
+						style={{
+							maxHeight: deviceHeight * 0.4,
+							minHeight: 200,
+							marginVertical: 0,
+							// backgroundColor: 'blue',
+						}}
+					>
+						<ScrollView
+							horizontal={true}
+							decelerationRate={0}
+							snapToInterval={deviceWidth} //your element width
+							snapToAlignment={'center'}
+							showsHorizontalScrollIndicator={false}
+							contentContainerStyle={styles.balance_horizontalScrollview}
+						>
+							{/* Container de BALANCE de la cuenta */}
+							<View style={styles.balanceContainer}>
+								<Text style={styles.textTitle}>Balance</Text>
+								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
 									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosUltimosMovimientos}> $ 415, 00</Text>
+										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
+										<Text style={styles.text_ingresos}>$ 1.587</Text>
+									</View>
+									{/* Separador Vertical */}
+									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
+										<Text style={styles.text_egresos}>$ 20.319</Text>
 									</View>
 								</View>
-								{/* Separador Horizontal */}
-								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-
-								{/* fila de ULTIMO MOVIMIENTO */}
-								<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-									<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-										<View style={styles.shopBrandLogosContainer}>
-											<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-										</View>
-										<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-											<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-											<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-										</View>
-									</View>
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosUltimosMovimientos}> $ 174.319, 21</Text>
-									</View>
-								</View>
-								{/* Separador Horizontal */}
-								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-
-								{/* fila de ULTIMO MOVIMIENTO */}
-								<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-									<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-										<View style={styles.shopBrandLogosContainer}>
-											<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-										</View>
-										<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-											<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-											<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-										</View>
-									</View>
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_egresosUltimosMovimientos}> - $ 4.821, 94</Text>
-									</View>
-								</View>
-								{/* Separador Horizontal */}
-								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-
-								{/* fila de ULTIMO MOVIMIENTO */}
-								<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-									<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-										<View style={styles.shopBrandLogosContainer}>
-											<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-										</View>
-										<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-											<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-											<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-										</View>
-									</View>
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_egresosUltimosMovimientos}> - $ 12.127, 00</Text>
-									</View>
-								</View>
-								{/* Separador Horizontal */}
-								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-
-								{/* fila de ULTIMO MOVIMIENTO */}
-								<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-									<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-										<View style={styles.shopBrandLogosContainer}>
-											<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-										</View>
-										<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-											<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-											<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-										</View>
-									</View>
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_egresosUltimosMovimientos}> - $ 17, 53</Text>
-									</View>
-								</View>
+								{/* Separador Vertical */}
+								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
+								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
 								<TouchableOpacity
-									style={{ alignItems: 'flex-end', marginTop: 30 }}
+									style={{ alignItems: 'flex-end', marginTop: 0 }}
 									onPress={() => {
-										alert('Ver mas movimientos');
+										alert('Ver el detalle');
 									}}
 								>
-									<Text style={styles.text_link}>Ver mas movimientos</Text>
+									<Text style={styles.text_link}>Ver el detalle</Text>
 								</TouchableOpacity>
 							</View>
+
+							{/* Container de BALANCE de la cuenta */}
+							<View style={styles.balanceContainer}>
+								<Text style={styles.textTitle}>Balance</Text>
+								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
+										<Text style={styles.text_ingresos}>$ 1.587</Text>
+									</View>
+									{/* Separador Vertical */}
+									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
+										<Text style={styles.text_egresos}>$ 20.319</Text>
+									</View>
+								</View>
+								{/* Separador Vertical */}
+								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+								<TouchableOpacity
+									style={{ alignItems: 'flex-end', marginTop: 0 }}
+									onPress={() => {
+										alert('Ver el detalle');
+									}}
+								>
+									<Text style={styles.text_link}>Ver el detalle</Text>
+								</TouchableOpacity>
+							</View>
+
+							{/* Container de BALANCE de la cuenta */}
+							<View style={styles.balanceContainer}>
+								<Text style={styles.textTitle}>Balance</Text>
+								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
+										<Text style={styles.text_ingresos}>$ 1.587</Text>
+									</View>
+									{/* Separador Vertical */}
+									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
+									<View style={{ alignItems: 'center' }}>
+										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
+										<Text style={styles.text_egresos}>$ 20.319</Text>
+									</View>
+								</View>
+								{/* Separador Vertical */}
+								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+								<TouchableOpacity
+									style={{ alignItems: 'flex-end', marginTop: 0 }}
+									onPress={() => {
+										alert('Ver el detalle');
+									}}
+								>
+									<Text style={styles.text_link}>Ver el detalle</Text>
+								</TouchableOpacity>
+							</View>
+						</ScrollView>
+					</View>
+
+					{/* ACCIONES */}
+					<View style={styles.accionesContainer}>
+						<Text style={styles.textTitle}>Acciones</Text>
+						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+							<TouchableOpacity
+								onPress={() => {
+									alert('Recargar dinero');
+								}}
+								style={{ width: '30%' }}
+							>
+								<View style={{ alignItems: 'center' }}>
+									<View style={styles.mainActionIconContainer}>
+										<Ionicons name='ios-wallet' color='indigo' size={35}></Ionicons>
+									</View>
+									<Text style={styles.text_acciones}>Recargar Dinero</Text>
+								</View>
+							</TouchableOpacity>
+
+							<TouchableOpacity
+								onPress={() => {
+									alert('Mandar dinero');
+								}}
+								style={{ width: '30%' }}
+							>
+								<View style={{ alignItems: 'center' }}>
+									<View style={styles.mainActionIconContainer}>
+										<Ionicons name='ios-swap' color='indigo' size={35}></Ionicons>
+									</View>
+									<Text style={styles.text_acciones}>Mandar Dinero</Text>
+								</View>
+							</TouchableOpacity>
+							<TouchableOpacity
+								onPress={() => {
+									alert('Pagar');
+								}}
+								style={{ width: '30%' }}
+							>
+								<View style={{ alignItems: 'center' }}>
+									<View style={styles.mainActionIconContainer}>
+										<Ionicons name='ios-cart' color='indigo' size={35}></Ionicons>
+									</View>
+									<Text style={styles.text_acciones}>Pagar</Text>
+								</View>
+							</TouchableOpacity>
 						</View>
-					</ScrollView>
-				)}
-			</View>
-		</SideMenu>
+						<TouchableOpacity
+							style={{ alignItems: 'flex-end', alignSelf: 'flex-end', marginTop: 10, paddingVertical: 10, marginRight: 5, maxWidth: '50%' }}
+							onPress={() => {
+								alert('Ver todas las acciones');
+							}}
+						>
+							<Text style={styles.text_link}>Ver todas las acciones</Text>
+						</TouchableOpacity>
+					</View>
+
+					{/* Container de ULTIMOS MOVIMIENTOS de la cuenta */}
+					<View style={{ marginVertical: 30 }}>
+						<View style={styles.ultimosMovimientosContainer}>
+							<Text style={styles.textTitle_ultimosMovimientos}>Úlitmos movimientos</Text>
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_ingresosUltimosMovimientos}> $ 415, 00</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_ingresosUltimosMovimientos}> $ 174.319, 21</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_egresosUltimosMovimientos}> - $ 4.821, 94</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_egresosUltimosMovimientos}> - $ 12.127, 00</Text>
+								</View>
+							</View>
+							{/* Separador Horizontal */}
+							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+
+							{/* fila de ULTIMO MOVIMIENTO */}
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+									<View style={styles.shopBrandLogosContainer}>
+										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+									</View>
+									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+									</View>
+								</View>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.text_egresosUltimosMovimientos}> - $ 17, 53</Text>
+								</View>
+							</View>
+							<TouchableOpacity
+								style={{ alignItems: 'flex-end', marginTop: 30 }}
+								onPress={() => {
+									alert('Ver mas movimientos');
+								}}
+							>
+								<Text style={styles.text_link}>Ver mas movimientos</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</ScrollView>
+			)}
+		</View>
 	);
 }
 // <---------------------------- ESTILOS ---------------------------->
