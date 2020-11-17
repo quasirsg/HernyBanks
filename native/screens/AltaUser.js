@@ -45,40 +45,76 @@ const AltaUser = ({
   console.log(stateUser.userUp);
   const userUp = stateUser.userUp;
   const [provinces,setProvinces] =useState([]);
-  const [selectedProvince,setSelectedProvinces] =useState(provinces[0]);
+  const [selectedProvince,setSelectedProvince] =useState('');
+  const [departamentos,setDepartamentos] =useState([]);
+  const [selectedDepartamento,setSelectedDepartamento] =useState(departamentos[0]);
   const [localidades,setLocalidades] =useState([]);
   const [selectedLocalidad,setSelectedLocalidad] =useState(localidades[0]);
+  const [direccion,setDireccion] = useState('')
   //const userId = useSelector(state => state.users[0]._id);
 
   useEffect(()=>{
     getProvinces();
+    
   },[]);
-
-  useEffect(()=>{
-    getLocalidades();
-  },[])
 
   
 
-  let getProvinces=()=>{
-    axios.get('https://apis.datos.gob.ar/georef/api/provincias')
+  
+
+  const getProvinces=()=>{
+    axios.get('https://apis.datos.gob.ar/georef/api/provincias?orden=nombre&max=30')
     .then(res=>{
       setProvinces(res.data.provincias);
+      setSelectedProvince(res.data.provincias[0].nombre);
+      getDepartamentos(res.data.provincias[0].nombre);
     })
   }
 
-  let getLocalidades=(selectedProvince)=>{
-    axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${selectedProvince}&campos=id,nombre&max=5000`)
+  const getDepartamentos=(province)=>{
+    axios.get(`https://apis.datos.gob.ar/georef/api/departamentos?provincia=${province}&max=1000&orden=nombre`)
     .then(res=>{
-      setLocalidades(res.data.municipios);
+      setDepartamentos(res.data.departamentos);
+      setSelectedDepartamento(res.data.departamentos[0].nombre)
+      getLocalidades(province,res.data.departamentos[0].nombre);
     })
   }
+
+  const getLocalidades=(province,departamento)=>{
+    console.log("DEPARTAMENTO",departamento)
+    axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&departamento=${departamento}&max=1000&orden=nombre`)
+    .then(res=>{
+      setLocalidades(res.data.localidades);
+      setSelectedLocalidad(res.data.localidades[0].nombre)
+    })
+  }
+
+  async function handleAddress(add){
+
+    var result=await axios.get(`https://apis.datos.gob.ar/georef/api/calles?provincia=${selectedProvince}&departamento=${selectedDepartamento}&localidad_censal=${selectedLocalidad}&nombre=${add} `)
+    .then(res=>{
+      //console.log('res',res)
+      if(res.data.calles[0]){
+       if(res.data.calles[0].nombre){
+         return true
+       }else{
+         return false
+       }
+    }else{
+        return false
+      }
+    })
+
+    return result
+
+  }
+
 
   return (
     <Background>
     <View style={styles.altauser}> 
       <View>
-        {1 === 0 ? (
+        {Object.keys(userUp).length === 0 ? (
           <View>
             <View>
               <Link to="/RegisterModal">
@@ -99,6 +135,7 @@ const AltaUser = ({
             </Text>
           </View>
         ) : (
+          <ScrollView>
           <Formik
             initialValues={{
               name: "",
@@ -131,7 +168,10 @@ const AltaUser = ({
               address: Yup.string()
                 .min(6, "Debe tener al menos 6 caracteres")
                 .max(50, "Debe tener 50 caracteres o menos")
-                .required("Debes completar este campo"),
+                .required("Debes completar este campo")
+                .test("verifyAddress","Domicilio inexistente",(address)=>{return handleAddress(address)}
+                )
+                ,
               // dob: Yup.string()
               //   .min(4, "Debe tener al menos 4 caracteres")
               //   .max(50, "Debe tener 50 caracteres o menos")
@@ -139,6 +179,8 @@ const AltaUser = ({
             })}
             onSubmit={async (values, action) => {
               action.resetForm();
+              values.address=values.address+', '+selectedProvince+', '+selectedDepartamento+', '+selectedLocalidad
+              //console.log('VALORES SUBMIT',values)
               dispatch(
                 completeUserRegister(values, () => navigation.navigate("Login"))
               );
@@ -205,24 +247,7 @@ const AltaUser = ({
                 )}
 
                 {/*  */}
-                <CustomInput
-                  label="Dirección"
-                  name="address"
-                  onChangeText={handleChange("address")}
-                  value={values.address}
-                  style={styles.input}
-                />
-
-                {values.address.length >= 4 && !errors.address && (
-                  <Icon name="check" size={40} color="green" />
-                )}
-
-                {errors.address && (
-                  <Text style={{ fontSize: 10, color: "red" }}>
-                    {errors.address}
-                  </Text>
-                )}
-                {/*  */}
+              
                 <CustomInput
                   placeholder="Teléfono"
                   name="phone"
@@ -241,13 +266,18 @@ const AltaUser = ({
                   </Text>
                 )}
                 {/*  */}
+
+               
+
+                <Text>Provincias</Text>
                 {provinces && (
                   <Picker 
                   style={styles.picker}
                   selectedValue={selectedProvince} 
-                  onValueChange={(itemValue,itemIndex) => {setSelectedProvinces(itemValue);
-                  console.log(selectedProvince);
-                  getLocalidades(selectedProvince);
+                  onValueChange={(itemValue,itemIndex) => {
+                    setSelectedProvince(itemValue);
+                  console.log(itemValue);
+                  getDepartamentos(itemValue);
                   }}>
                     {provinces &&
                       provinces.map((province, i) => {
@@ -261,6 +291,28 @@ const AltaUser = ({
                       })}
                   </Picker>
                 )}
+                <Text>Departamentos</Text>
+                {departamentos && (
+                  <Picker 
+                  style={styles.picker}
+                  selectedValue={selectedDepartamento} 
+                  onValueChange={(itemValue,itemIndex) => {
+                    setSelectedDepartamento(itemValue) 
+                    getLocalidades(selectedProvince,itemValue);
+                  }}>
+                    {departamentos &&
+                      departamentos.map((departamento, i) => {
+                        return (
+                          <Picker.Item
+                            key={i}
+                            label={departamento.nombre}
+                            value={departamento.nombre}
+                          ></Picker.Item>
+                        );
+                      })}
+                  </Picker>
+                )}
+                <Text>localidades</Text>
                 {localidades && (
                   <Picker 
                   style={styles.picker}
@@ -299,6 +351,25 @@ const AltaUser = ({
                 )} */}
                 {/*  */}
 
+                <CustomInput
+                  label="Dirección"
+                  name="address"
+                  onChangeText={handleChange("address")}
+                  value={values.address}
+                  style={styles.input}
+                />
+
+                {values.address.length >= 4 && !errors.address && (
+                  <Icon name="check" size={40} color="green" />
+                )}
+
+                {errors.address && (
+                  <Text style={{ fontSize: 10, color: "red" }}>
+                    {errors.address}
+                  </Text>
+                )}
+                {/*  */}
+
                 <Button
                   mode="contained"
                   secureTextEntry={true}
@@ -311,6 +382,7 @@ const AltaUser = ({
               </View>
             )}
           </Formik>
+          </ScrollView>
         )}
       </View>
      </View>
@@ -329,9 +401,9 @@ const styles = StyleSheet.create({
     color: 'darkorchid',
     marginTop: 0
   },
-  picker: {
+  /* picker: {
     backgroundColor: 'black',
-  },
+  }, */
   altauser: {
     width: vw(60),
 		height: vh(100),

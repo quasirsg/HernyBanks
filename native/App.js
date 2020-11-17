@@ -21,7 +21,7 @@ const Stack = createStackNavigator(); //contiene la navegacion
 function MainStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="AltaUSer" component={AltaUSer} />
+      
       <Stack.Screen
         name="Welcome"
         component={Welcome}
@@ -51,7 +51,7 @@ function MainStack() {
       />
 
       <Stack.Screen name="SendMonyScreen" component={SendMonyScreen} />
-
+      <Stack.Screen name="AltaUSer" component={AltaUSer} />
       <Stack.Screen name="Transactions" component={Transactions} />
       <Stack.Screen name="RegisterModal" component={RegisterModal} />
       <Stack.Screen name="FAQ" component={FAQ} />
