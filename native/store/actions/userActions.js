@@ -1,62 +1,102 @@
-import axios from 'axios';
-import { CREATE_USER, LOGIN_USER, UPDATE_USER } from '../constans/constans';
-import  {BACK_URL}  from '../../env';
-
+import axios from "axios";
+import { CREATE_USER, LOGIN_USER, UPDATE_USER } from "../constans/constans";
+import { BACK_URL } from "../../env";
+import Toast from "react-native-toast-message";
 // const {URL} = BACK_URL
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para crear usuario (Desde Register Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
-export function createUser(userData,onSuccess) {
-	console.log(URL)
+export function createUser(userData, onSuccess) {
 
-	const dataUser = {
-		username: userData.username,
-		email: userData.email,
-		password: userData.password,
-	};
-	return (dispatch) => {
-		console.log(BACK_URL)
+  const dataUser = {
+    username: userData.username,
+    email: userData.email,
+    dni: userData.dni,
+    password: userData.password,
+  };
+  return (dispatch) => {
+    console.log(BACK_URL);
 
-		axios
-			.post(`${BACK_URL}/api/users/create`, dataUser)
-			.then((res) => {
-				console.log(res.data);
-				dispatch({
-					type: CREATE_USER,
-					users: res.data || {},
-					createUserSuccess: true,
-				});
-				onSuccess();
-			})
-			.catch((error) => {
-				console.log('Api call error');
-				alert(error.message);
-			});
-	};
+    axios
+      .post(`${BACK_URL}/api/users/create`, dataUser)
+      .then((res) => {
+        console.log(res.data);
+        dispatch({
+          type: CREATE_USER,
+          users: res.data || {},
+          createUserSuccess: true,
+        });
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Registro exitoso',
+          text2: 'Por favor verifique su correo',
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        setTimeout(function () {
+          onSuccess();
+        }, 3000);
+      })
+      .catch((error) => {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error al registrarse',
+          text2: `${error.message}`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      });
+  };
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Acción para completar registro usuario(Desde AltaUser Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-export function completeUserRegister(userData,onSuccess) {
-	console.log(userData);
-	const { name, lastname, dni, phone, address, dob, _id } = userData;
-	const dataUser = { name, lastname, dni, phone, address, dob, _id };
+export function completeUserRegister(userData, onSuccess) {
+  console.log(userData);
+  const { name, lastname, dni, phone, address, dob, _id } = userData;
+  const dataUser = { name, lastname, dni, phone, address, dob, _id };
 
-	return (dispatch) => {
-		axios
-			.put(`${BACK_URL}/api/users/update`, dataUser)
-			.then((res) => {
-				console.log('User updated', res.data);
-				dispatch({ type: UPDATE_USER, users: res.data });
-				onSuccess();
-			})
-			.catch((error) => {
-				console.log('Error when updating user');
-				alert(error.message);
-			});
-	};
+  return (dispatch) => {
+    axios
+      .put(`${BACK_URL}/api/users/update`, dataUser)
+      .then((res) => {
+        console.log("User updated", res.data);
+        dispatch({ type: UPDATE_USER, users: res.data });
+        Toast.show({
+          type: 'success',
+          position: 'top',
+          text1: 'Registro exitoso',
+          text2: 'Por favor verifique su correo',
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+        setTimeout(function () {
+          onSuccess();
+        }, 3000);
+      })
+      .catch((error) => {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error al registrarse',
+          text2: `${error.message}`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      });
+  };
 }
 
 // export const loginUser = (email, password) => (dispatch) => {
