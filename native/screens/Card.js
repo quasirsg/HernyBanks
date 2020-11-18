@@ -57,7 +57,7 @@ const Card = () => {
                 returnKeyType="done"
                 // onChangeText={handleChange("password")}
                 style={styles.input}
-              />
+                />
         <TouchableOpacity
           style={styles.buttonStyle}
           onPress={handlerSubmit}
@@ -78,9 +78,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         justifyContent: 'center',
-        alignItems: 'center',
         textAlign: 'center',
-        paddingVertical: 50,
+        paddingVertical: 100,
       },
     label: {
       color: "black",
@@ -97,7 +96,8 @@ const styles = StyleSheet.create({
         borderColor: '#51D8C7',
         alignItems: 'center',
         borderRadius: 5,
-        marginTop: 30,
+        marginTop: 10,
+        marginBottom:100,
         padding: 10,
         width:"100%"
       },
@@ -110,6 +110,14 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: "white",
         borderColor: "#fff",
+      },
+      textInputStyle: {
+        flexDirection: 'row',
+        height: 40,
+        width:"70%",
+        margin: "auto",
+        justifyContent: 'center',
+        textAlign: 'center',
       },
 
   });
