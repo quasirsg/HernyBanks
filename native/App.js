@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; //instalar
 import { createStackNavigator } from '@react-navigation/stack'; //instalar
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import CustomDrawerContent from './screens/CustomDrawerContent';
 import Register from './screens/Register';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { st } from './store/store';
@@ -16,8 +17,8 @@ import CodeVerification from './screens/CodeVerification';
 import AltaUser from './screens/AltaUser';
 import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
-import MenuLateral from './screens/MenuLateral';
 import Recharge from './screens/Recharge';
+import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,15 +26,18 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const Stack = createStackNavigator(); //contiene la navegacion
 const Drawer = createDrawerNavigator(); // Menu lateral
 
+// <--------------- ROOT Stack (contiene a LoginStack y MainStack ) --------------->
 function RootStack() {
 	return (
-		<Stack.Navigator initialRouteName='Login'>
+		<Stack.Navigator initialRouteName='Main'>
 			<Stack.Screen name='Login' component={LoginStack} options={{ headerShown: false }} />
-			<Stack.Screen name='Mains' component={MainStack} options={{ headerShown: false }} />
+			<Stack.Screen name='Main' component={MainStack} options={{ headerShown: false }} />
 		</Stack.Navigator>
 	);
 }
+// <--------------- ROOT Stack (contiene a LoginStack y MainStack ) --------------->
 
+// <--------------------- LOGIN Stack --------------------->
 function LoginStack() {
 	return (
 		<Stack.Navigator
@@ -47,20 +51,25 @@ function LoginStack() {
 			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
 			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
 			<Stack.Screen name='AltaUser' component={AltaUser} />
+			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: true }} />
 		</Stack.Navigator>
 	);
 }
+// <--------------------- LOGIN Stack --------------------->
 
+// <--------------------- MAIN Stack --------------------->
 function MainStack() {
 	return (
 		<Drawer.Navigator
 			initialRouteName='PosConsolidada'
+			drawerContent={(props) => <CustomDrawerContent {...props} />}
 			screenOptions={{
 				headerShown: true,
 				headerTitleAlign: 'center',
 				headerStyle: { backgroundColor: 'indigo', shadowColor: 'indigo', elevation: 0 },
 				headerTitleStyle: { color: 'white', fontSize: 16 },
-				headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
+				// headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
+				// headerLeft: () => <Ionicons name='ios-menu' color='white' size={30} style={{ marginHorizontal: 15 }} onPress={() => props.navigation.openDrawer()}></Ionicons>,
 			}}
 		>
 			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} />
@@ -72,7 +81,9 @@ function MainStack() {
 		</Drawer.Navigator>
 	);
 }
+// <--------------------- MAIN Stack --------------------->
 
+// <--------------------- APP --------------------->
 export default function App() {
 	return (
 		<Provider store={st}>
@@ -83,6 +94,9 @@ export default function App() {
 		</Provider>
 	);
 }
+// <--------------------- APP --------------------->
+
+// <--------------------- ESTILOS --------------------->
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,

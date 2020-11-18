@@ -10,13 +10,6 @@ import MenuLateral from './MenuLateral';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
-// Background Image
-const background1 = require('../assets/background1.png');
-
-// BORRAR
-const session = true;
-// BORRAR
-
 export default function PosConsolidada({ navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
@@ -40,20 +33,11 @@ export default function PosConsolidada({ navigation }) {
 			<Image source={require('../assets/background2.png')} style={{ position: 'absolute' }} />
 			{session && (
 				<ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-					<Ionicons
-						name='ios-menu'
-						color='white'
-						size={30}
-						style={{ marginHorizontal: 15, marginVertical: 5, alignSelf: 'flex-start' }}
-						onPress={() => {
-							alert('menu lateral');
-						}}
-					></Ionicons>
 					{/* Container de SALDO de la cuenta */}
 					<View style={styles.saldoContainer}>
 						<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
 						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-							<Text style={styles.text_saldoCuenta}> $ {bal}</Text>
+							<Text style={styles.text_saldoCuenta}> $ {bal || 0}</Text>
 							<TouchableOpacity
 								onPress={() => {
 									alert('Editar perfil');
@@ -192,7 +176,7 @@ export default function PosConsolidada({ navigation }) {
 							>
 								<View style={{ alignItems: 'center' }}>
 									<View style={styles.mainActionIconContainer}>
-										<Ionicons name='ios-swap' color='indigo' size={35}></Ionicons>
+										<Ionicons name='ios-send' color='indigo' size={35}></Ionicons>
 									</View>
 									<Text style={styles.text_acciones}>Mandar Dinero</Text>
 								</View>

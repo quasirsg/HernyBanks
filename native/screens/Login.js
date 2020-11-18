@@ -37,7 +37,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
 						user.email = user.email.toLowerCase();
 
 						action.resetForm();
-						dispatch(loguinUser(user.email, user.password, () => navigation.navigate('Mains')));
+						dispatch(loguinUser(user.email, user.password, () => navigation.navigate('Main')));
 
 						// navigation.navigate("RegisterModal");
 					}}
