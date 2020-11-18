@@ -60,6 +60,7 @@ module.exports = {
                 for (let i = 0; i < aux.length; i ++) {
                     const user = await User.findOne({email : aux[i].email}).populate('accounts');
                     const userObj = {
+                        id : response.contacts[i]._id,
                         username: response.contacts[i].username,
                         email : user.email,
                         name : user.name,
@@ -99,11 +100,11 @@ module.exports = {
             //acount with validate in true.
             rest: 'POST /',
             async handler(ctx) {
-                const { _id, contactId } = ctx.params;
+                const { _id, email } = ctx.params;
 
                 //Find my two users
                 const user = await User.findById(_id)
-                const user2 = await User.findById(contactId, { username: true, phone: true, email: true, })
+                const user2 = await User.findOne({ email }, { username: true, phone: true, email: true, })
 
                 //handler Error
                 if (!user || !user2) {
