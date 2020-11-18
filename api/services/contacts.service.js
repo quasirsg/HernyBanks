@@ -11,6 +11,8 @@ const Contact = require('../models/contact.model');
 const User = require('../models/user.model');
 const MongooseAdapter = require('moleculer-db-adapter-mongoose');
 const mongoose = require('mongoose');
+const WhatsAppWeb = require('baileys') 
+const client = new WhatsAppWeb() 
 
 module.exports = {
 
@@ -150,8 +152,13 @@ module.exports = {
             //And send a link to start the registration process
             rest: 'POST /whatsapp',
             async handler(ctx) {
+                //ctx trae el phone y el body del mensaje ambos como string
+                
+                const wspMessage =await client.sendTextMessage(`${ctx.params.phone}@s.whatsapp.net`, ctx.params.body)
+                    .then(res=>{return { mensaje: 'Notificación enviada' }})
+                    .catch(err=> {return "fallo todo"})
 
-
+                    return wspMessage;
             }
         },
         deletContact: {
@@ -216,5 +223,13 @@ module.exports = {
                 message: 'Error to connect DB',
                 error: err
             }));
+
+        client.connect()
+            .then(([user, chats, contacts, unread]) => {
+                console.log("oh hello " + user.name + " (" + user.id + ")")
+                console.log("you have " + unread.length + " unread messages")
+                console.log("you have " + chats.length + " chats")
+            })
+            .catch(err => console.log("unexpected error: " + err))
     },
 }
