@@ -10,16 +10,40 @@ import CustomInput from '../../components/CustomInput';
 
 const { width, height } = Dimensions.get('window');
 
-const SummaryItem = ({ keyName, value }) => {
+const ModalSelector = ({ show, control, setter }) => {
     return (
-        <View style={styles.summary}>
-            <Text style={styles.summaryKey}>{keyName}: </Text>
-            <Text style={styles.summaryValue}>{value}</Text>
+
+        <View>
+            <Modal
+                visible={show}
+                animated
+                animationType='fade'
+                transparent={true}
+            >
+                <View style={styles.modalContent}>
+                    <TouchableOpacity onPress={() => {setter({selected: 'pesos'}); control(false)}}>
+                        <View style={styles.item}>
+                            <Text style={styles.itemText}>Cuenta en pesos</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {setter({selected: 'dólares'}); control(false)}}>
+                        <View style={styles.item}>
+                            <Text style={styles.itemText}>Cuenta en dólares</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
         </View>
     )
 }
 
 export default function SelectContact({ navigation }) {
+
+    const [showModal, setShowModal] = React.useState(false);
+    const [currency, setCurrency] = React.useState({
+        selected: 'pesos'
+    })
 
     const [currentBalance, setCurrentBalance] = React.useState({
         pesos: 3000000,
@@ -29,6 +53,7 @@ export default function SelectContact({ navigation }) {
     return (
         <ScrollView backgroundColor={'white'}>
             <View>
+
                 <View style={styles.header}>
 
                     <Link to="/SelectContact">
@@ -45,7 +70,6 @@ export default function SelectContact({ navigation }) {
 
                     <Text style={styles.instruction}> Por último completa esta información </Text>
                 </View>
-
 
                 <View style={styles.card}>
 
@@ -65,50 +89,66 @@ export default function SelectContact({ navigation }) {
                     </View>
                 </View>
 
-                <Text style={styles.from}> Elije desde dónde quieres transferir</Text>
+                <View style={styles.main}>
 
-                <View style={{alignItems: 'center'}}>
-                    <Formik
-                        initialValues={{
-                            ammount: '',
-                            type: '',
-                        }}
+                    <Text style={styles.from}> Selecciona desde dónde quieres transferir</Text>
 
-                        onSubmit={(values, action) => {
-                            action.resetForm();
-                            dispatch(createUser(values, () => navigation.navigate('CodeVerification')));
-                        }}
-                    >
-                        <View style={styles.inputContainer}>
-                            <CustomInput
-                                label='Selección de cuenta'
-                                name='username'
-                                style={styles.input}
-                            />
+                    <View style={styles.formContainer}>
 
-                            <CustomInput
-                                label='Monto'
-                                name='ammount'
-                                keyboardType={'phone-pad'}
-                                style={styles.input}
-                            />
-                        </View>
-                    </Formik>
+                        <Formik
+                            initialValues={{
+                                ammount: '',
+                                type: '',
+                            }}
 
-                    <Button
-                        mode="contained"
-                        secureTextEntry={true}
-                        style={styles.button}
-                    //onPress={() => navigation.navigate('FinishSend')}
-                    >
-                        Enviar
-                    </Button>
+                            onSubmit={(values, action) => {
+                                action.resetForm();
+                                dispatch(createUser(values, () => navigation.navigate('CodeVerification')));
+                            }}
+                        >
+                            <View style={styles.main}>
 
+                                <View style={styles.summary}>
+                                    <TouchableOpacity onPress={() => setShowModal(true)}>
+                                        <View style={styles.modalshut}>
+                                            <Text style={{ textAlign: 'center' }}>Desde mi cuenta en {currency.selected}</Text>
+                                        </View>
+                                    </TouchableOpacity>
+
+                                    <CustomInput
+                                        label='Valor'
+                                        name='ammount'
+                                        keyboardType={'phone-pad'}
+                                        style={styles.input}
+                                    />
+
+                                    <CustomInput
+                                        label='Descripción'
+                                        name='description'
+                                        style={styles.input}
+                                    />
+
+                                    <Text style={styles.description}>Se trasferirán x valor/moneda a tu contacto x</Text>
+                                    <Text style={styles.foot}>Presiona enviar para finalizar la transacción</Text>
+                                </View>
+                                <Button
+                                    mode="contained"
+                                    secureTextEntry={true}
+                                    style={styles.button}
+                                //onPress={() => navigation.navigate('FinishSend')}
+                                > Enviar
+                                </Button>
+
+                            </View>
+                        </Formik>
+
+                        <ModalSelector show={showModal} control={setShowModal} setter={setCurrency}/>
+
+                    </View>
                 </View>
 
             </View>
         </ScrollView>
-
     )
 }
 
@@ -198,12 +238,9 @@ const styles = StyleSheet.create({
     },
     from: {
         color: theme.colors.secondary,
-        textAlign: 'center'
-    },
-    inputContainer: {
-        alignItems: 'center',
-        marginLeft: 15,
-        marginRight: 15,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        padding: 7
     },
     button: {
         marginTop: 20,
@@ -213,6 +250,81 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.primary,
         width: width * .5,
     },
+    main: {
+        flex: 1,
+        alignItems: 'center',
+    },
+    formContainer: {
+        width: '80%'
+    },
+    modal: {
+        flex: 1,
+        backgroundColor: 'red'
+    },
+    modalContent: {
+        marginLeft: width * .05,
+        marginRight: width * .05,
+        marginTop: height * .40,
+        height: height * .2,
+        width: width * .9,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: .3,
+        borderRadius: 5
+    },
+    ammountSelect: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '90%',
+    },
+    inputAmmount: {
+        width: width * .7,
+        height: 40,
+        backgroundColor: 'white',
+    },
+    modalshut: {
+        marginTop: 5,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 12,
+        paddingRight: 12,
+        borderWidth: .3,
+        borderRadius: 5,
+        borderColor: '#669',
+    },
+    summary: {
+        marginTop: 5,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 12,
+        paddingRight: 12,
+        borderWidth: .3,
+        borderRadius: 5,
+        borderColor: theme.colors.secondary,
+        width: width * .95,
+        height: height * .32
+    },
+    item: {
+        backgroundColor: 'transparent', 
+        width: width*.9,
+        marginTop: 10,
+    },
+    itemText: {
+        fontSize: 20, 
+        textAlign: 'center',
+        color: theme.colors.secondary,
+    },
+    description: {
+        paddingTop: 20,
+        color: theme.colors.secondary,
+        textAlign: 'center'
+    },
+    foot: {
+        color: theme.colors.secondary,
+        textAlign: 'center'
+    }
 
 })
 
