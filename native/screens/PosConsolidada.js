@@ -45,11 +45,6 @@ export default function PosConsolidada({ navigation }) {
 	}, []);
 	console.log('****Cuentas****');
 	console.log(accounts);
-	const logoutHandler = () => {
-		dispatch(logoutUser());
-		navigation.navigate('welcome');
-		return;
-	};
 
 	return (
 		<View style={styles.containerPrin}>
@@ -62,32 +57,56 @@ export default function PosConsolidada({ navigation }) {
 							marginVertical: 0,
 							marginTop: 10,
 							// backgroundColor: 'blue',
+							paddingVertical: accounts.length > 1 ? 0 : 20, // Pone padding solo si hay mas de una cuenta
 						}}
 					>
-						{accounts.map((cuenta, key) => {
-							return (
-								<View key={key}>
-									{/* Container de BALANCE de la cuenta */}
-									<View style={styles.balanceContainer}>
-										<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
-										<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-											<Text style={styles.text_saldoCuenta2}> $ {cuenta.balance || 0}</Text>
+						{accounts.length > 0 ? (
+							accounts.map((cuenta, key) => {
+								return (
+									<View key={key}>
+										{/* Container de BALANCE de la cuenta */}
+										<View style={styles.balanceContainer}>
+											<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
+											<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+												<Text style={styles.text_saldoCuenta2}> $ {cuenta.balance || 0}</Text>
+											</View>
+											{/* Separador Vertical */}
+											<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
+											<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+											<TouchableOpacity
+												style={{ alignItems: 'flex-end', marginTop: 0 }}
+												onPress={() => {
+													alert('Ver el detalle');
+												}}
+											>
+												<Text style={styles.text_link}>Ver el detalle</Text>
+											</TouchableOpacity>
 										</View>
-										{/* Separador Vertical */}
-										<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
-										<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-										<TouchableOpacity
-											style={{ alignItems: 'flex-end', marginTop: 0 }}
-											onPress={() => {
-												alert('Ver el detalle');
-											}}
-										>
-											<Text style={styles.text_link}>Ver el detalle</Text>
-										</TouchableOpacity>
 									</View>
+								);
+							})
+						) : (
+							<View>
+								{/* Container de BALANCE de la cuenta */}
+								<View style={styles.balanceContainer}>
+									<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
+									<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+										<Text style={styles.text_saldoCuenta2}> $ 1234560</Text>
+									</View>
+									{/* Separador Vertical */}
+									<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
+									<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+									<TouchableOpacity
+										style={{ alignItems: 'flex-end', marginTop: 0 }}
+										onPress={() => {
+											alert('Ver el detalle');
+										}}
+									>
+										<Text style={styles.text_link}>Ver el detalle</Text>
+									</TouchableOpacity>
 								</View>
-							);
-						})}
+							</View>
+						)}
 					</View>
 
 					{/* ACCIONES */}
