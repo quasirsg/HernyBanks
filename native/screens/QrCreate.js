@@ -4,6 +4,7 @@
 // import React in our code
 import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {rechargeByQr} from '../store/actions/acountActions'
 // import all the components we are going to use
 import {
   SafeAreaView,
@@ -15,16 +16,25 @@ import {
 } from 'react-native';
 import { theme } from '../core/theme';
 import QRCode from 'react-native-qrcode-svg';
+import { set } from 'react-native-reanimated';
 
 const Qrnative = () => {
+  const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
-  const cvuV = session.cvu
+  const accounts = useSelector((state) => state.acoount.account);
+  const account = accounts[0]
+  const cvuV = account && account.cvu
   const [inputText, setInputText] = useState({
     cvu: cvuV,
-    monto : '',
-    type: 'codigo QR'
+    amount : '',
   });
   const [qrvalue, setQrvalue] = useState('');
+
+  const handlerSubmit = () => {
+    dispatch(rechargeByQr(inputText))
+    setQrvalue(inputText)
+    return
+  }
 
 
   console.log(inputText);
@@ -65,14 +75,14 @@ const Qrnative = () => {
         <TextInput
           style={styles.textInputStyle}
           onChangeText={
-            (text) => setInputText({...inputText, monto:text})
+            (text) => setInputText({...inputText, amount:text})
           }
           placeholder="Enter Any Value"
           value={inputText.monto}
         />
         <TouchableOpacity
           style={styles.buttonStyle}
-          onPress={() => setQrvalue(inputText)}>
+          onPress={handlerSubmit}>
           <Text style={styles.buttonTextStyle}>
             Generar codigo
           </Text>

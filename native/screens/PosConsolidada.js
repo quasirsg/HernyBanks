@@ -20,6 +20,24 @@ export default function PosConsolidada({ navigation }) {
 	const accounts = useSelector((state) => state.acoount.account);
 	const bal = session.balance;
 	const id = session._id;
+	// const bal1 = accounts ? accounts[0].balance : 0
+	// const bal2 = accounts ? accounts[1].balance : 0
+	useEffect(() => {
+		dispatch(getAccount(id ? id : null));
+		dispatch(verifySession());
+	}, []);
+	console.log('****Cuentas****');
+	const accountP = accounts[0];
+	const accountD = accounts[1];
+	const balancP = accountP && accountP.balance;
+	const balancD = accountD && accountD.balance;
+	console.log(accounts);
+
+	const logoutHandler = () => {
+		dispatch(logoutUser());
+		navigation.navigate('welcome');
+		return;
+	};
 
 	useEffect(() => {
 		dispatch(getAccount(id ? id : null));
@@ -46,14 +64,14 @@ export default function PosConsolidada({ navigation }) {
 							// backgroundColor: 'blue',
 						}}
 					>
-						{arrayDePrueba.map((cuenta, key) => {
+						{accounts.map((cuenta, key) => {
 							return (
 								<View key={key}>
 									{/* Container de BALANCE de la cuenta */}
 									<View style={styles.balanceContainer}>
 										<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
 										<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-											<Text style={styles.text_saldoCuenta2}> $ {bal || 0}</Text>
+											<Text style={styles.text_saldoCuenta2}> $ {cuenta.balance || 0}</Text>
 										</View>
 										{/* Separador Vertical */}
 										<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
