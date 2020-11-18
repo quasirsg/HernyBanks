@@ -7,8 +7,7 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
-  FlatList,
-  Dimensions
+  FlatList
   
 } from "react-native";
 import { Formik, Form, Field } from "formik";
@@ -29,8 +28,6 @@ import { theme } from "../core/theme";
 import Icon from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
-
-const { height } = Dimensions.get('window');
 
 const AltaUser = ({
   id,
@@ -53,9 +50,7 @@ const AltaUser = ({
   const [selectedDepartamento,setSelectedDepartamento] =useState(departamentos[0]);
   const [localidades,setLocalidades] =useState([]);
   const [selectedLocalidad,setSelectedLocalidad] =useState(localidades[0]);
-  const [screenHeight,setScreenHeight] = useState(0)
-
-  const scrollEnabled = screenHeight > height;
+  
 
   //const userId = useSelector(state => state.users[0]._id);
 
@@ -64,13 +59,6 @@ const AltaUser = ({
     
   },[]);
 
-  function onContentSizeChange (contentWidth, contentHeight){
-    // Save the content height in state
-    setScreenHeight(contentHeight);
-  };
-  
-
-  
 
   const getProvinces=()=>{
     axios.get('https://apis.datos.gob.ar/georef/api/provincias?orden=nombre&max=30')
@@ -130,7 +118,7 @@ const AltaUser = ({
         {Object.keys(userUp).length === 0 ? (
           <View>
             <View>
-              <Link to="/RegisterModal">
+              <Link to="/AltaUser">
                 <Icon name="angle-left" color="#422C63" size={50} />
               </Link>
             </View>
@@ -153,7 +141,6 @@ const AltaUser = ({
             initialValues={{
               name: "",
               lastname: "",
-              dni: "",
               phone: "",
               address: "",
               // dob: "",
@@ -168,10 +155,6 @@ const AltaUser = ({
                 .min(4, "Debe tener al menos 4 caracteres")
                 .max(50, "Debe tener 50 caracteres o menos")
                 .required("Debes completar este campo"),
-              dni: Yup.string()
-                .min(4, "Debe tener al menos 4 caracteres")
-                .max(50, "Debe tener 50 caracteres o menos")
-                .required("Debes completar este campo"),
               phone: Yup.string()
                 .required("Please Enter your Phone Number")
                 .matches(
@@ -182,7 +165,7 @@ const AltaUser = ({
                 .min(6, "Debe tener al menos 6 caracteres")
                 .max(50, "Debe tener 50 caracteres o menos")
                 .required("Debes completar este campo")
-                .test("verifyAddress","Domicilio inexistente",(address)=>{return handleAddress(address)}
+                .test("verifyAddress","Domicilio inexistente en esa Provincia, Departamento o localidad",(address)=>{return handleAddress(address)}
                 )
                 ,
               // dob: Yup.string()
@@ -237,25 +220,6 @@ const AltaUser = ({
                 {errors.lastname && (
                   <Text style={{ fontSize: 10, color: "red" }}>
                     {errors.lastname}
-                  </Text>
-                )}
-
-                {/*  */}
-                <CustomInput
-                  label="Documento de identidad"
-                  name="dni"
-                  onChangeText={handleChange("dni")}
-                  value={values.dni}
-                  style={styles.input}
-                />
-
-                {values.dni.length >= 4 && !errors.dni && (
-                  <Icon name="check" size={40} color="green" />
-                )}
-
-                {errors.dni && (
-                  <Text style={{ fontSize: 10, color: "red" }}>
-                    {errors.dni}
                   </Text>
                 )}
 

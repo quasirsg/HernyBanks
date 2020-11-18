@@ -32,7 +32,7 @@ export function userUp(code, onSuccess) {
         });
         setTimeout(function () {
           onSuccess();
-        }, 3000);
+        }, 2000);
       })
       .catch((error) => {
         Toast.show({

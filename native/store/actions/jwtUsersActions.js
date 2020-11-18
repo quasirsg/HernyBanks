@@ -22,10 +22,10 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
       password: password,
     })
     .then((res) => {
-      console.log(res);
+
       const token = res.data;
       var decoded = jwt_decode(token);
-      console.log(decoded.id);
+
       // console.log('soy el token',token);
       if (token) {
         AsyncStorage.setItem("@token", token);
@@ -106,12 +106,12 @@ export const verifySession = () => (dispatch) => {
 };
 
 //logout
-export const logoutUser = (path) => (dispatch) => {
+export const logoutUser = (onSuccess) => (dispatch) => {
   Toast.show({
     type: "info",
     position: "top",
     text1: "Cerraste sesión",
-    visibilityTime: 6000,
+    visibilityTime: 2000,
     autoHide: true,
     topOffset: 30,
     bottomOffset: 40,

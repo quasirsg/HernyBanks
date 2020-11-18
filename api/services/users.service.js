@@ -61,17 +61,17 @@ module.exports = {
 			rest: "POST /create",
 			async handler(ctx) {
 				const entity = ctx.params;
+				console.log(entity)
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Validación de username o email (creación de usuario único)     	     *
 				 * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 				if (entity.username) {
 					const found = await User.findOne({
-						$and: [
+						$or: [
 							{ username: entity.username },
 							{ email: entity.email },
 						],
 					});
-
 
 					if (found) {
 						if (found.username === entity.username.toLowerCase()) {
@@ -82,26 +82,42 @@ module.exports = {
 					}
 				}
 
-				/*  * * * * * * * * * * * * * * * * *
-				 * Encryptación de contraseña		*
-				 * * * * *  * * * * * * * *  * * * * */
+				/* * * * * * * * * * * * * * * * * *
+				 * Encryptación de contraseña      *
+				 * * * * * * * * * * * * * * * * * */
 				entity.password = bcrypt.hashSync(entity.password, 10);
 
+				/* * * * * * * * * * * * * *
+				 * Función generadora 	   *
+				 * * * * * * * * * * * * * */
+				const rdm = () => parseInt(Math.random() * 10).toString();
+
+				// /* * * * * * * * * * * * *
+				//  * Generación de CVU     *
+				//  * * * * * * * * * * * * */
+				//  const x = entity.dni.toString();
+				//  const last4 = x.substring(x.length-4, x.length)
+
+				//  entity.cvu = '00000000' + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + last4; 
+				
 				/*  * * * * * * * * * * * * * * * * *
 				 * Creación del nuevo usuario		*
 				 * * * * *  * * * * * * * *  * * * * */
 				const created = await User.create(entity);
 
+				//Dar de alta las cuentas para este usario : llamando a los acciones de
+				//accounts.service.js
+
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Generación de token para enviar confirmación al mail del nuevo usuario *
 				 * * * * * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * */
-				const rdm = () => Math.random().toString(36).substr(2);
-				const tokenGen = () => rdm() + rdm() + rdm();
+				const tokenGen = () => rdm() + rdm() + rdm() + rdm() + rdm();
 
 				const token = await Token.create({
 					_userId: created._id,
 					token: tokenGen(),
 				});
+
 				console.log(token)
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -217,8 +233,15 @@ module.exports = {
 					);
 
 					const updated = await User.findById({ _id });
+					/* * * * * * * * * * * * * * * * * * * * * * * * * *
+		 			*   Crear cuentas en pesos y en dolares para el usuario  *
+					 * * * * * * * * * * * * * * * * * * * * * * * * * */
+					 console.log(_id)
+					await ctx.call('accounts.createdAccounts', updated._id)
+					
 					return updated;
 				}
+
 
 				return Promise.reject(userNotFound);
 			},

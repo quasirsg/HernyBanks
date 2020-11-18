@@ -16,6 +16,7 @@
         color: rgb(148, 148, 148);
         padding: 1rem;
         text-align: center;
+        font-weight: bold;
     }
     .content{
         background-color: rgb(255, 255, 255);
@@ -36,14 +37,13 @@
     }
     button {
         border: 1px solid transparent;
-        border-radius: .5rem;
+        border-radius: 1rem;
         padding: .5rem;
         color: white;
         font-weight: bold;
-        font-size: 90%;
+        font-size: 200%;
         min-width: 20%;
-        background-color: rgb(174, 0, 205);
-        cursor: pointer;
+        background-color: #7a29ff;
     }
     .explain {
         text-align: center;
@@ -56,7 +56,7 @@
         color: rgb(148, 148, 148);
     }
     .line {
-        background-color: rgb(174, 0, 205);
+        background-color: #7a29ff;
         height: .3rem;
     }
     .foot {
@@ -77,17 +77,17 @@
 <body>
     <div class="container">
         <div class="title">HBank</div>
-
+        <div class="line"></div>
         <div class="main">
 
             <div class="content">
-                <div class="hello">¡Hola {{username}}!</div>
-                <div class="instruction">Por favor copia el siguiente código de verificación</div>
+                <div class="hello">¡Hola @{{username}}!</div>
+                <div class="instruction">Tu código de verificación es: </div>
                 <button>{{token}}</button>
             </div>
             <div class="explain">
                 <b>Verificación de cuenta</b>
-                <p>Una vez que hayas copiado el código, abre tu app de Hbank nuevamente y pégalo para que activar tu cuenta. <br><br> ¡Bienvenido a Hbank!</p>
+                <p>Abre tu app de Hbank nuevamente e ingresa el código para activar tu cuenta. <br><br> ¡Bienvenido a Hbank!</p>
             </div>
             
         </div>
