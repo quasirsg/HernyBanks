@@ -124,7 +124,7 @@ module.exports = {
                 const { amount, cvu } = ctx.params;
                 const recharge = await this.recharge(amount, cvu, 'QR');
 
-                return recharge && 'The Recharge Was Successful';
+                return recharge && recharge;
             }
         },
         rechargeByCard: {
@@ -215,6 +215,7 @@ module.exports = {
         },
         async recharge(amount, cvu, type) {
             const account = await Account.findOne({ cvu })
+
             const transaction = await this.generateTransaction(
                 type,
                 account._id,
