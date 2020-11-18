@@ -18,7 +18,8 @@ import Toast from 'react-native-toast-message';
 import SideMenu from 'react-native-side-menu-updated';
 import MenuLateral from './screens/MenuLateral';
 import Recharge from './screens/Recharge';
-
+import SelectContact from './screens/sendMoneyFlow/SelectContact';
+import FinishSend from './screens/sendMoneyFlow/FinishSend';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -41,23 +42,70 @@ function MainStack() {
 				options={{
 					headerShown: true,
 					headerTitleAlign: 'center',
-					headerStyle: { backgroundColor: 'indigo', shadowColor: 'indigo', elevation: 0 },
-					headerTitleStyle: { color: 'white', fontSize: 16 },
-					headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
+					headerStyle: {
+						backgroundColor: 'indigo',
+						shadowColor: 'indigo',
+						elevation: 0
+					},
+					headerTitleStyle: {
+						color: 'white',
+						fontSize: 16
+					},
+					headerRight: () =>
+						<Ionicons
+							name='ios-log-out'
+							color='white'
+							size={30}
+							style={{ marginHorizontal: 15 }}>
+
+						</Ionicons>,
 				}}
 			/>
         <Stack.Screen name='Recharge' component={Recharge} />
-			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
+			
       
 
-			<Stack.Screen name='Estatistics' component={Estatistics} />
-			<Stack.Screen name='SendMonyScreen' component={SendMonyScreen} />
-			<Stack.Screen name='Transactions' component={Transactions} />
 
-      
-		
+			<Stack.Screen
+				name='Register'
+				component={Register}
+				options={{ title: 'Registrarse' }}
+				options={{ headerShown: false }}
+			/>
 
-			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: false }} />
+			<Stack.Screen
+				name='Estatistics'
+				component={Estatistics}
+			/>
+
+			<Stack.Screen
+				name='SendMonyScreen'
+				component={SendMonyScreen}
+			/>
+
+			<Stack.Screen
+				name='Transactions'
+				component={Transactions}
+			/>
+
+			<Stack.Screen
+				name='FAQ'
+				component={FAQ}
+				options={{ headerShown: false }}
+			/>
+
+			<Stack.Screen
+				name='SelectContact'
+				component={SelectContact}
+				options={{ headerShown: false }}
+			/>
+
+			<Stack.Screen
+				name='FinishSend'
+				component={FinishSend}
+				options={{ headerShown: false }}
+			/>
+
 		</Stack.Navigator>
 	);
 }
