@@ -46,7 +46,7 @@ const AltaUser = ({
         {Object.keys(userUp).length === 0 ? (
           <View>
             <View>
-              <Link to="/RegisterModal">
+              <Link to="/AltaUser">
                 <Icon name="angle-left" color="#422C63" size={50} />
               </Link>
             </View>

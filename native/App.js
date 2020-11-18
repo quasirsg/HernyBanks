@@ -29,35 +29,13 @@ const Stack = createStackNavigator(); //contiene la navegacion
 function MainStack() {
 	return (
 		<Stack.Navigator>
+    	
+		<Stack.Screen name='Welcome' component={welcome} options={{ headerShown: false }} />
+        <Stack.Screen name='AltaUser' component={AltaUser} />
+		<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
 
-			<Stack.Screen
-				name='Welcome'
-				component={welcome}
-				options={{ headerShown: false }}
-			/>
-
-			<Stack.Screen
-				name='AltaUser'
-				component={AltaUser}
-			/>
-			<Stack.Screen
-				name='Login'
-				component={Login}
-				options={{ title: 'Iniciar sesión' }}
-				options={{ headerShown: false }}
-			/>
-
-			<Stack.Screen
-				name='CodeVerification'
-				component={CodeVerification}
-				options={{ headerShown: false }}
-			/>
-
-			<Stack.Screen
-				name='MenuLateral'
-				component={MenuLateral}
-			/>
-
+	    <Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
+        <Stack.Screen name='MenuLateral' component={MenuLateral} />
 			<Stack.Screen
 				name='PosConsolidada'
 				component={PosConsolidada}
@@ -83,11 +61,10 @@ function MainStack() {
 						</Ionicons>,
 				}}
 			/>
+        <Stack.Screen name='Recharge' component={Recharge} />
+			
+      
 
-			<Stack.Screen
-				name='Recharge'
-				component={Recharge}
-			/>
 
 			<Stack.Screen
 				name='Register'
