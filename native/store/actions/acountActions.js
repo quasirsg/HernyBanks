@@ -1,12 +1,12 @@
 import axios from "axios";
-import { GET_ACCOUNT, UP_USER } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, UP_USER } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
 import Toast from "react-native-toast-message";
 
 
-// CREAR USUARIO
+
 export function getAccount(id) {
   return (dispatch) => {
     axios
@@ -19,6 +19,26 @@ export function getAccount(id) {
           console.log(res.data)
         dispatch({
           type: GET_ACCOUNT,
+          data: res.data || {},
+        });
+
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  };
+}
+
+
+export function rechargeByQr(data) {
+  return (dispatch) => {
+    console.log(data)
+    axios
+      .post(`${BACK_URL}/api/accounts/rechargeByQR/`, data)
+      .then((res) => {
+          console.log(res.data)
+        dispatch({
+          type: RECHARGE_QR,
           data: res.data || [],
         });
 
@@ -26,5 +46,25 @@ export function getAccount(id) {
       .catch((error) => {
         console.log(error)
       });
+  };
+}
+
+export function rechargeByCard(data) {
+  return (dispatch) => {
+    console.log('***est este***')
+    console.log(data)
+    // axios
+    //   .post(`${BACK_URL}/api/accounts/rechargeByQR/`, data)
+    //   .then((res) => {
+    //       console.log(res.data)
+    //     dispatch({
+    //       type: RECHARGE_QR,
+    //       data: res.data || [],
+    //     });
+
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //   });
   };
 }

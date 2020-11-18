@@ -23,7 +23,7 @@ function Recharge() {
   ]);
  
   const renderScene = SceneMap({
-    first: FirstRoute,
+    first: Card,
     second: Qrnative,
   });
  

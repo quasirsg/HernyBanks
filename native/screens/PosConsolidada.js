@@ -25,13 +25,19 @@ const session = useSelector((state) => state.session.userDetail);
 const accounts = useSelector((state) => state.acoount.account);
 const bal = session.balance
 const id = session._id
-
+// const bal1 = accounts ? accounts[0].balance : 0
+// const bal2 = accounts ? accounts[1].balance : 0
 useEffect(() => {
 	dispatch(getAccount(id ? id : null));
 	dispatch(verifySession());
 }, []);
 console.log("****Cuentas****");
+const accountP = accounts[0]
+const accountD = accounts[1]
+const balancP = accountP && accountP.balance
+const balancD = accountD && accountD.balance
 console.log(accounts);
+
 const logoutHandler = () => {
 	dispatch(logoutUser());
 	navigation.navigate('welcome');
@@ -62,9 +68,12 @@ const logoutHandler = () => {
 						></Ionicons>
 						{/* Container de SALDO de la cuenta */}
 						<View style={styles.saldoContainer}>
-							<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
+							<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta No.1</Text>
+							<Text style={styles.text_saldoCuenta}>$ {balancP}</Text>
+							<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta No.2</Text>
+							<Text style={styles.text_saldoCuenta}> $ {balancD}</Text>
 							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-								<Text style={styles.text_saldoCuenta}> $ {bal}</Text>
+								{/* <Text style={styles.text_saldoCuenta}> $ {bal}</Text> */}
 								<TouchableOpacity
 									onPress={() => {
 										alert('Editar perfil');
