@@ -6,7 +6,7 @@ const { MoleculerClientError } = require('moleculer').Errors;
 //DbServices and Mongo
 const DbService = require('moleculer-db');
 const Account = require('../models/account.model');
-const Transaction = require ('../models/transaction.model');
+const Transaction = require('../models/transaction.model');
 const User = require('../models/user.model');
 const MongooseAdapter = require('moleculer-db-adapter-mongoose');
 const mongoose = require('mongoose');
@@ -50,7 +50,7 @@ module.exports = {
                         '', [{ message: 'the user was not found!' }]
                     )
                 }
-                
+
                 //Create 2 account for this user. The first in "Pesos a.k.a. accountOne" , 
                 //and the second in 'Dolares a.k.a. accountTwo'
                 //In my userSeeds i dont have dni, and i go to change it for phone
@@ -91,25 +91,12 @@ module.exports = {
 
             }
         },
-        //This actions its only to test
-        toDeposit: {
-            rest: 'POST /deposit',
-            async handler(ctx) {
-                const { amount , cvu } = ctx.params;
-                const account = await Account.findOne({ cvu })
-                const balance = account.balance + parseInt(amount , 10)
-                account.balance = balance;
-                account.save();
-
-                return account;
-            }
-        },
         //Transaction Actions
         getTransactions: {
             rest: 'GET /transactions',
             async handler(ctx) {
                 const { cvu } = ctx.params; //account id
-                const account = await Account.findOne( { cvu } )
+                const account = await Account.findOne({ cvu })
 
                 if (!account) {
                     throw new MoleculerClientError(
@@ -119,50 +106,62 @@ module.exports = {
                     )
                 }
 
-                const transactions = await Transaction.find({ 
-                    $or: [ 
-                        { fromAccount : account._id },
-                        { toAccount : account._id }
-                    ] 
+                const transactions = await Transaction.find({
+                    $or: [
+                        { fromAccount: account._id },
+                        { toAccount: account._id }
+                    ]
                 }).populate('fromAccount').populate('toAccount')
 
                 return transactions && transactions;
             }
         },
-        recharge: {
-            rest: 'POST /recharge',
+        rechargeByQR: {
+            rest: 'POST /rechargebyqr',
             async handler(ctx) {
+                const { amount, cvu } = ctx.params;
+                const recharge = await this.recharge(amount, cvu, 'QR');
 
+                return recharge && 'The Recharge Was Successful';
             }
         },
-        transfer : {
-            rest : 'POST /transfer',
+        rechargeByCard: {
+            rest: 'POST /rechargebycard',
             async handler(ctx) {
-                const { from , to , amount , description } = ctx.params;
-                
-                const fromAccount = await Account.findOne( { cvu : from } )
-                const toAccount = await Account.findOne( { cvu : to } )
+                const { amount, cvu } = ctx.params;
+                const recharge = await this.recharge(amount, cvu, 'Credit Card');
 
-                if(fromAccount.balance - parseInt(amount , 10) >= 0) {
-                    fromAccount.balance = fromAccount.balance - parseInt(amount , 10);
-                    toAccount.balance += parseInt(amount , 10);
+                return recharge && 'The Recharge Was Successful';
+            }
+        },
+        transfer: {
+            rest: 'POST /transfer',
+            async handler(ctx) {
+                const { from, to, amount, description } = ctx.params;
+
+                const fromAccount = await Account.findOne({ cvu: from })
+                const toAccount = await Account.findOne({ cvu: to })
+
+                if (fromAccount.balance - parseInt(amount, 10) >= 0) {
+                    fromAccount.balance = fromAccount.balance - parseInt(amount, 10);
+                    toAccount.balance += parseInt(amount, 10);
 
                     const transaction = await this.generateTransaction(
                         'Transfer',
                         fromAccount._id,
                         toAccount._id,
                         description,
-                        parseInt(amount , 10),
+                        parseInt(amount, 10),
                     );
 
                     await transaction.save()
 
                     fromAccount.transactions.push(transaction);
                     toAccount.transactions.push(transaction);
-                    
+
                     await fromAccount.save()
                     await toAccount.save()
-                    
+
                     return 'the transaction was succesful'
                 } else {
                     return 'You do not have enough balance'
@@ -195,7 +194,7 @@ module.exports = {
             }
             return account
         },
-        generateTransaction( by , fromAccount , toAccount , description , amount) {
+        generateTransaction(by, fromAccount, toAccount, description, amount) {
             const transaction = new Transaction({
                 by,
                 fromAccount,
@@ -211,6 +210,23 @@ module.exports = {
                 )
             }
             return transaction
+        },
+        async recharge(amount, cvu, type) {
+            const account = await Account.findOne({ cvu })
+            const transaction = await this.generateTransaction(
+                type,
+                account._id,
+                account._id,
+                'Recharge',
+                parseInt(amount, 10)
+            );
+            transaction.save()
+            account.transactions.push(transaction)
+            const balance = account.balance + parseInt(amount, 10)
+            account.balance = balance;
+            account.save();
+
+            return account;
         }
     },
 
