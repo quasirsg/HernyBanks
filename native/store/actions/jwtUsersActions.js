@@ -22,10 +22,9 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
 			password: password,
 		})
 		.then((res) => {
-			console.log(res);
 			const token = res.data;
 			var decoded = jwt_decode(token);
-			console.log(decoded.id);
+
 			// console.log('soy el token',token);
 			if (token) {
 				AsyncStorage.setItem('@token', token);
@@ -44,7 +43,7 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
 				position: 'top',
 				text1: 'Login incorrecto',
 				text2: `Email o password incorrecto`,
-				visibilityTime: 3 * 1000,
+				visibilityTime: 6000,
 				autoHide: true,
 				topOffset: 30,
 				bottomOffset: 40,

@@ -5,6 +5,8 @@ import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { getAccount } from '../store/actions/acountActions';
+
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -15,14 +17,19 @@ var arrayDePruebaMovimientos = [1, 2, 3, 4, 5];
 export default function PosConsolidada({ navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
+	const accounts = useSelector((state) => state.acoount.account);
 	const bal = session.balance;
+	const id = session._id;
+
 	useEffect(() => {
+		dispatch(getAccount(id ? id : null));
 		dispatch(verifySession());
 	}, []);
-	console.log('soy el user logeado', session);
+	console.log('****Cuentas****');
+	console.log(accounts);
 	const logoutHandler = () => {
 		dispatch(logoutUser());
-		navigation.navigate('Welcome');
+		navigation.navigate('welcome');
 		return;
 	};
 
