@@ -51,7 +51,7 @@ export default function CustomDrawerContent(props) {
 					<DrawerItem icon={() => <Ionicons name='ios-wallet' color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label='Recargar dinero' onPress={() => props.navigation.navigate('Recharge')} />
 					<DrawerItem icon={() => <Ionicons name='ios-send' color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label='Mandar dinero' onPress={() => props.navigation.navigate('SelectContact')} />
 					{/* <DrawerItem icon={() => <Ionicons name='ios-cart' color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label='Pagar en un local' onPress={() => alert('Pagar en un local')} /> */}
-					<DrawerItem icon={() => <Ionicons name='ios-contact' color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label='Contactos' onPress={() => alert('ContacList')} />
+					<DrawerItem icon={() => <Ionicons name='ios-contact' color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label='Contactos' onPress={() => props.navigation.navigate('ContactList')} />
 					{/* <DrawerItem icon={() => <Ionicons name='ios-water' color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label='Pagar un servicio' onPress={() => alert('Pagar un servicio')} /> */}
 					{/* <DrawerItem icon={() => <Ionicons name='ios-options' color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label='Gestionar debitos automaticos' onPress={() => alert('Gestionar debitos automaticos')} /> */}
 				</View>

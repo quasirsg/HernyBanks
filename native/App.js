@@ -18,6 +18,8 @@ import AltaUser from './screens/AltaUser';
 import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
 import Recharge from './screens/Recharge';
+import ContactCard from './screens/Contactos/ContactCard';
+import ContactList from './screens/Contactos/ContactList';
 import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
@@ -81,8 +83,10 @@ function MainStack() {
 			<Drawer.Screen name='Transactions' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recharge' component={Recharge} />
-			<Stack.Screen name='SelectContact' component={SelectContact} options={{ headerShown: true }} />
-			<Stack.Screen name='FinishSend' component={FinishSend} options={{ headerShown: true }} />
+			<Stack.Screen name='SelectContact' component={SelectContact} />
+			<Stack.Screen name='FinishSend' component={FinishSend} />
+			<Stack.Screen name='ContactCard' component={ContactCard} />
+			<Stack.Screen name='ContactList' component={ContactList} />
 		</Drawer.Navigator>
 	);
 }

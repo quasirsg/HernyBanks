@@ -9,6 +9,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
 
+var arrayDePrueba = [1, 2];
+var arrayDePruebaMovimientos = [1, 2, 3, 4, 5];
+
 export default function PosConsolidada({ navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
@@ -29,121 +32,37 @@ export default function PosConsolidada({ navigation }) {
 			<Image source={require('../assets/background2.png')} style={{ position: 'absolute' }} />
 			{session && (
 				<ScrollView contentContainerStyle={{ alignItems: 'center' }}>
-					{/* Container de SALDO de la cuenta */}
-					<View style={styles.saldoContainer}>
-						<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>
-						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-							<Text style={styles.text_saldoCuenta}> $ {bal || 0}</Text>
-							<TouchableOpacity
-								onPress={() => {
-									alert('Editar perfil');
-								}}
-							>
-								<Ionicons name='md-person' color='white' size={38} style={styles.avatar}></Ionicons>
-							</TouchableOpacity>
-						</View>
-					</View>
-					{/* scrollview HORIZONTAL de balances de cuentas */}
 					<View
 						style={{
-							maxHeight: deviceHeight * 0.4,
-							minHeight: 200,
 							marginVertical: 0,
+							marginTop: 10,
 							// backgroundColor: 'blue',
 						}}
 					>
-						<ScrollView
-							horizontal={true}
-							decelerationRate={0}
-							snapToInterval={deviceWidth} //your element width
-							snapToAlignment={'center'}
-							showsHorizontalScrollIndicator={false}
-							contentContainerStyle={styles.balance_horizontalScrollview}
-						>
-							{/* Container de BALANCE de la cuenta */}
-							<View style={styles.balanceContainer}>
-								<Text style={styles.textTitle}>Balance</Text>
-								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
-										<Text style={styles.text_ingresos}>$ 1.587</Text>
-									</View>
-									{/* Separador Vertical */}
-									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
-										<Text style={styles.text_egresos}>$ 20.319</Text>
-									</View>
-								</View>
-								{/* Separador Vertical */}
-								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
-								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-								<TouchableOpacity
-									style={{ alignItems: 'flex-end', marginTop: 0 }}
-									onPress={() => {
-										alert('Ver el detalle');
-									}}
-								>
-									<Text style={styles.text_link}>Ver el detalle</Text>
-								</TouchableOpacity>
-							</View>
-
-							{/* Container de BALANCE de la cuenta */}
-							<View style={styles.balanceContainer}>
-								<Text style={styles.textTitle}>Balance</Text>
-								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
-										<Text style={styles.text_ingresos}>$ 1.587</Text>
-									</View>
-									{/* Separador Vertical */}
-									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
-										<Text style={styles.text_egresos}>$ 20.319</Text>
+						{arrayDePrueba.map((cuenta, key) => {
+							return (
+								<View key={key}>
+									{/* Container de BALANCE de la cuenta */}
+									<View style={styles.balanceContainer}>
+										<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
+										<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+											<Text style={styles.text_saldoCuenta2}> $ {bal || 0}</Text>
+										</View>
+										{/* Separador Vertical */}
+										<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
+										<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+										<TouchableOpacity
+											style={{ alignItems: 'flex-end', marginTop: 0 }}
+											onPress={() => {
+												alert('Ver el detalle');
+											}}
+										>
+											<Text style={styles.text_link}>Ver el detalle</Text>
+										</TouchableOpacity>
 									</View>
 								</View>
-								{/* Separador Vertical */}
-								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-								<TouchableOpacity
-									style={{ alignItems: 'flex-end', marginTop: 0 }}
-									onPress={() => {
-										navigation.navigate('Recharge');
-									}}
-								>
-									<Text style={styles.text_link}>Ver el detalle</Text>
-								</TouchableOpacity>
-							</View>
-
-							{/* Container de BALANCE de la cuenta */}
-							<View style={styles.balanceContainer}>
-								<Text style={styles.textTitle}>Balance</Text>
-								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
-										<Text style={styles.text_ingresos}>$ 1.587</Text>
-									</View>
-									{/* Separador Vertical */}
-									<View style={{ borderRightColor: 'grey', borderRightWidth: 1 }} />
-									<View style={{ alignItems: 'center' }}>
-										<Text style={styles.text_ingresosEgresos}> Egresos</Text>
-										<Text style={styles.text_egresos}>$ 20.319</Text>
-									</View>
-								</View>
-								{/* Separador Vertical */}
-								<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-								<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-								<TouchableOpacity
-									style={{ alignItems: 'flex-end', marginTop: 0 }}
-									onPress={() => {
-										alert('Ver el detalle');
-									}}
-								>
-									<Text style={styles.text_link}>Ver el detalle</Text>
-								</TouchableOpacity>
-							</View>
-						</ScrollView>
+							);
+						})}
 					</View>
 
 					{/* ACCIONES */}
@@ -204,93 +123,31 @@ export default function PosConsolidada({ navigation }) {
 						<View style={styles.ultimosMovimientosContainer}>
 							<Text style={styles.textTitle_ultimosMovimientos}>Úlitmos movimientos</Text>
 
-							{/* fila de ULTIMO MOVIMIENTO */}
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<View style={styles.shopBrandLogosContainer}>
-										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+							{/* .map de ULTIMOS MOVIMIENTOS */}
+							{arrayDePruebaMovimientos.map((mov, key) => {
+								return (
+									<View key={key}>
+										{/* fila de ULTIMO MOVIMIENTO */}
+										<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+											<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+												<View style={styles.shopBrandLogosContainer}>
+													<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+												</View>
+												<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+													<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+													<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+												</View>
+											</View>
+											<View style={{ alignItems: 'center' }}>
+												<Text style={styles.text_ingresosUltimosMovimientos}> $ {key}</Text>
+											</View>
+										</View>
+										{/* Separador Horizontal */}
+										<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
 									</View>
-									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-									</View>
-								</View>
-								<View style={{ alignItems: 'center' }}>
-									<Text style={styles.text_ingresosUltimosMovimientos}> $ 415, 00</Text>
-								</View>
-							</View>
-							{/* Separador Horizontal */}
-							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
+								);
+							})}
 
-							{/* fila de ULTIMO MOVIMIENTO */}
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<View style={styles.shopBrandLogosContainer}>
-										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-									</View>
-									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-									</View>
-								</View>
-								<View style={{ alignItems: 'center' }}>
-									<Text style={styles.text_ingresosUltimosMovimientos}> $ 174.319, 21</Text>
-								</View>
-							</View>
-							{/* Separador Horizontal */}
-							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-
-							{/* fila de ULTIMO MOVIMIENTO */}
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<View style={styles.shopBrandLogosContainer}>
-										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-									</View>
-									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-									</View>
-								</View>
-								<View style={{ alignItems: 'center' }}>
-									<Text style={styles.text_egresosUltimosMovimientos}> - $ 4.821, 94</Text>
-								</View>
-							</View>
-							{/* Separador Horizontal */}
-							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-
-							{/* fila de ULTIMO MOVIMIENTO */}
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<View style={styles.shopBrandLogosContainer}>
-										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-									</View>
-									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-									</View>
-								</View>
-								<View style={{ alignItems: 'center' }}>
-									<Text style={styles.text_egresosUltimosMovimientos}> - $ 12.127, 00</Text>
-								</View>
-							</View>
-							{/* Separador Horizontal */}
-							<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-
-							{/* fila de ULTIMO MOVIMIENTO */}
-							<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-								<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-									<View style={styles.shopBrandLogosContainer}>
-										<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
-									</View>
-									<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-										<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-										<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
-									</View>
-								</View>
-								<View style={{ alignItems: 'center' }}>
-									<Text style={styles.text_egresosUltimosMovimientos}> - $ 17, 53</Text>
-								</View>
-							</View>
 							<TouchableOpacity
 								style={{ alignItems: 'flex-end', marginTop: 30 }}
 								onPress={() => {
@@ -334,12 +191,12 @@ const styles = StyleSheet.create({
 	},
 	balanceContainer: {
 		width: deviceWidth * 0.9,
-		height: '90%',
+		// height: '90%',
 		backgroundColor: 'white',
 		borderRadius: 15,
 		paddingVertical: 10,
 		paddingHorizontal: 15,
-		// marginVertical: 10,
+		marginVertical: 10,
 		marginHorizontal: deviceWidth * 0.05,
 		shadowColor: '#000', // iOS
 		shadowOffset: { width: 0, height: 5 }, // iOS
@@ -402,6 +259,11 @@ const styles = StyleSheet.create({
 	},
 	text_saldoCuenta: {
 		color: 'white',
+		fontSize: 36,
+		// fontWeight: 'bold',
+	},
+	text_saldoCuenta2: {
+		color: 'rgb(30,30,30)',
 		fontSize: 36,
 		// fontWeight: 'bold',
 	},
