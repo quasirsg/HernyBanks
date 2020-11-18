@@ -66,9 +66,9 @@ export default function PosConsolidada({ navigation }) {
 									<View key={key}>
 										{/* Container de BALANCE de la cuenta */}
 										<View style={styles.balanceContainer}>
-											<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
+											<Text style={styles.textTitle}>Saldo de la cuenta en {cuenta.type}</Text>
 											<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-												<Text style={styles.text_saldoCuenta2}> $ {cuenta.balance || 0}</Text>
+												<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' + cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
 											</View>
 											{/* Separador Vertical */}
 											<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
