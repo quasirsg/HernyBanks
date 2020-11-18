@@ -54,6 +54,13 @@ const logoutHandler = () => {
 								setShowMenu(true);
 							}}
 						></Ionicons>
+						<TouchableOpacity
+                    onPress={() => navigation.navigate("ContactList")}
+                  >
+                    <Text style={styles.forgotPassword}>
+                      ContactList
+                  </Text>
+                  </TouchableOpacity>
 						{/* Container de SALDO de la cuenta */}
 						<View style={styles.saldoContainer}>
 							<Text style={styles.text_saldoCuentaTitle}> Saldo de la cuenta</Text>

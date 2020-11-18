@@ -29,7 +29,7 @@ const Stack = createStackNavigator(); //contiene la navegacion
 
 function MainStack() {
   return (
-    <Stack.Navigator initialRouteName='ContactList'>
+    <Stack.Navigator  /* initialRouteName='ContactList' */ >
       <Stack.Screen
         name="Welcome"
         component={welcome}

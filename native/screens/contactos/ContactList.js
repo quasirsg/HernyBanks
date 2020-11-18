@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Dimensions,
   View,
@@ -13,6 +14,7 @@ import { Link } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Searchbar } from "react-native-paper";
+import { getContacts } from "../../store/actions/contactAction";
 
 //Lista Contactos usuarios de HenryBanks Agregados
 //un boton agregar contacto
@@ -22,6 +24,10 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const ContactList = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.session.userDetail);
+  console.log(user._id);
+  /*  const contact = useSelector((state) => state.contacts.contacts); */
   const [contacts, setContacts] = useState([
     {
       name: "Carlos",
@@ -86,9 +92,9 @@ const ContactList = ({ navigation }) => {
     {
       name: "Maria",
       email: "maria@gmail.com",
-      Account:{
-        pesos:"0001234567891011121312",
-        dollars:"0001234567891011121325",
+      Account: {
+        pesos: "0001234567891011121312",
+        dollars: "0001234567891011121325",
       },
       phone: "3011234511",
     },
@@ -96,7 +102,9 @@ const ContactList = ({ navigation }) => {
 
   const [results, setResults] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(getContacts());
+  }, []);
 
   const searchContacts = (value) => {
     if (!value) {
@@ -132,6 +140,7 @@ const ContactList = ({ navigation }) => {
               {item && item.cvu && item.cvu}
             </Text>
           </View>
+  
         </View>
       </Link>
     </View>
@@ -173,6 +182,7 @@ const ContactList = ({ navigation }) => {
               style={styles.input}
               onChangeText={(value) => searchContacts(value)}
             />
+            <Text>$ {user._id}</Text>
             <View style={{ alignItems: "center" }}>
               {/* agregar contacto */}
               <Link to="/SearchBar">
@@ -198,6 +208,7 @@ const ContactList = ({ navigation }) => {
               )}
             />
           </View>
+          
         </View>
       </LinearGradient>
     </View>
