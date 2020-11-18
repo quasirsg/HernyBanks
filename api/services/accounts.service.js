@@ -50,7 +50,7 @@ module.exports = {
                         '', [{ message: 'the user was not found!' }]
                     )
                 }
-                console.log(user)
+                
                 //Create 2 account for this user. The first in "Pesos a.k.a. accountOne" , 
                 //and the second in 'Dolares a.k.a. accountTwo'
                 //In my userSeeds i dont have dni, and i go to change it for phone
