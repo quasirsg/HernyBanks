@@ -19,6 +19,8 @@ import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
 import Recharge from './screens/Recharge';
 import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
+import SelectContact from './screens/sendMoneyFlow/SelectContact';
+import FinishSend from './screens/sendMoneyFlow/FinishSend';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -78,6 +80,8 @@ function MainStack() {
 			<Drawer.Screen name='Transactions' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recharge' component={Recharge} />
+			<Stack.Screen name='SelectContact' component={SelectContact} options={{ headerShown: false }} />
+			<Stack.Screen name='FinishSend' component={FinishSend} options={{ headerShown: false }} />
 		</Drawer.Navigator>
 	);
 }

@@ -124,6 +124,8 @@ export default function PosConsolidada({ navigation }) {
 							<View style={styles.balanceContainer}>
 								<Text style={styles.textTitle}>Balance</Text>
 								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+									{/* BOTON DE CARLOS, REVISAR SI ESTA BIEN */}
+									<TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}></TouchableOpacity>
 									<View style={{ alignItems: 'center' }}>
 										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
 										<Text style={styles.text_ingresos}>$ 1.587</Text>

@@ -31,13 +31,13 @@ services:
     networks:
       - internal
 
-  products:
+  contact:
     build:
       context: .
     image: api
     env_file: docker-compose.env
     environment:
-      SERVICES: products
+      SERVICES: contacts
     depends_on:
       - mongo
       - nats
