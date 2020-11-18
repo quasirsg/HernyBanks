@@ -60,7 +60,7 @@ module.exports = {
                 for (let i = 0; i < aux.length; i ++) {
                     const user = await User.findOne({email : aux[i].email}).populate('accounts');
                     const userObj = {
-                        id : response.contacts[i]._id,
+                        // id : response.contacts[i]._id,
                         username: response.contacts[i].username,
                         email : user.email,
                         name : user.name,
