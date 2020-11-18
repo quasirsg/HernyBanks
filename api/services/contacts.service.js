@@ -44,9 +44,8 @@ module.exports = {
             rest: 'GET /',
             async handler(ctx) {
                 //We need the front-end to send us the id of the user who is currently logged in
-                const { id } = ctx.params;
-                const response = await User.findById(id)
-                //.populate('contacts')
+                const { _id } = ctx.params;
+                const response = await User.findById(_id).populate('contacts')
 
                 if (!response) {
                     throw new MoleculerClientError(
@@ -55,8 +54,25 @@ module.exports = {
                         '', [{ message: 'the user was not found!' }]
                     )
                 }
-
-                return response;
+                const aux = response.contacts
+                let contactList = []
+                //Take the contact accounts
+                for (let i = 0; i < aux.length; i ++) {
+                    const user = await User.findOne({email : aux[i].email}).populate('accounts');
+                    const userObj = {
+                        username: response.contacts[i].username,
+                        email : user.email,
+                        name : user.name,
+                        phone : user.phone,
+                        accounts : {
+                            pesos : user.accounts[0].cvu, 
+                            dollars : user.accounts[1].cvu
+                        }
+                    }
+                    contactList.push(userObj)    
+                }
+                
+                return contactList;
             }
         },
         updateUsername: {
