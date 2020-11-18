@@ -190,9 +190,7 @@ const logoutHandler = () => {
 								</TouchableOpacity>
 
 								<TouchableOpacity
-									onPress={() => {
-										alert('Mandar dinero');
-									}}
+									onPress={() => navigation.navigate('SelectContact')}
 									style={{ width: '30%' }}
 								>
 									<View style={{ alignItems: 'center' }}>
