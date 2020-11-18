@@ -10,7 +10,7 @@ import { st } from './store/store';
 import Estatistics from './screens/Estatistics';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
-import welcome from './screens/welcome';
+import Welcome from './screens/Welcome';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
 import CodeVerification from './screens/CodeVerification';
@@ -31,7 +31,7 @@ const Drawer = createDrawerNavigator(); // Menu lateral
 // <--------------- ROOT Stack (contiene a LoginStack y MainStack ) --------------->
 function RootStack() {
 	return (
-		<Stack.Navigator initialRouteName='Main'>
+		<Stack.Navigator initialRouteName='Login'>
 			<Stack.Screen name='Login' component={LoginStack} options={{ headerShown: false }} />
 			<Stack.Screen name='Main' component={MainStack} options={{ headerShown: false }} />
 		</Stack.Navigator>
@@ -48,12 +48,12 @@ function LoginStack() {
 				headerShown: false,
 			}}
 		>
-			<Stack.Screen name='Welcome' component={welcome} options={{ headerShown: false }} />
+			<Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
 			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
 			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
 			<Stack.Screen name='AltaUser' component={AltaUser} />
-			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: true }} />
+			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: true, headerStyle: { backgroundColor: 'indigo', shadowColor: 'indigo', elevation: 0 }, headerTitleStyle: { color: 'white', fontSize: 16 } }} />
 		</Stack.Navigator>
 	);
 }
@@ -73,6 +73,7 @@ function MainStack() {
 				// headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				// headerLeft: () => <Ionicons name='ios-menu' color='white' size={30} style={{ marginHorizontal: 15 }} onPress={() => props.navigation.openDrawer()}></Ionicons>,
 			}}
+			lazy={false}
 		>
 			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} />
 			<Drawer.Screen name='Estatistics' component={Estatistics} />
@@ -80,8 +81,8 @@ function MainStack() {
 			<Drawer.Screen name='Transactions' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recharge' component={Recharge} />
-			<Stack.Screen name='SelectContact' component={SelectContact} options={{ headerShown: false }} />
-			<Stack.Screen name='FinishSend' component={FinishSend} options={{ headerShown: false }} />
+			<Stack.Screen name='SelectContact' component={SelectContact} options={{ headerShown: true }} />
+			<Stack.Screen name='FinishSend' component={FinishSend} options={{ headerShown: true }} />
 		</Drawer.Navigator>
 	);
 }

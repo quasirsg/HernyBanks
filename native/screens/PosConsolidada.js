@@ -4,7 +4,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackg
 import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MenuLateral from './MenuLateral';
 
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
@@ -20,13 +19,10 @@ export default function PosConsolidada({ navigation }) {
 	console.log('soy el user logeado', session);
 	const logoutHandler = () => {
 		dispatch(logoutUser());
-		navigation.navigate('welcome');
+		navigation.navigate('Welcome');
 		return;
 	};
 
-	const menu = <MenuLateral></MenuLateral>;
-
-	// console.log(showMenu);
 	return (
 		<View style={styles.containerPrin}>
 			{/* Imagen de fondo */}
@@ -124,8 +120,6 @@ export default function PosConsolidada({ navigation }) {
 							<View style={styles.balanceContainer}>
 								<Text style={styles.textTitle}>Balance</Text>
 								<View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-									{/* BOTON DE CARLOS, REVISAR SI ESTA BIEN */}
-									<TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}></TouchableOpacity>
 									<View style={{ alignItems: 'center' }}>
 										<Text style={styles.text_ingresosEgresos}> Ingresos</Text>
 										<Text style={styles.text_ingresos}>$ 1.587</Text>
@@ -170,12 +164,10 @@ export default function PosConsolidada({ navigation }) {
 								</View>
 							</TouchableOpacity>
 
-							<TouchableOpacity
-								onPress={() => {
-									alert('Mandar dinero');
-								}}
-								style={{ width: '30%' }}
-							>
+							{/* BOTON DE CARLOS, REVISAR SI ESTA BIEN */}
+							{/* <TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}></TouchableOpacity> */}
+
+							<TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}>
 								<View style={{ alignItems: 'center' }}>
 									<View style={styles.mainActionIconContainer}>
 										<Ionicons name='ios-send' color='indigo' size={35}></Ionicons>
