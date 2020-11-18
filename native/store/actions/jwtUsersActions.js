@@ -22,10 +22,10 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
       password: password,
     })
     .then((res) => {
-      console.log(res);
+
       const token = res.data;
       var decoded = jwt_decode(token);
-      console.log(decoded.id);
+
       // console.log('soy el token',token);
       if (token) {
         AsyncStorage.setItem("@token", token);
