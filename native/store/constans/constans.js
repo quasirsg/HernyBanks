@@ -18,3 +18,12 @@ export const DELETE_ALL_CART = 'DELETE_ALL_CART'
 // Up User
 export const UP_USER = 'UP_USER';
 export const UPDATE_USER = 'UPDATE_USER';
+
+
+//Contact Henry
+export const GET_CONTACTS = 'GET_CONTACTS'
+export const EDIT_CONTACT = 'EDIT_CONTACT'
+export const ADD_CONTACT_EMAIL = 'ADD_CONTACT_EMAIL'
+export const ADD_CONTACT_PHONE = 'ADD_CONTACT_PHONE'
+export const DELETE_CONTACT = 'DELETE_CONTACT'
+export const SEND_WHATSAPP = 'SEND_WHATSAPP'
