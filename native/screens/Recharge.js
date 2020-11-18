@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Qrnative from './QrCreate'
+import Card from './Card'
 
  
 const FirstRoute = () => (

@@ -39,7 +39,9 @@ module.exports = {
         createdAccounts: {
             rest: 'POST /',
             async handler(ctx) {
+                
                 const { _id } = ctx.params; //user id
+                console.log("id cuenta: ", _id)
                 const user = await User.findById(_id)
 
                 //handler Error

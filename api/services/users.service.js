@@ -233,8 +233,15 @@ module.exports = {
 					);
 
 					const updated = await User.findById({ _id });
+					/* * * * * * * * * * * * * * * * * * * * * * * * * *
+		 			*   Crear cuentas en pesos y en dolares para el usuario  *
+					 * * * * * * * * * * * * * * * * * * * * * * * * * */
+					 console.log(_id)
+					await ctx.call('accounts.createdAccounts', updated._id)
+					
 					return updated;
 				}
+
 
 				return Promise.reject(userNotFound);
 			},

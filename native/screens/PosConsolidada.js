@@ -6,6 +6,7 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MenuLateral from './MenuLateral';
 import SideMenu from 'react-native-side-menu-updated';
+import {getAccount} from '../store/actions/acountActions'
 
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
@@ -21,11 +22,16 @@ const session = true;
 export default function PosConsolidada({ navigation }) {
 const dispatch = useDispatch();
 const session = useSelector((state) => state.session.userDetail);
+const accounts = useSelector((state) => state.acoount.account);
 const bal = session.balance
+const id = session._id
+
 useEffect(() => {
+	dispatch(getAccount(id ? id : null));
 	dispatch(verifySession());
 }, []);
-console.log('soy el user logeado', session);
+console.log("****Cuentas****");
+console.log(accounts);
 const logoutHandler = () => {
 	dispatch(logoutUser());
 	navigation.navigate('welcome');
@@ -190,9 +196,7 @@ const logoutHandler = () => {
 								</TouchableOpacity>
 
 								<TouchableOpacity
-									onPress={() => {
-										alert('Mandar dinero');
-									}}
+									onPress={() => navigation.navigate('SelectContact')}
 									style={{ width: '30%' }}
 								>
 									<View style={{ alignItems: 'center' }}>
