@@ -49,7 +49,7 @@ export function rechargeByQr(data) {
   };
 }
 
-export function rechargeByCard(data) {
+export function rechargeByCard(data, onSuccess) {
   return (dispatch) => {
     console.log('***est este***')
     console.log(data)
@@ -62,6 +62,28 @@ export function rechargeByCard(data) {
           type: RECHARGE_CARD,
           data: res.data || {},
         });
+        setTimeout(()=> {
+          Toast.show({
+            type: "success",
+            position: "top",
+            text1: ` Transaccion exitosa ... `,
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
+        }, 3000)
+
+        Toast.show({
+          type: "success",
+          position: "top",
+          text1: `Cargando ... `,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+
 
       })
       .catch((error) => {

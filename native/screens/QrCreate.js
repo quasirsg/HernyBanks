@@ -16,18 +16,16 @@ import CustomInput from '../components/CustomInput';
 const { width, height } = Dimensions.get('window');
 
 const Qrnative = () => {
-
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 	const accounts = useSelector((state) => state.acoount.account);
 	const account = accounts[0];
 	const cvuV = account && account.cvu;
 	const [inputText, setInputText] = useState({
-		cvu: cvuV,
+		cvu: "",
 		amount: '',
 	});
 	const [qrvalue, setQrvalue] = useState('');
-
 
 	const handlerSubmit = () => {
 		dispatch(rechargeByQr(inputText));
@@ -79,14 +77,13 @@ const Qrnative = () => {
 					/>
 				</View>
 
-
 				<Text style={styles.textStyle}>Por favor inserta el monto a recargar</Text>
 				{/* <TextInput style={styles.textInputStyle} onChangeText={(text) => setInputText({ ...inputText, amount: text })} placeholder='Enter Any Value' value={inputText.monto} /> */}
 				<CustomInput
 					label='Cantidad de dinero:'
 					name='Cantidad'
 					returnKeyType='done'
-					// onChangeText={(text) => setInputText({ ...inputText, amount: text })}
+					onChangeText={(text) => setInputText({ ...inputText, amount: text, cvu:cvuV })}
 					style={styles.inputCantidadDinero}
 				/>
 				{/* <TouchableOpacity style={styles.buttonStyle} onPress={handlerSubmit}>
@@ -98,7 +95,6 @@ const Qrnative = () => {
 			</View>
 		</ScrollView>
 	);
-
 };
 export default Qrnative;
 

@@ -6,11 +6,11 @@ import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, Modal, Scr
 import { rechargeByCard } from '../store/actions/acountActions';
 import CustomInput from '../components/CustomInput';
 import Button from '../components/Button';
+import { Value } from 'react-native-reanimated';
 
 const { width, height } = Dimensions.get('window');
 
-
-const Card = () => {
+const Card = ({navigation}) => {
 	const [showModal, setShowModal] = React.useState(false);
 	const [currency, setCurrency] = React.useState({
 		selected: 'pesos',
@@ -23,23 +23,25 @@ const Card = () => {
 	const cvuV = account && account.cvu;
 	const [show, setShow] = useState(false);
 	const [inputText, setInputText] = useState({
-		cvu: cvuV,
+		cvu: "",
 		amount: '',
 	});
-
 
 	const onChange = (formData) => {
 		return;
 	};
 
-
 	const onFocus = (field) => console.log('focus', field);
 
 	const handlerSubmit = () => {
-		dispatch(rechargeByCard(inputText));
+    dispatch(rechargeByCard(inputText));
+    
 		return;
-	};
-
+  };
+  
+  const handleChange = (value) => {
+    return setInputText({...inputText, amount:value, cvu:cvuV})
+  }
 
 	const ModalSelector = ({ show, control, setter }) => {
 		return (
@@ -97,7 +99,7 @@ const Card = () => {
 						label='Cantidad de dinero:'
 						name='Cantidad'
 						returnKeyType='done'
-						// onChangeText={handleChange("password")}
+						onChangeText={(value)=>handleChange(value)}
 						style={styles.inputCantidadDinero}
 					/>
 				</View>
