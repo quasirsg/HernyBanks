@@ -86,11 +86,12 @@ function MainStack() {
 			<Drawer.Screen name='Transactions' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recharge' component={Recharge} />
-			<Drawer.Screen name='Card' component={Card} />
+			{/* <Drawer.Screen name='Card' component={Card} /> */}
 			<Stack.Screen name='SelectContact' component={SelectContact} />
 			<Stack.Screen name='FinishSend' component={FinishSend} />
 			<Stack.Screen name='ContactCard' component={ContactCard} />
 			<Stack.Screen name='ContactList' component={ContactList} />
+			<Stack.Screen name='Card' component={Card} />
 		</Drawer.Navigator>
 	);
 }
