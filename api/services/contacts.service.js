@@ -21,7 +21,7 @@ module.exports = {
     mixin: [DbService],
 
     adapter: new MongooseAdapter(
-        'mongodb://localhost/henryBank', {
+        'mongodb://localhost/henrybank', {
             useNewUrlParser: true,
             useUnifiedTopology: true
         }
@@ -213,7 +213,7 @@ module.exports = {
 
     created() {
         mongoose.connect(
-                'mongodb://localhost/henryBank', {
+                'mongodb://localhost/henrybank', {
                     useNewUrlParser: true,
                     useUnifiedTopology: true
                 }
