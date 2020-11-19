@@ -8,6 +8,8 @@ import Button from "../../components/Button";
 import { Formik } from 'formik';
 import CustomInput from '../../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
+import  {transferMoney} from '../../store/actions/acountActions'
+import Toast from "react-native-toast-message";
 
 const { width, height } = Dimensions.get('window');
 
@@ -39,14 +41,16 @@ const ModalSelector = ({ show, control, setter }) => {
     )
 }
 
-export default function SelectContact({ navigation }) {
+export default function SelectContact({ navigation, route }) {
+    console.log('RECIBO::',route.params)
     const accounts = useSelector((state) => state.acoount.account);
     const accountP = accounts[0];
 	const accountD = accounts[1];
 	const balancP = accountP && accountP.balance;
     const balancD = accountD && accountD.balance;
-    console.log("***balance para contact***")
-    console.log(balancP)
+    const session = useSelector((state) => state.session.userDetail);
+    const dispatch = useDispatch();
+
     const [showModal, setShowModal] = React.useState(false);
     const [currency, setCurrency] = React.useState({
         selected: 'pesos'
@@ -55,7 +59,43 @@ export default function SelectContact({ navigation }) {
     const [currentBalance, setCurrentBalance] = React.useState({
         pesos: balancP,
         dollars: balancD
+    });
+
+    const [values, setValues]= React.useState({
+        amount: '',
+        description: ''
     })
+
+    const handleInput = (name, text) => {
+      setValues({...values, [name]: text})   
+      console.log(text);
+    }
+
+    const handleFinish = (data) => {
+        console.log('SESSION::',session)
+        const send = {
+            from: session.accounts[0].cvu,
+            to: data.accounts.pesos,
+            amount: values.amount,
+            description: values.description,
+        }
+        dispatch(transferMoney(send))
+
+        setTimeout(function () {
+            navigation.navigate('PosConsolidada');
+
+            Toast.show({
+              type: "success",
+              position: "top",
+              text1: "Transferencia exitosa",
+              text2: "Por favor verifique su saldo",
+              visibilityTime: 3000,
+              autoHide: true,
+              topOffset: 30,
+              bottomOffset: 40,
+            });
+        }, 3000);
+    }
 
     return (
         <ScrollView backgroundColor={'white'}>
@@ -63,12 +103,12 @@ export default function SelectContact({ navigation }) {
 
                 <View style={styles.header}>
 
-                    <Link to="/SelectContact">
+                    {/* <Link to="/SelectContact">
                         <View style={styles.rowI}>
                             <Icon name="arrow-left" color={'white'} size={25} />
                             <Text style={styles.back}> Volver </Text>
                         </View>
-                    </Link>
+                    </Link> */}
 
                     <View style={styles.rowII}>
                         <Icon name="money" color={'white'} size={30} />
@@ -102,17 +142,7 @@ export default function SelectContact({ navigation }) {
 
                     <View style={styles.formContainer}>
 
-                        <Formik
-                            initialValues={{
-                                ammount: '',
-                                type: '',
-                            }}
-
-                            onSubmit={(values, action) => {
-                                action.resetForm();
-                                dispatch(createUser(values, () => navigation.navigate('CodeVerification')));
-                            }}
-                        >
+                        <Formik>
                             <View style={styles.main}>
 
                                 <View style={styles.summary}>
@@ -124,15 +154,17 @@ export default function SelectContact({ navigation }) {
 
                                     <CustomInput
                                         label='Valor'
-                                        name='ammount'
+                                        name='amount'
                                         keyboardType={'phone-pad'}
                                         style={styles.input}
+                                        onChangeText={(value)=>handleInput('amount',value)}
                                     />
 
                                     <CustomInput
                                         label='Descripción'
                                         name='description'
                                         style={styles.input}
+                                        onChangeText={(value)=>handleInput('description',value)}
                                     />
 
                                     <Text style={styles.description}>Se trasferirán x valor/moneda a tu contacto x</Text>
@@ -142,7 +174,7 @@ export default function SelectContact({ navigation }) {
                                     mode="contained"
                                     secureTextEntry={true}
                                     style={styles.button}
-                                //onPress={() => navigation.navigate('FinishSend')}
+                                    onPress={() => handleFinish(route.params)}
                                 > Enviar
                                 </Button>
 
@@ -163,7 +195,6 @@ const styles = StyleSheet.create({
     header: {
         width: '100%',
         backgroundColor: theme.colors.primary,
-        paddingTop: 40,
         paddingLeft: 15
     },
     rowI: {
