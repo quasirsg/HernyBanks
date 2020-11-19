@@ -159,7 +159,7 @@ export default function PosConsolidada({ navigation }) {
           <View style={styles.accionesContainer}>
             <Animatable.View
               animation="bounceInLeft"
-              duration={2000}
+              duration={1800}
               delay={1000}
             >
               <Text style={styles.textTitle}>Acciones</Text>
@@ -244,7 +244,7 @@ export default function PosConsolidada({ navigation }) {
           {/* Container de ULTIMOS MOVIMIENTOS de la cuenta */}
           <Animatable.View
             animation="fadeInUpBig"
-            duration={2000}
+            duration={1800}
             delay={1000}
           >
             <View style={{ marginVertical: 30 }}>
