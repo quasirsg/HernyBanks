@@ -10,7 +10,7 @@ import { st } from './store/store';
 import Estatistics from './screens/Estatistics';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
-import Welcome from './screens/welcome';
+import Welcome from './screens/Welcome';
 import WelcomeRecharge from './screens/WelcomeRecharge';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
@@ -26,7 +26,7 @@ import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
 
 // icons
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator(); //contiene la navegacion
 const Drawer = createDrawerNavigator(); // Menu lateral
@@ -109,10 +109,10 @@ export default function App() {
 
 // <--------------------- ESTILOS --------------------->
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+	container: {
+		flex: 1,
+		backgroundColor: 'white',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 });

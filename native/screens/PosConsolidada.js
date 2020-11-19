@@ -35,7 +35,7 @@ export default function PosConsolidada({ navigation }) {
 
 	const logoutHandler = () => {
 		dispatch(logoutUser());
-		navigation.navigate('welcome');
+		navigation.navigate('Welcome');
 		return;
 	};
 
