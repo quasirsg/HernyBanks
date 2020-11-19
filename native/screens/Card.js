@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CreditCardInput, LiteCreditCardInput } from 'react-native-credit-card-input';
 import { useDispatch, useSelector } from 'react-redux';
 import { theme } from '../core/theme';
-import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, Modal } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, Modal, ScrollView } from 'react-native';
 import { rechargeByCard } from '../store/actions/acountActions';
 import CustomInput from '../components/CustomInput';
 import Button from '../components/Button';
@@ -70,7 +70,7 @@ const Card = () => {
 	};
 
 	return (
-		<View>
+		<ScrollView>
 			{/* Imagen de fondo */}
 			<Image source={require('../assets/background2.png')} style={{ position: 'absolute', backgroundColor: 'white' }} />
 			<View style={styles.containerPrincipal}>
@@ -115,7 +115,7 @@ const Card = () => {
 					</Button>
 				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 

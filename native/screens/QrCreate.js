@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rechargeByQr } from '../store/actions/acountActions';
 // import all the components we are going to use
-import { SafeAreaView, Text, View, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { SafeAreaView, ScrollView, Text, View, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { theme } from '../core/theme';
 import QRCode from 'react-native-qrcode-svg';
 import { set } from 'react-native-reanimated';
@@ -36,7 +36,7 @@ const Qrnative = () => {
 	console.log(inputText);
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<ScrollView style={{ flex: 1 }}>
 			{/* Imagen de fondo */}
 			<Image source={require('../assets/background1.png')} style={{ position: 'absolute', backgroundColor: 'white' }} />
 			<View style={styles.container}>
@@ -93,7 +93,7 @@ const Qrnative = () => {
 					Generar codigo
 				</Button>
 			</View>
-		</SafeAreaView>
+		</ScrollView>
 	);
 };
 export default Qrnative;
