@@ -24,7 +24,7 @@ import ContactList from './screens/Contactos/ContactList';
 import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
-// import Card from './screens/Card'
+import Card from './screens/Card'
 
 // icons
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -86,7 +86,7 @@ function MainStack() {
 			<Drawer.Screen name='Transactions' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recharge' component={Recharge} />
-			{/* <Drawer.Screen name='Card' component={Card} /> */}
+			<Drawer.Screen name='Card' component={Card} />
 			<Stack.Screen name='SelectContact' component={SelectContact} />
 			<Stack.Screen name='FinishSend' component={FinishSend} />
 			<Stack.Screen name='ContactCard' component={ContactCard} />

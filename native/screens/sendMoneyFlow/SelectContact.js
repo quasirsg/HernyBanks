@@ -6,6 +6,7 @@ import { theme } from '../../core/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '../../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
+import { getContact } from '../../store/actions/contactsAction'
 
 const { width, height } = Dimensions.get('window');
 
@@ -79,14 +80,7 @@ const testingContacts = [
 ];
 
 const SummaryItem = ({ keyName, value }) => {
-	const dispatch = useDispatch();
-	const session = useSelector((state) => state.session.userDetail);
 
-	useEffect(() => {
-		let id = session._id
-		console.log('holaaaa soy card List')
-		// dispatch(getContact(id))
-	}, []);
 
 	return (
 		<View style={styles.summary}>
@@ -98,6 +92,15 @@ const SummaryItem = ({ keyName, value }) => {
 
 export default function SelectContact({ navigation }) {
 	const myContacts = testingContacts; // Aquí se debe hacer la consulta a la api para traer los contactos del usuario
+	const dispatch = useDispatch();
+	const session = useSelector((state) => state.session.userDetail);
+	const contacts = useSelector((state) => state.contact.contact);
+	const contactArray = contacts && contacts
+	console.log(contacts)
+	useEffect(() => {
+		let id = session._id
+		dispatch(getContact(id))
+	}, []);
 	const [selected, setSelected] = React.useState({
 		name: '',
 		email: '',
@@ -133,7 +136,7 @@ export default function SelectContact({ navigation }) {
 				<View style={styles.contactContainer}>
 					<Text style={styles.contactTitle}> Selecciona el destinatario </Text>
 					<ScrollView>
-						{myContacts.map((contact, i) => (
+						{contacts.map((contact, i) => (
 							<TouchableOpacity style={styles.contactList} name={contact} onPress={() => handleSelect(contact)} key={i}>
 								<Text style={styles.name}>{contact.name}</Text>
 								<Text style={styles.complement}>{contact.email}</Text>
@@ -147,7 +150,7 @@ export default function SelectContact({ navigation }) {
 					<View style={styles.summaryContent}>
 						<SummaryItem keyName={'Nombre'} value={selected.name} />
 						<SummaryItem keyName={'Correo'} value={selected.email} />
-						<SummaryItem keyName={'CVU'} value={selected.cvu} />
+						{/* <SummaryItem keyName={'CVU'} value={selected.accounts.pesos} /> */}
 						<SummaryItem keyName={'Teléfono'} value={selected.phone} />
 					</View>
 				</View>

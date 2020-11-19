@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD } from "../constans/constans";
+import { GET_CONTACT } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
@@ -18,7 +18,7 @@ export function getContact(id) {
       .then((res) => {
           console.log(res.data)
         dispatch({
-          type: GET_ACCOUNT,
+          type: GET_CONTACT,
           data: res.data || [],
         });
 
