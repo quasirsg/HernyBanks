@@ -34,7 +34,7 @@ const Card = ({navigation}) => {
 	const onFocus = (field) => console.log('focus', field);
 
 	const handlerSubmit = () => {
-    dispatch(rechargeByCard(inputText, () => navigation.navigate('PosConsolidada')));
+    dispatch(rechargeByCard(inputText));
     
 		return;
   };

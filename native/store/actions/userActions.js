@@ -41,12 +41,13 @@ export function createUser(userData, onSuccess) {
         }, 3000);
       })
       .catch((error) => {
+        console.log(error);
         setTimeout(function () {
           Toast.show({
             type: "error",
             position: "top",
             text1: "Error al registrarse",
-            text2: `${error.message}`,
+            text2: `${error.message.emailError}`,
             visibilityTime: 6000,
             autoHide: true,
             topOffset: 30,
