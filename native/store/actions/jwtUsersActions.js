@@ -22,9 +22,7 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
 			password: password,
 		})
 		.then((res) => {
-			const token = res.data;
-			var decoded = jwt_decode(token);
-
+      
       const token = res.data;
       var decoded = jwt_decode(token);
 
