@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Formik } from "formik";
@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import Logo from "../components/Logo";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as Animatable from "react-native-animatable";
+import Spinner from "react-native-loading-spinner-overlay";
 const Register = ({
   id,
   username,
@@ -21,6 +22,14 @@ const Register = ({
   navigation,
 }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  const startLoading = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
 
   return (
     <ScrollView backgroundColor={"white"}>
@@ -60,6 +69,7 @@ const Register = ({
           })}
           onSubmit={(values, action) => {
             action.resetForm();
+            startLoading();
             dispatch(
               createUser(values, () => navigation.navigate("CodeVerification"))
             );
@@ -67,7 +77,15 @@ const Register = ({
         >
           {({ handleChange, handleSubmit, values, errors, touched }) => (
             <View style={styles.form_container}>
-              <Animatable.View animation="bounceInUp">
+              <Spinner
+                //visibility of Overlay Loading Spinner
+                visible={loading}
+                //Text with the Spinner
+                textContent={"Loading..."}
+                //Text style of the Spinner Text
+                textStyle={styles.spinnerTextStyle}
+              />
+              <Animatable.View animation="bounceInUp" delay={1000}>
                 <CustomInput
                   label="Username"
                   name="username"

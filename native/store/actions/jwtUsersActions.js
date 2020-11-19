@@ -39,16 +39,18 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
       }
     })
     .catch((error) => {
-      Toast.show({
-        type: "error",
-        position: "top",
-        text1: "Login incorrecto",
-        text2: `Email o password incorrecto`,
-        visibilityTime: 6000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
+      setTimeout(function () {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "Login incorrecto",
+          text2: `Email o password incorrecto`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
     });
 };
 
@@ -68,27 +70,32 @@ export const getCurrentUser = (token) => async (dispatch) => {
         type: actionTypes.CURRENT_USER,
         user: res.data,
       });
-      Toast.show({
-        type: "success",
-        position: "top",
-        text1: `Bienvenido ${res.data.username} `,
-        visibilityTime: 6000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
+      setTimeout(function () {
+        Toast.show({
+          type: "success",
+          position: "top",
+          text1: `Bienvenido ${res.data.username} `,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
+
     })
     .catch((error) => {
-      Toast.show({
-        type: "error",
-        position: "top",
-        text1: "Error",
-        text2: `${error.message}`,
-        visibilityTime: 6000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
+      setTimeout(function () {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "Error",
+          text2: `${error.message}`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
     });
 };
 

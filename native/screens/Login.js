@@ -16,7 +16,7 @@ import CustomInput from "../components/CustomInput";
 import { theme } from "../core/theme";
 import Logo from "../components/Logo";
 import * as Animatable from "react-native-animatable";
-import Spinner from 'react-native-loading-spinner-overlay';
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default function Login({ id, email, password, isValid, navigation }) {
   const [hidePassword, setHidePassword] = useState(false);
@@ -28,19 +28,11 @@ export default function Login({ id, email, password, isValid, navigation }) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2000);
   };
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View>
-      <Spinner
-          //visibility of Overlay Loading Spinner
-          visible={loading}
-          //Text with the Spinner
-          textContent={'Loading...'}
-          //Text style of the Spinner Text
-          textStyle={styles.spinnerTextStyle}
-        />
         {/* <Logo /> */}
         <Text style={styles.title}>Iniciar sesión</Text>
 
@@ -57,11 +49,11 @@ export default function Login({ id, email, password, isValid, navigation }) {
           })}
           onSubmit={(values, action) => {
             let user = { ...values };
+            action.resetForm();
 
             //To lower case (wtf?)
             user.email = user.email.toLowerCase();
             startLoading();
-            action.resetForm();
             dispatch(
               loguinUser(user.email, user.password, () =>
                 navigation.navigate("PosConsolidada")
@@ -73,7 +65,15 @@ export default function Login({ id, email, password, isValid, navigation }) {
         >
           {({ handleChange, handleSubmit, values, errors, touched }) => (
             <View>
-              <Animatable.View animation="bounceInUp">
+              <Spinner
+                //visibility of Overlay Loading Spinner
+                visible={loading}
+                //Text with the Spinner
+                textContent={"Loading..."}
+                //Text style of the Spinner Text
+                textStyle={styles.spinnerTextStyle}
+              />
+              <Animatable.View animation="bounceInUp" delay={1000}>
                 <CustomInput
                   label="Correo"
                   name="email"
