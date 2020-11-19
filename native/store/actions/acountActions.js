@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ACCOUNT, RECHARGE_QR, UP_USER } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
@@ -19,7 +19,7 @@ export function getAccount(id) {
           console.log(res.data)
         dispatch({
           type: GET_ACCOUNT,
-          data: res.data || {},
+          data: res.data || [],
         });
 
       })
@@ -39,7 +39,7 @@ export function rechargeByQr(data) {
           console.log(res.data)
         dispatch({
           type: RECHARGE_QR,
-          data: res.data || [],
+          data: res.data || {},
         });
 
       })
@@ -49,22 +49,66 @@ export function rechargeByQr(data) {
   };
 }
 
-export function rechargeByCard(data) {
+export function rechargeByCard(data, onSuccess) {
   return (dispatch) => {
     console.log('***est este***')
     console.log(data)
-    // axios
-    //   .post(`${BACK_URL}/api/accounts/rechargeByQR/`, data)
-    //   .then((res) => {
-    //       console.log(res.data)
-    //     dispatch({
-    //       type: RECHARGE_QR,
-    //       data: res.data || [],
-    //     });
+    axios
+      .post(`${BACK_URL}/api/accounts/rechargeByCard`, data)
+      .then((res) => {
+        console.log('*****res card recharse***')
+          console.log(res.data)
+        dispatch({
+          type: RECHARGE_CARD,
+          data: res.data || {},
+        });
+        setTimeout(()=> {
+          Toast.show({
+            type: "success",
+            position: "top",
+            text1: ` Transaccion exitosa ... `,
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
+        }, 3000)
 
-    //   })
-    //   .catch((error) => {
-    //     console.log(error)
-    //   });
+        Toast.show({
+          type: "success",
+          position: "top",
+          text1: `Cargando ... `,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+
+
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  };
+}
+
+export function transferMoney(data) {
+  return (dispatch) => {
+    console.log('Transfer Money')
+    console.log(data)
+
+    axios
+      .post(`${BACK_URL}/api/accounts/transfer`, data)
+      .then((res) => {
+        console.log('Transferencia exitosa',res)
+        dispatch({
+          type: TRANSFER_MONEY,
+          data: res.data || {},
+        });
+
+      })
+      .catch((error) => {
+        console.log('Error en la transferencia',error)
+      });
   };
 }

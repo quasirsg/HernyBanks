@@ -4,7 +4,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, ImageBackg
 import { verifySession, logoutUser } from '../store/actions/jwtUsersActions';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import * as Animatable from 'react-native-animatable';
 import { getAccount } from '../store/actions/acountActions';
 
 // Dimensions
@@ -35,7 +35,7 @@ export default function PosConsolidada({ navigation }) {
 
 	const logoutHandler = () => {
 		dispatch(logoutUser());
-		navigation.navigate('Welcome');
+		navigation.navigate('welcome');
 		return;
 	};
 
@@ -67,11 +67,22 @@ export default function PosConsolidada({ navigation }) {
 										{/* Container de BALANCE de la cuenta */}
 										<View style={styles.balanceContainer}>
 											<Text style={styles.textTitle}>Saldo de la cuenta en {cuenta.type}</Text>
-											<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+											<View
+												style={{
+													flexDirection: 'row',
+													justifyContent: 'center',
+												}}
+											>
 												<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' + cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
 											</View>
 											{/* Separador Vertical */}
-											<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
+											<View
+												style={{
+													borderBottomColor: 'grey',
+													borderBottomWidth: 1,
+													marginVertical: 5,
+												}}
+											/>
 											<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
 											<TouchableOpacity
 												style={{ alignItems: 'flex-end', marginTop: 0 }}
@@ -94,7 +105,13 @@ export default function PosConsolidada({ navigation }) {
 										<Text style={styles.text_saldoCuenta2}> $ 1234560</Text>
 									</View>
 									{/* Separador Vertical */}
-									<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 5 }} />
+									<View
+										style={{
+											borderBottomColor: 'grey',
+											borderBottomWidth: 1,
+											marginVertical: 5,
+										}}
+									/>
 									<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
 									<TouchableOpacity
 										style={{ alignItems: 'flex-end', marginTop: 0 }}
@@ -111,97 +128,130 @@ export default function PosConsolidada({ navigation }) {
 
 					{/* ACCIONES */}
 					<View style={styles.accionesContainer}>
-						<Text style={styles.textTitle}>Acciones</Text>
-						<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-							<TouchableOpacity
-								onPress={() => {
-									navigation.navigate('Recharge');
+						<Animatable.View animation='bounceInLeft' duration={1800} delay={1000}>
+							<Text style={styles.textTitle}>Acciones</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
 								}}
-								style={{ width: '30%' }}
 							>
-								<View style={{ alignItems: 'center' }}>
-									<View style={styles.mainActionIconContainer}>
-										<Ionicons name='ios-wallet' color='indigo' size={35}></Ionicons>
+								<TouchableOpacity
+									onPress={() => {
+										navigation.navigate('Recharge');
+									}}
+									style={{ width: '30%' }}
+								>
+									<View style={{ alignItems: 'center' }}>
+										<View style={styles.mainActionIconContainer}>
+											<Ionicons name='ios-wallet' color='indigo' size={35}></Ionicons>
+										</View>
+										<Text style={styles.text_acciones}>Recargar Dinero</Text>
 									</View>
-									<Text style={styles.text_acciones}>Recargar Dinero</Text>
-								</View>
-							</TouchableOpacity>
+								</TouchableOpacity>
 
-							{/* BOTON DE CARLOS, REVISAR SI ESTA BIEN */}
-							{/* <TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}></TouchableOpacity> */}
+								{/* BOTON DE CARLOS, REVISAR SI ESTA BIEN */}
+								{/* <TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}></TouchableOpacity> */}
 
-							<TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}>
-								<View style={{ alignItems: 'center' }}>
-									<View style={styles.mainActionIconContainer}>
-										<Ionicons name='ios-send' color='indigo' size={35}></Ionicons>
+								<TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}>
+									<View style={{ alignItems: 'center' }}>
+										<View style={styles.mainActionIconContainer}>
+											<Ionicons name='ios-send' color='indigo' size={35}></Ionicons>
+										</View>
+										<Text style={styles.text_acciones}>Mandar Dinero</Text>
 									</View>
-									<Text style={styles.text_acciones}>Mandar Dinero</Text>
-								</View>
-							</TouchableOpacity>
+								</TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => {
+										alert('Pagar');
+									}}
+									style={{ width: '30%' }}
+								>
+									<View style={{ alignItems: 'center' }}>
+										<View style={styles.mainActionIconContainer}>
+											<Ionicons name='ios-cart' color='indigo' size={35}></Ionicons>
+										</View>
+										<Text style={styles.text_acciones}>Pagar</Text>
+									</View>
+								</TouchableOpacity>
+							</View>
 							<TouchableOpacity
-								onPress={() => {
-									alert('Pagar');
+								style={{
+									alignItems: 'flex-end',
+									alignSelf: 'flex-end',
+									marginTop: 10,
+									paddingVertical: 10,
+									marginRight: 5,
+									maxWidth: '50%',
 								}}
-								style={{ width: '30%' }}
+								onPress={() => {
+									alert('Ver todas las acciones');
+								}}
 							>
-								<View style={{ alignItems: 'center' }}>
-									<View style={styles.mainActionIconContainer}>
-										<Ionicons name='ios-cart' color='indigo' size={35}></Ionicons>
-									</View>
-									<Text style={styles.text_acciones}>Pagar</Text>
-								</View>
+								<Text style={styles.text_link}>Ver todas las acciones</Text>
 							</TouchableOpacity>
-						</View>
-						<TouchableOpacity
-							style={{ alignItems: 'flex-end', alignSelf: 'flex-end', marginTop: 10, paddingVertical: 10, marginRight: 5, maxWidth: '50%' }}
-							onPress={() => {
-								alert('Ver todas las acciones');
-							}}
-						>
-							<Text style={styles.text_link}>Ver todas las acciones</Text>
-						</TouchableOpacity>
+						</Animatable.View>
 					</View>
 
 					{/* Container de ULTIMOS MOVIMIENTOS de la cuenta */}
-					<View style={{ marginVertical: 30 }}>
-						<View style={styles.ultimosMovimientosContainer}>
-							<Text style={styles.textTitle_ultimosMovimientos}>Úlitmos movimientos</Text>
+					<Animatable.View animation='fadeInUpBig' duration={1800} delay={1000}>
+						<View style={{ marginVertical: 30 }}>
+							<View style={styles.ultimosMovimientosContainer}>
+								<Text style={styles.textTitle_ultimosMovimientos}>Úlitmos movimientos</Text>
 
-							{/* .map de ULTIMOS MOVIMIENTOS */}
-							{arrayDePruebaMovimientos.map((mov, key) => {
-								return (
-									<View key={key}>
-										{/* fila de ULTIMO MOVIMIENTO */}
-										<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-											<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-												<View style={styles.shopBrandLogosContainer}>
-													<Image source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }} style={{ height: 30, width: 30 }}></Image>
+								{/* .map de ULTIMOS MOVIMIENTOS */}
+								{arrayDePruebaMovimientos.map((mov, key) => {
+									return (
+										<View key={key}>
+											{/* fila de ULTIMO MOVIMIENTO */}
+											<View
+												style={{
+													flexDirection: 'row',
+													justifyContent: 'space-between',
+													alignItems: 'center',
+												}}
+											>
+												<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+													<View style={styles.shopBrandLogosContainer}>
+														<Image
+															source={{
+																uri: 'https://reactnative.dev/img/tiny_logo.png',
+															}}
+															style={{ height: 30, width: 30 }}
+														></Image>
+													</View>
+													<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+														<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
+														<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+													</View>
 												</View>
-												<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-													<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-													<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+												<View style={{ alignItems: 'center' }}>
+													<Text style={styles.text_ingresosUltimosMovimientos}> $ {key}</Text>
 												</View>
 											</View>
-											<View style={{ alignItems: 'center' }}>
-												<Text style={styles.text_ingresosUltimosMovimientos}> $ {key}</Text>
-											</View>
+											{/* Separador Horizontal */}
+											<View
+												style={{
+													borderBottomColor: 'grey',
+													borderBottomWidth: 1,
+													marginVertical: 10,
+												}}
+											/>
 										</View>
-										{/* Separador Horizontal */}
-										<View style={{ borderBottomColor: 'grey', borderBottomWidth: 1, marginVertical: 10 }} />
-									</View>
-								);
-							})}
+									);
+								})}
 
-							<TouchableOpacity
-								style={{ alignItems: 'flex-end', marginTop: 30 }}
-								onPress={() => {
-									alert('Ver mas movimientos');
-								}}
-							>
-								<Text style={styles.text_link}>Ver mas movimientos</Text>
-							</TouchableOpacity>
+								<TouchableOpacity
+									style={{ alignItems: 'flex-end', marginTop: 30 }}
+									onPress={() => {
+										alert('Ver mas movimientos');
+									}}
+								>
+									<Text style={styles.text_link}>Ver mas movimientos</Text>
+								</TouchableOpacity>
+							</View>
 						</View>
-					</View>
+					</Animatable.View>
 				</ScrollView>
 			)}
 		</View>

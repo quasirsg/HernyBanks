@@ -27,6 +27,7 @@ import { theme } from "../core/theme";
 import Icon from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
+
 import Spinner from "react-native-loading-spinner-overlay";
 const AltaUser = ({
   id,
@@ -125,230 +126,206 @@ const AltaUser = ({
   }
 
   return (
-    <ScrollView>
-      <Background>
-        <View style={styles.altauser}>
-          <View>
-            {Object.keys(userUp).length === 0 ? (
-              <View>
-                <View>
-                  <Link to="/AltaUser">
-                    <Icon name="angle-left" color="#422C63" size={50} />
-                  </Link>
-                </View>
-                <Text
-                  style={{
-                    fontSize: 30,
-                    fontWeight: "bold",
-                    color: "purple",
-                    textAlign: "center",
-                  }}
-                >
-                  <Header>
-                    Tu código es incorrecto. Vuelve atrás e inténtalo
-                    nuevamente.
-                  </Header>
-                </Text>
-              </View>
-            ) : (
-              <Formik
-                initialValues={{
-                  name: "",
-                  lastname: "",
-                  phone: "",
-                  address: "",
-                  // dob: "",
-                  _id: userUp._id,
-                }}
-                validationSchema={Yup.object({
-                  name: Yup.string()
-                    .min(4, "Debe tener al menos 4 caracteres")
-                    .max(50, "Debe tener 50 caracteres o menos")
-                    .required("Debes completar este campo"),
-                  lastname: Yup.string()
-                    .min(4, "Debe tener al menos 4 caracteres")
-                    .max(50, "Debe tener 50 caracteres o menos")
-                    .required("Debes completar este campo"),
-                  phone: Yup.string()
-                    .required("Please Enter your Phone Number")
-                    .matches(
-                      /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-                      "Phone number is not valid"
-                    ),
-                  address: Yup.string()
-                    .min(6, "Debe tener al menos 6 caracteres")
-                    .max(50, "Debe tener 50 caracteres o menos")
-                    .required("Debes completar este campo")
-                    .test(
-                      "verifyAddress",
-                      "Domicilio inexistente en esa Provincia, Departamento o localidad",
-                      (address) => {
-                        return handleAddress(address);
-                      }
-                    ),
-                  // dob: Yup.string()
-                  //   .min(4, "Debe tener al menos 4 caracteres")
-                  //   .max(50, "Debe tener 50 caracteres o menos")
-                  //   .required("Debes completar este campo"),
-                })}
-                onSubmit={async (values, action) => {
-                  action.resetForm();
-                  values.address =
-                    values.address +
-                    ", " +
-                    selectedProvince +
-                    ", " +
-                    selectedDepartamento +
-                    ", " +
-                    selectedLocalidad;
-                  //console.log('VALORES SUBMIT',values)
-                  startLoading();
-                  dispatch(
-                    completeUserRegister(values, () =>
-                      navigation.navigate("Login")
-                    )
-                  );
-                }}
-              >
-                {({ handleChange, handleSubmit, values, errors }) => (
-                  <View>
-                    <Spinner
-                      //visibility of Overlay Loading Spinner
-                      visible={loading}
-                      //Text with the Spinner
-                      textContent={"Loading..."}
-                      //Text style of the Spinner Text
-                      textStyle={styles.spinnerTextStyle}
-                    />
-                    <Text style={styles.header}>Darse de alta</Text>
+    <ScrollView backgroundColor={"white"}>
 
-                    <CustomInput
-                      label="Nombre"
-                      name="name"
-                      onChangeText={handleChange("name")}
-                      value={values.name}
-                      style={styles.input}
-                    />
+        <View style={styles.container}>
+          <Text style={styles.title}>Darse de alta</Text>
+          <Formik
+            initialValues={{
+              name: "",
+              lastname: "",
+              phone: "",
+              address: "",
+              // dob: "",
+              _id: userUp._id,
+            }}
+            validationSchema={Yup.object({
+              name: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo"),
+              lastname: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo"),
+              phone: Yup.string()
+                .required("Please Enter your Phone Number")
+                .matches(
+                  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                  "Phone number is not valid"
+                ),
+              address: Yup.string()
+                .min(6, "Debe tener al menos 6 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo")
+                .test(
+                  "verifyAddress",
+                  "Domicilio inexistente en esa Provincia, Departamento o localidad",
+                  (address) => {
+                    return handleAddress(address);
+                  }
+                ),
+              // dob: Yup.string()
+              //   .min(4, "Debe tener al menos 4 caracteres")
+              //   .max(50, "Debe tener 50 caracteres o menos")
+              //   .required("Debes completar este campo"),
+            })}
+            onSubmit={async (values, action) => {
+              action.resetForm();
+              values.address =
+                values.address +
+                ", " +
+                selectedProvince +
+                ", " +
+                selectedDepartamento +
+                ", " +
+                selectedLocalidad;
+              //console.log('VALORES SUBMIT',values)
+              startLoading();
+              dispatch(
+                completeUserRegister(values, () => navigation.navigate("Login"))
+              );
+            }}
+          >
+            {({ handleChange, handleSubmit, values, errors }) => (
+              <View style={styles.form_container}>
+                <Spinner
+                  //visibility of Overlay Loading Spinner
+                  visible={loading}
+                  //Text with the Spinner
+                  textContent={"Loading..."}
+                  //Text style of the Spinner Text
+                  textStyle={styles.spinnerTextStyle}
+                />
 
-                    {values.name.length >= 4 && !errors.name && (
-                      <Icon name="check" size={40} color="green" />
-                    )}
+                <Animatable.View animation="bounceInUp" delay={500}>
+                  <CustomInput
+                    label="Nombre"
+                    name="name"
+                    onChangeText={handleChange("name")}
+                    value={values.name}
+                    style={styles.input}
+                  />
+                  {errors.name ? (
+                    <Text style={styles.error}>{errors.name}</Text>
+                  ) : values.name.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
 
-                    {errors.name && (
-                      <Text style={{ fontSize: 10, color: "red" }}>
-                        {errors.name}
-                      </Text>
-                    )}
+                  {/*  */}
+                  <CustomInput
+                    label="Apellido"
+                    name="lastname"
+                    onChangeText={handleChange("lastname")}
+                    value={values.lastname}
+                    style={styles.input}
+                  />
 
-                    {/*  */}
-                    <CustomInput
-                      label="Apellido"
-                      name="lastname"
-                      onChangeText={handleChange("lastname")}
-                      value={values.lastname}
-                      style={styles.input}
-                    />
+                  {errors.lastname ? (
+                    <Text style={styles.error}>{errors.lastname}</Text>
+                  ) : values.lastname.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
 
-                    {values.lastname.length >= 4 && !errors.lastname && (
-                      <Icon name="check" size={40} color="green" />
-                    )}
+                  {/*  */}
 
-                    {errors.lastname && (
-                      <Text style={{ fontSize: 10, color: "red" }}>
-                        {errors.lastname}
-                      </Text>
-                    )}
+                  <CustomInput
+                    placeholder="Teléfono"
+                    name="phone"
+                    onChangeText={handleChange("phone")}
+                    value={values.phone}
+                    style={styles.input}
+                    keyboardType={"phone-pad"}
+                  />
 
-                    {/*  */}
+                  {errors.phone ? (
+                    <Text style={styles.error}>{errors.phone}</Text>
+                  ) : values.phone.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
+                  {/*  */}
 
-                    <CustomInput
-                      placeholder="Teléfono"
-                      name="phone"
-                      onChangeText={handleChange("phone")}
-                      value={values.phone}
-                      style={styles.input}
-                    />
+                  <Text>Provincias</Text>
+                  {provinces && (
+                    <Picker
+                      style={styles.picker}
+                      selectedValue={selectedProvince}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setSelectedProvince(itemValue);
+                        console.log(itemValue);
+                        getDepartamentos(itemValue);
+                      }}
+                    >
+                      {provinces &&
+                        provinces.map((province, i) => {
+                          return (
+                            <Picker.Item
+                              key={i}
+                              label={province.nombre}
+                              value={province.nombre}
+                            ></Picker.Item>
+                          );
+                        })}
+                    </Picker>
+                  )}
+                  <Text>Departamentos</Text>
+                  {departamentos && (
+                    <Picker
+                      style={styles.picker}
+                      selectedValue={selectedDepartamento}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setSelectedDepartamento(itemValue);
+                        getLocalidades(selectedProvince, itemValue);
+                      }}
+                    >
+                      {departamentos &&
+                        departamentos.map((departamento, i) => {
+                          return (
+                            <Picker.Item
+                              key={i}
+                              label={departamento.nombre}
+                              value={departamento.nombre}
+                            ></Picker.Item>
+                          );
+                        })}
+                    </Picker>
+                  )}
+                  <Text>localidades</Text>
+                  {localidades && (
+                    <Picker
+                      style={styles.picker}
+                      selectedValue={selectedLocalidad}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setSelectedLocalidad(itemValue);
+                        console.log(selectedLocalidad);
+                      }}
+                    >
+                      {localidades &&
+                        localidades.map((localidad, i) => {
+                          return (
+                            <Picker.Item
+                              key={i}
+                              label={localidad.nombre}
+                              value={localidad.nombre}
+                            ></Picker.Item>
+                          );
+                        })}
+                    </Picker>
+                  )}
 
-                    {values.phone.length >= 4 && !errors.phone && (
-                      <Icon name="check" size={40} color="green" />
-                    )}
-
-                    {errors.phone && (
-                      <Text style={{ fontSize: 10, color: "red" }}>
-                        {errors.phone}
-                      </Text>
-                    )}
-                    {/*  */}
-
-                    <Text>Provincias</Text>
-                    {provinces && (
-                      <Picker
-                        style={styles.picker}
-                        selectedValue={selectedProvince}
-                        onValueChange={(itemValue, itemIndex) => {
-                          setSelectedProvince(itemValue);
-                          console.log(itemValue);
-                          getDepartamentos(itemValue);
-                        }}
-                      >
-                        {provinces &&
-                          provinces.map((province, i) => {
-                            return (
-                              <Picker.Item
-                                key={i}
-                                label={province.nombre}
-                                value={province.nombre}
-                              ></Picker.Item>
-                            );
-                          })}
-                      </Picker>
-                    )}
-                    <Text>Departamentos</Text>
-                    {departamentos && (
-                      <Picker
-                        style={styles.picker}
-                        selectedValue={selectedDepartamento}
-                        onValueChange={(itemValue, itemIndex) => {
-                          setSelectedDepartamento(itemValue);
-                          getLocalidades(selectedProvince, itemValue);
-                        }}
-                      >
-                        {departamentos &&
-                          departamentos.map((departamento, i) => {
-                            return (
-                              <Picker.Item
-                                key={i}
-                                label={departamento.nombre}
-                                value={departamento.nombre}
-                              ></Picker.Item>
-                            );
-                          })}
-                      </Picker>
-                    )}
-                    <Text>localidades</Text>
-                    {localidades && (
-                      <Picker
-                        style={styles.picker}
-                        selectedValue={selectedLocalidad}
-                        onValueChange={(itemValue, itemIndex) => {
-                          setSelectedLocalidad(itemValue);
-                          console.log(selectedLocalidad);
-                        }}
-                      >
-                        {localidades &&
-                          localidades.map((localidad, i) => {
-                            return (
-                              <Picker.Item
-                                key={i}
-                                label={localidad.nombre}
-                                value={localidad.nombre}
-                              ></Picker.Item>
-                            );
-                          })}
-                      </Picker>
-                    )}
-
-                    {/* <CustomInput
+                  {/* <CustomInput
                   placeholder="Fecha de nacimiento"
                   name="dob"
                   onChangeText={handleChange("dob")}
@@ -365,70 +342,69 @@ const AltaUser = ({
                     {errors.dob}
                   </Text>
                 )} */}
-                    {/*  */}
+                  {/*  */}
 
-                    <CustomInput
-                      label="Dirección"
-                      name="address"
-                      onChangeText={handleChange("address")}
-                      value={values.address}
-                      style={styles.input}
-                    />
+                  <CustomInput
+                    label="Dirección"
+                    name="address"
+                    onChangeText={handleChange("address")}
+                    value={values.address}
+                    style={styles.input}
+                  />
 
-                    {values.address.length >= 4 && !errors.address && (
-                      <Icon name="check" size={40} color="green" />
-                    )}
+                  {errors.address ? (
+                    <Text style={styles.error}>{errors.address}</Text>
+                  ) : values.address.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
+                  {/*  */}
 
-                    {errors.address && (
-                      <Text style={{ fontSize: 10, color: "red" }}>
-                        {errors.address}
-                      </Text>
-                    )}
-                    {/*  */}
-
-                    <Button
-                      mode="contained"
-                      secureTextEntry={true}
-                      title="Register"
-                      style={styles.createButton}
-                      onPress={handleSubmit}
-                    >
-                      Enviar
-                    </Button>
-                  </View>
-                )}
-              </Formik>
+                  <Button
+                    mode="contained"
+                    secureTextEntry={true}
+                    title="Register"
+                    style={styles.button}
+                    onPress={handleSubmit}
+                  >
+                    Enviar
+                  </Button>
+                </Animatable.View>
+              </View>
             )}
-          </View>
+          </Formik>
         </View>
-      </Background>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  title: {
+    textAlign: "center",
+    paddingTop: 120,
+    fontSize: 30,
+    paddingBottom: 20,
+    fontWeight: "bold",
+    color: theme.colors.primary,
+  },
   label: {
     color: theme.colors.secondary,
-    //borderColor: 'darkorchid',
   },
-  header: {
-    textAlign: "center",
-    fontSize: 30,
-    color: "darkorchid",
-    marginTop: 0,
-  },
-  /* picker: {
-    backgroundColor: 'black',
-  }, */
-  altauser: {
-    width: vw(60),
-    height: vh(100),
-    justifyContent: "space-evenly",
-    alignItems: "stretch",
+  form_container: {
+    width: "70%",
   },
   button: {
-    marginTop: 24,
-    borderRadius: 90,
+    marginTop: 20,
+    marginBottom: 30,
+    backgroundColor: theme.colors.primary,
   },
   row: {
     flexDirection: "row",
@@ -441,6 +417,10 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     backgroundColor: "white",
+  },
+  error: {
+    fontSize: 10,
+    color: "red",
   },
 });
 

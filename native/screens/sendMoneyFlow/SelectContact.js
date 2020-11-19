@@ -1,83 +1,85 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Linking, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Link } from '@react-navigation/native';
 import { theme } from '../../core/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '../../components/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContact } from '../../store/actions/contactsAction'
 
 const { width, height } = Dimensions.get('window');
 
-const testingContacts = [
-	{
-		name: 'Carlos',
-		email: 'carlos@gmail.com',
-		cvu: '0001234567891011121311',
-		phone: '3011234561',
-	},
-	{
-		name: 'Juan',
-		email: 'juanito@gmail.com',
-		cvu: '0001234567891011121312',
-		phone: '3011234562',
-	},
-	{
-		name: 'Camilo',
-		email: 'cami@gmail.com',
-		cvu: '0001234567891011121313',
-		phone: '3011234563',
-	},
-	{
-		name: 'Olivert',
-		email: 'oli@gmail.com',
-		cvu: '0001234567891011121314',
-		phone: '3011234564',
-	},
-	{
-		name: 'Gabriela',
-		email: 'gabi@gmail.com',
-		cvu: '0001234567891011121315',
-		phone: '3011234565',
-	},
-	{
-		name: 'Sebastian',
-		email: 'sebas@gmail.com',
-		cvu: '0001234567891011121316',
-		phone: '3011234566',
-	},
-	{
-		name: 'Cecilia',
-		email: 'ceci@gmail.com',
-		cvu: '0001234567891011121317',
-		phone: '3011234567',
-	},
-	{
-		name: 'Alexis',
-		email: 'alex@gmail.com',
-		cvu: '0001234567891011121318',
-		phone: '3011234568',
-	},
-	{
-		name: 'Pedro',
-		email: 'pedro@gmail.com',
-		cvu: '0001234567891011121319',
-		phone: '3011234569',
-	},
-	{
-		name: 'Ana',
-		email: 'ana@gmail.com',
-		cvu: '0001234567891011121311',
-		phone: '3011234510',
-	},
-	{
-		name: 'Maria',
-		email: 'maria@gmail.com',
-		cvu: '0001234567891011121312',
-		phone: '3011234511',
-	},
-];
+// const testingContacts = [
+// 	{
+// 		name: 'Carlos',
+// 		email: 'carlos@gmail.com',
+// 		phone: '3011234561',
+// 	},
+// 	{
+// 		name: 'Juan',
+// 		email: 'juanito@gmail.com',
+// 		cvu: '0001234567891011121312',
+// 		phone: '3011234562',
+// 	},
+// 	{
+// 		name: 'Camilo',
+// 		email: 'cami@gmail.com',
+// 		cvu: '0001234567891011121313',
+// 		phone: '3011234563',
+// 	},
+// 	{
+// 		name: 'Olivert',
+// 		email: 'oli@gmail.com',
+// 		cvu: '0001234567891011121314',
+// 		phone: '3011234564',
+// 	},
+// 	{
+// 		name: 'Gabriela',
+// 		email: 'gabi@gmail.com',
+// 		cvu: '0001234567891011121315',
+// 		phone: '3011234565',
+// 	},
+// 	{
+// 		name: 'Sebastian',
+// 		email: 'sebas@gmail.com',
+// 		cvu: '0001234567891011121316',
+// 		phone: '3011234566',
+// 	},
+// 	{
+// 		name: 'Cecilia',
+// 		email: 'ceci@gmail.com',
+// 		cvu: '0001234567891011121317',
+// 		phone: '3011234567',
+// 	},
+// 	{
+// 		name: 'Alexis',
+// 		email: 'alex@gmail.com',
+// 		cvu: '0001234567891011121318',
+// 		phone: '3011234568',
+// 	},
+// 	{
+// 		name: 'Pedro',
+// 		email: 'pedro@gmail.com',
+// 		cvu: '0001234567891011121319',
+// 		phone: '3011234569',
+// 	},
+// 	{
+// 		name: 'Ana',
+// 		email: 'ana@gmail.com',
+// 		cvu: '0001234567891011121311',
+// 		phone: '3011234510',
+// 	},
+// 	{
+// 		name: 'Maria',
+// 		email: 'maria@gmail.com',
+// 		phone: '3011234511',
+// 	},
+// ];
 
 const SummaryItem = ({ keyName, value }) => {
+
+
 	return (
 		<View style={styles.summary}>
 			<Text style={styles.summaryKey}>{keyName}: </Text>
@@ -87,11 +89,20 @@ const SummaryItem = ({ keyName, value }) => {
 };
 
 export default function SelectContact({ navigation }) {
-	const myContacts = testingContacts; // Aquí se debe hacer la consulta a la api para traer los contactos del usuario
+	//const myContacts = testingContacts; // Aquí se debe hacer la consulta a la api para traer los contactos del usuario
+	const dispatch = useDispatch();
+	const session = useSelector((state) => state.session.userDetail);
+	const contacts = useSelector((state) => state.contact.contact);
+	const contactArray = contacts && contacts
+	console.log('ENVIO::',contacts)
+	useEffect(() => {
+		let id = session._id
+		dispatch(getContact(id))
+	}, []);
 	const [selected, setSelected] = React.useState({
 		name: '',
 		email: '',
-		cvu: '',
+		accounts: {},
 		phone: '',
 	});
 
@@ -123,7 +134,7 @@ export default function SelectContact({ navigation }) {
 				<View style={styles.contactContainer}>
 					<Text style={styles.contactTitle}> Selecciona el destinatario </Text>
 					<ScrollView>
-						{myContacts.map((contact, i) => (
+						{contacts.map((contact, i) => (
 							<TouchableOpacity style={styles.contactList} name={contact} onPress={() => handleSelect(contact)} key={i}>
 								<Text style={styles.name}>{contact.name}</Text>
 								<Text style={styles.complement}>{contact.email}</Text>
@@ -137,13 +148,13 @@ export default function SelectContact({ navigation }) {
 					<View style={styles.summaryContent}>
 						<SummaryItem keyName={'Nombre'} value={selected.name} />
 						<SummaryItem keyName={'Correo'} value={selected.email} />
-						<SummaryItem keyName={'CVU'} value={selected.cvu} />
+						{/* <SummaryItem keyName={'CVU'} value={selected.accounts.pesos} /> */}
 						<SummaryItem keyName={'Teléfono'} value={selected.phone} />
 					</View>
 				</View>
 
 				<View style={styles.buttonContainer}>
-					<Button mode='contained' secureTextEntry={true} style={styles.button} onPress={() => navigation.navigate('FinishSend')}>
+					<Button mode='contained' secureTextEntry={true} style={styles.button} onPress={() => navigation.navigate('FinishSend', selected) }>
 						Siguiente
 					</Button>
 				</View>

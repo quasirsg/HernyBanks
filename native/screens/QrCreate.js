@@ -22,7 +22,7 @@ const Qrnative = () => {
 	const account = accounts[0];
 	const cvuV = account && account.cvu;
 	const [inputText, setInputText] = useState({
-		cvu: cvuV,
+		cvu: "",
 		amount: '',
 	});
 	const [qrvalue, setQrvalue] = useState('');
@@ -83,7 +83,7 @@ const Qrnative = () => {
 					label='Cantidad de dinero:'
 					name='Cantidad'
 					returnKeyType='done'
-					// onChangeText={(text) => setInputText({ ...inputText, amount: text })}
+					onChangeText={(text) => setInputText({ ...inputText, amount: text, cvu:cvuV })}
 					style={styles.inputCantidadDinero}
 				/>
 				{/* <TouchableOpacity style={styles.buttonStyle} onPress={handlerSubmit}>
