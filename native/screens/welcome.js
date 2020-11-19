@@ -5,12 +5,17 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
+import { theme } from "../core/theme";
+import Button from "../components/Button";
 import * as Animatable from "react-native-animatable";
 const image = {
   uri:
     "https://cdn.pixabay.com/photo/2016/05/22/20/13/background-1409125_960_720.png",
 };
+
+const { width, height } = Dimensions.get("window");
 
 function Welcome({ navigation }) {
   const onPressLogin = () => {
@@ -24,11 +29,10 @@ function Welcome({ navigation }) {
   };
 
   return (
-
-      <View style={styles.container}>
-        <ImageBackground source={image} style={styles.image}>
-          <Text style={styles.title}>HBank</Text>
-		  <Animatable.View animation="bounceInDown" duration={2000}>
+    <View style={styles.container}>
+      <ImageBackground source={image} style={styles.image}>
+        <Text style={styles.title}>HBank</Text>
+        <Animatable.View animation="bounceInDown" duration={2000}>
           <Text
             style={{
               backgroundColor: "transparent",
@@ -37,18 +41,23 @@ function Welcome({ navigation }) {
             }}
           >
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={onPressLogin}>
-                <View style={styles.signInButton}>
-                  <Text>INICIAR SESIÓN</Text>
-                </View>
-              </TouchableOpacity>
+              <Button
+                mode="contained"
+                secureTextEntry={true}
+                style={styles.button}
+                onPress={onPressLogin}
+              >
+                Iniciar Sesión
+              </Button>
 
-              <TouchableOpacity onPress={onPressRegister}>
-                <View style={styles.signUpButton}>
-                  <Text>REGISTRARSE</Text>
-                </View>
-              </TouchableOpacity>
-
+              <Button
+                mode="contained"
+                secureTextEntry={true}
+                style={styles.button}
+                onPress={onPressRegister}
+              >
+                Registrarse
+              </Button>
               <TouchableOpacity onPress={onPressFAQ}>
                 <View>
                   <Text style={styles.help}>¿Necesitas ayuda?</Text>
@@ -56,10 +65,9 @@ function Welcome({ navigation }) {
               </TouchableOpacity>
             </View>
           </Text>
-		  </Animatable.View>
-        </ImageBackground>
-      </View>
-
+        </Animatable.View>
+      </ImageBackground>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -85,22 +93,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   signInButton: {
-    alignItems: "center",
-    backgroundColor: "#7d00f1",
-    padding: 15,
-    margin: 10,
-    fontSize: 15,
-    borderRadius: 30,
-    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    backgroundColor: theme.colors.primary,
+    width: width * 0.5,
   },
   signUpButton: {
-    alignItems: "center",
-    backgroundColor: "#7f18c3",
-    padding: 15,
-    margin: 10,
-    fontSize: 15,
-    borderRadius: 30,
-    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
+    backgroundColor: theme.colors.primary,
+    width: width * 0.5,
   },
   help: {
     backgroundColor: "transparent",

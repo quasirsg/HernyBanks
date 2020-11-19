@@ -56,8 +56,8 @@ module.exports = {
                 //Create 2 account for this user. The first in "Pesos a.k.a. accountOne" , 
                 //and the second in 'Dolares a.k.a. accountTwo'
                 //In my userSeeds i dont have dni, and i go to change it for phone
-                const pesosCVU = await this.generateCVU(user.phone)
-                const dolaresCVU = await this.generateCVU(user.phone)
+                const pesosCVU = await this.generateCVU(user.dni)
+                const dolaresCVU = await this.generateCVU(user.dni)
                 const accountOne = await this.generateAccount(pesosCVU, 'Pesos', user._id)
                 const accountTwo = await this.generateAccount(dolaresCVU, 'Dolares', user._id);
 
@@ -124,7 +124,7 @@ module.exports = {
                 const { amount, cvu } = ctx.params;
                 const recharge = await this.recharge(amount, cvu, 'QR');
 
-                return recharge && 'The Recharge Was Successful';
+                return recharge && recharge;
             }
         },
         rechargeByCard: {
@@ -215,6 +215,7 @@ module.exports = {
         },
         async recharge(amount, cvu, type) {
             const account = await Account.findOne({ cvu })
+
             const transaction = await this.generateTransaction(
                 type,
                 account._id,
@@ -247,3 +248,10 @@ module.exports = {
     },
 
 }
+
+
+
+
+
+
+

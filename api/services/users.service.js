@@ -61,7 +61,7 @@ module.exports = {
 			rest: "POST /create",
 			async handler(ctx) {
 				const entity = ctx.params;
-				console.log(entity)
+				console.log(entity);
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Validación de username o email (creación de usuario único)     	     *
 				 * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -98,8 +98,8 @@ module.exports = {
 				//  const x = entity.dni.toString();
 				//  const last4 = x.substring(x.length-4, x.length)
 
-				//  entity.cvu = '00000000' + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + last4; 
-				
+				//  entity.cvu = '00000000' + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + rdm() + last4;
+
 				/*  * * * * * * * * * * * * * * * * *
 				 * Creación del nuevo usuario		*
 				 * * * * *  * * * * * * * *  * * * * */
@@ -118,7 +118,7 @@ module.exports = {
 					token: tokenGen(),
 				});
 
-				console.log(token)
+				console.log(token);
 
 				/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 				 * Llamado al servicio de emails para hacer verificación de la cuenta *
@@ -216,32 +216,23 @@ module.exports = {
 		update_user: {
 			rest: "PUT /update",
 			async handler(ctx) {
-				const {
-					_id,
-					name,
-					lastname,
-					dni,
-					phone,
-					address,
-					dob,
-				} = ctx.params;
+				const { _id, name, lastname, phone, address, dob } = ctx.params;
 
 				if (mongoose.Types.ObjectId.isValid(_id)) {
 					await User.findByIdAndUpdate(
 						{ _id },
-						{ name, lastname, dni, phone, address, dob }
+						{ name, lastname, phone, address, dob }
 					);
 
 					const updated = await User.findById({ _id });
 					/* * * * * * * * * * * * * * * * * * * * * * * * * *
-		 			*   Crear cuentas en pesos y en dolares para el usuario  *
+					 *   Crear cuentas en pesos y en dolares para el usuario  *
 					 * * * * * * * * * * * * * * * * * * * * * * * * * */
-					 console.log(_id)
-					await ctx.call('accounts.createdAccounts', updated._id)
-					
+					console.log(_id);
+					await ctx.call("accounts.createdAccounts", updated._id);
+
 					return updated;
 				}
-
 
 				return Promise.reject(userNotFound);
 			},

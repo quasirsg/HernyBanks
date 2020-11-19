@@ -56,7 +56,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
             startLoading();
             dispatch(
               loguinUser(user.email, user.password, () =>
-                navigation.navigate("PosConsolidada")
+                navigation.navigate("Main")
               )
             );
 
