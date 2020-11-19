@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from "../../components/Button";
 import { Formik } from 'formik';
 import CustomInput from '../../components/CustomInput';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
@@ -39,15 +40,21 @@ const ModalSelector = ({ show, control, setter }) => {
 }
 
 export default function SelectContact({ navigation }) {
-
+    const accounts = useSelector((state) => state.acoount.account);
+    const accountP = accounts[0];
+	const accountD = accounts[1];
+	const balancP = accountP && accountP.balance;
+    const balancD = accountD && accountD.balance;
+    console.log("***balance para contact***")
+    console.log(balancP)
     const [showModal, setShowModal] = React.useState(false);
     const [currency, setCurrency] = React.useState({
         selected: 'pesos'
     })
 
     const [currentBalance, setCurrentBalance] = React.useState({
-        pesos: 3000000,
-        dollars: 500
+        pesos: balancP,
+        dollars: balancD
     })
 
     return (
@@ -78,12 +85,12 @@ export default function SelectContact({ navigation }) {
 
                         <View style={styles.balance}>
                             <Text style={styles.pesosTitle}> Pesos </Text>
-                            <Text style={styles.pesosValue}>$ {currentBalance.pesos}</Text>
+                            <Text style={styles.pesosValue}>$ {balancP}</Text>
                         </View>
 
                         <View style={styles.balance}>
                             <Text style={styles.dollarsTitle}> Dólares </Text>
-                            <Text style={styles.dollarsValue}>USD {currentBalance.dollars}</Text>
+                            <Text style={styles.dollarsValue}>USD {balancD}</Text>
                         </View>
 
                     </View>

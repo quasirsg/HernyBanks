@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ACCOUNT, RECHARGE_QR, UP_USER } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
@@ -19,7 +19,7 @@ export function getAccount(id) {
           console.log(res.data)
         dispatch({
           type: GET_ACCOUNT,
-          data: res.data || {},
+          data: res.data || [],
         });
 
       })
@@ -39,7 +39,7 @@ export function rechargeByQr(data) {
           console.log(res.data)
         dispatch({
           type: RECHARGE_QR,
-          data: res.data || [],
+          data: res.data || {},
         });
 
       })
@@ -53,18 +53,19 @@ export function rechargeByCard(data) {
   return (dispatch) => {
     console.log('***est este***')
     console.log(data)
-    // axios
-    //   .post(`${BACK_URL}/api/accounts/rechargeByQR/`, data)
-    //   .then((res) => {
-    //       console.log(res.data)
-    //     dispatch({
-    //       type: RECHARGE_QR,
-    //       data: res.data || [],
-    //     });
+    axios
+      .post(`${BACK_URL}/api/accounts/rechargeByCard`, data)
+      .then((res) => {
+        console.log('*****res card recharse***')
+          console.log(res.data)
+        dispatch({
+          type: RECHARGE_CARD,
+          data: res.data || {},
+        });
 
-    //   })
-    //   .catch((error) => {
-    //     console.log(error)
-    //   });
+      })
+      .catch((error) => {
+        console.log(error)
+      });
   };
 }

@@ -1,4 +1,4 @@
-import { GET_ACCOUNT, RECHARGE_QR } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD} from "../constans/constans";
 
 const initialState = {
   users: [],
@@ -25,6 +25,14 @@ const acoountReducers = (state = initialState, action) => {
       let accountNew = [...state.account]
       accountNew[ind].balance = obj.balance
       return {...state, account: accountNew};
+    case RECHARGE_CARD:
+        let objT = action.data
+        let accT = state.account.find(x => x._id == objT._id)
+        if(accT === undefined) return {...state};
+        let indT = state.account.indexOf(accT)
+        let accountNewT = [...state.account]
+        accountNewT[indT].balance = objT.balance
+        return {...state, account: accountNewT};
     default:
       return state;
   }

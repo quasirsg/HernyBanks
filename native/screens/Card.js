@@ -9,6 +9,7 @@ import Button from '../components/Button';
 
 const { width, height } = Dimensions.get('window');
 
+
 const Card = () => {
 	const [showModal, setShowModal] = React.useState(false);
 	const [currency, setCurrency] = React.useState({
@@ -26,9 +27,11 @@ const Card = () => {
 		amount: '',
 	});
 
+
 	const onChange = (formData) => {
 		return;
 	};
+
 
 	const onFocus = (field) => console.log('focus', field);
 
@@ -36,6 +39,7 @@ const Card = () => {
 		dispatch(rechargeByCard(inputText));
 		return;
 	};
+
 
 	const ModalSelector = ({ show, control, setter }) => {
 		return (

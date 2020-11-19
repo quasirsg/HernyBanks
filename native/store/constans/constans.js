@@ -23,3 +23,7 @@ export const UPDATE_USER = 'UPDATE_USER';
 //Acount
 export const GET_ACCOUNT = 'GET_ACCOUNT'
 export const RECHARGE_QR = 'RECHARGE_QR'
+export const RECHARGE_CARD = 'RECHARGE_CARD'
+
+//Contact 
+export const GET_CONTACT = 'GET_CONTACT'

@@ -3,7 +3,9 @@ import { Dimensions, View, Text, StyleSheet, SafeAreaView, TextInput, FlatList, 
 import { Link } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
 import { Searchbar } from 'react-native-paper';
+import {getContact} from '../../store/actions/contactsAction'
 
 //Lista Contactos usuarios de HenryBanks Agregados
 //un boton agregar contacto
@@ -13,6 +15,8 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 const ContactList = ({ navigation }) => {
+	const dispatch = useDispatch();
+	const session = useSelector((state) => state.session.userDetail);
 	const [contacts, setContacts] = useState([
 		{
 			name: 'Carlos',
@@ -84,7 +88,9 @@ const ContactList = ({ navigation }) => {
 
 	const [results, setResults] = useState([]);
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+
+	}, []);
 
 	const searchContacts = (value) => {
 		if (!value) {
