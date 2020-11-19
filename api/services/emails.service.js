@@ -6,7 +6,8 @@ const Token = require('../models/token.model');
 const handlebars = require("handlebars");
 const fs = require('fs')
 const { ADMIN_EMAIL, PASSW_EMAIL, VERIFICATION_URL } = process.env;
-
+//Imports from moleculer
+const { MoleculerClientError } = require('moleculer').Errors;
 module.exports = {
 
 	name: "emails",
@@ -70,6 +71,12 @@ module.exports = {
 
 					if (confirm) return confirm;					
 					else console.log('Falta esta opción'); //falta terminar
+				}else{
+					throw new MoleculerClientError(
+                        'Incorrect token',
+                        422,
+                        '', [{ message: 'Incorrect token' }]
+                    )
 				}
 				 
 			}
