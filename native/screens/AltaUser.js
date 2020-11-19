@@ -58,7 +58,7 @@ const AltaUser = ({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1500);
   };
 
   //const userId = useSelector(state => state.users[0]._id);

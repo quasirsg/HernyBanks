@@ -50,7 +50,7 @@ export default function CodeVerification({ navigation }) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1500);
   };
   return (
     <ScrollView contentContainerStyle={styles.container}>

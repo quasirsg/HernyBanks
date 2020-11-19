@@ -73,7 +73,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
                 //Text style of the Spinner Text
                 textStyle={styles.spinnerTextStyle}
               />
-              <Animatable.View animation="bounceInUp" delay={1000}>
+              <Animatable.View animation="bounceInUp" delay={500}>
                 <CustomInput
                   label="Correo"
                   name="email"

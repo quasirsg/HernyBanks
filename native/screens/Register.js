@@ -28,7 +28,7 @@ const Register = ({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1500);
   };
 
   return (
@@ -85,7 +85,7 @@ const Register = ({
                 //Text style of the Spinner Text
                 textStyle={styles.spinnerTextStyle}
               />
-              <Animatable.View animation="bounceInUp" delay={1000}>
+              <Animatable.View animation="bounceInUp" delay={500}>
                 <CustomInput
                   label="Username"
                   name="username"

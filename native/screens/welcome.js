@@ -32,7 +32,7 @@ function Welcome({ navigation }) {
     <View style={styles.container}>
       <ImageBackground source={image} style={styles.image}>
         <Text style={styles.title}>HBank</Text>
-        <Animatable.View animation="bounceInDown" duration={2000}>
+        <Animatable.View animation="bounceInDown" duration={1500}>
           <Text
             style={{
               backgroundColor: "transparent",
