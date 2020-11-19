@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
@@ -66,6 +66,27 @@ export function rechargeByCard(data) {
       })
       .catch((error) => {
         console.log(error)
+      });
+  };
+}
+
+export function transferMoney(data) {
+  return (dispatch) => {
+    console.log('Transfer Money')
+    console.log(data)
+
+    axios
+      .post(`${BACK_URL}/api/accounts/transfer`, data)
+      .then((res) => {
+        console.log('Transferencia exitosa',res)
+        dispatch({
+          type: TRANSFER_MONEY,
+          data: res.data || {},
+        });
+
+      })
+      .catch((error) => {
+        console.log('Error en la transferencia',error)
       });
   };
 }

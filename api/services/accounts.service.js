@@ -163,8 +163,8 @@ module.exports = {
 
                     await fromAccount.save()
                     await toAccount.save()
-
-                    return 'the transaction was succesful'
+                       
+                    return fromAccount;
                 } else {
                     return 'You do not have enough balance'
                 };
