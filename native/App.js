@@ -10,7 +10,8 @@ import { st } from './store/store';
 import Estatistics from './screens/Estatistics';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
-import Welcome from './screens/Welcome';
+import Welcome from './screens/welcome';
+import WelcomeRecharge from './screens/WelcomeRecharge';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
 import CodeVerification from './screens/CodeVerification';
@@ -25,7 +26,7 @@ import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
 
 // icons
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Stack = createStackNavigator(); //contiene la navegacion
 const Drawer = createDrawerNavigator(); // Menu lateral
@@ -45,12 +46,13 @@ function RootStack() {
 function LoginStack() {
 	return (
 		<Stack.Navigator
-			initialRouteName='Welcome'
+			initialRouteName='WelcomeRecharge'
 			screenOptions={{
 				headerShown: false,
 			}}
 		>
 			<Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
+			<Stack.Screen name='WelcomeRecharge' component={WelcomeRecharge} options={{ headerShown: false }} />
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
 			<Stack.Screen name='CodeVerification' component={CodeVerification} options={{ headerShown: false }} />
 			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
@@ -107,10 +109,10 @@ export default function App() {
 
 // <--------------------- ESTILOS --------------------->
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: 'white',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

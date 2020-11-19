@@ -22,73 +22,81 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
 			password: password,
 		})
 		.then((res) => {
-			const token = res.data;
-			var decoded = jwt_decode(token);
+      
+      const token = res.data;
+      var decoded = jwt_decode(token);
 
-			// console.log('soy el token',token);
-			if (token) {
-				AsyncStorage.setItem('@token', token);
-				dispatch({
-					type: actionTypes.USER_LOGIN,
-				});
-				dispatch(getCurrentUser(token));
-				setTimeout(function () {
-					onSuccess();
-				}, 1500);
-			}
-		})
-		.catch((error) => {
-			Toast.show({
-				type: 'error',
-				position: 'top',
-				text1: 'Login incorrecto',
-				text2: `Email o password incorrecto`,
-				visibilityTime: 6000,
-				autoHide: true,
-				topOffset: 30,
-				bottomOffset: 40,
-			});
-		});
+      // console.log('soy el token',token);
+      if (token) {
+        AsyncStorage.setItem("@token", token);
+        dispatch({
+          type: actionTypes.USER_LOGIN,
+        });
+        dispatch(getCurrentUser(token));
+        setTimeout(function () {
+          onSuccess();
+        }, 1500);
+      }
+    })
+    .catch((error) => {
+      setTimeout(function () {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "Login incorrecto",
+          text2: `Email o password incorrecto`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
+    });
 };
 
 //obtener información del usuario logueado
 export const getCurrentUser = (token) => async (dispatch) => {
-	//Headers con Token
-	var decoded = jwt_decode(token);
-	console.log(typeof decoded.id);
-	axios
-		.get(`${BACK_URL}/api/users/by-id`, {
-			params: {
-				_id: decoded.id,
-			},
-		})
-		.then((res) => {
-			dispatch({
-				type: actionTypes.CURRENT_USER,
-				user: res.data,
-			});
-			Toast.show({
-				type: 'success',
-				position: 'top',
-				text1: `Bienvenido ${res.data.username} `,
-				visibilityTime: 3 * 1000,
-				autoHide: true,
-				topOffset: 30,
-				bottomOffset: 40,
-			});
-		})
-		.catch((error) => {
-			Toast.show({
-				type: 'error',
-				position: 'top',
-				text1: 'Error',
-				text2: `${error.message}`,
-				visibilityTime: 3 * 1000,
-				autoHide: true,
-				topOffset: 30,
-				bottomOffset: 40,
-			});
-		});
+  //Headers con Token
+  var decoded = jwt_decode(token);
+  console.log(typeof decoded.id);
+  axios
+    .get(`${BACK_URL}/api/users/by-id`, {
+      params: {
+        _id: decoded.id,
+      },
+    })
+    .then((res) => {
+      dispatch({
+        type: actionTypes.CURRENT_USER,
+        user: res.data,
+      });
+      setTimeout(function () {
+        Toast.show({
+          type: "success",
+          position: "top",
+          text1: `Bienvenido ${res.data.username} `,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
+
+    })
+    .catch((error) => {
+      setTimeout(function () {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "Error",
+          text2: `${error.message}`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
+    });
 };
 
 export const verifySession = () => (dispatch) => {
