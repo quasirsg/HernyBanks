@@ -24,8 +24,9 @@ const Qrnative = () => {
   const accounts = useSelector((state) => state.acoount.account);
   const account = accounts[0]
   const cvuV = account && account.cvu
+  console.log(cvuV)
   const [inputText, setInputText] = useState({
-    cvu: cvuV,
+    cvu: '',
     amount : '',
   });
   const [qrvalue, setQrvalue] = useState('');
@@ -75,7 +76,7 @@ const Qrnative = () => {
         <TextInput
           style={styles.textInputStyle}
           onChangeText={
-            (text) => setInputText({...inputText, amount:text})
+            (text) => setInputText({...inputText, amount:text, cvu:cvuV})
           }
           placeholder="Enter Any Value"
           value={inputText.monto}

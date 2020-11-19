@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Linking, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Link } from '@react-navigation/native';
 import { theme } from '../../core/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '../../components/Button';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { width, height } = Dimensions.get('window');
 
@@ -78,6 +79,15 @@ const testingContacts = [
 ];
 
 const SummaryItem = ({ keyName, value }) => {
+	const dispatch = useDispatch();
+	const session = useSelector((state) => state.session.userDetail);
+
+	useEffect(() => {
+		let id = session._id
+		console.log('holaaaa soy card List')
+		// dispatch(getContact(id))
+	}, []);
+
 	return (
 		<View style={styles.summary}>
 			<Text style={styles.summaryKey}>{keyName}: </Text>

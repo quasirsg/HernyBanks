@@ -133,7 +133,7 @@ module.exports = {
                 const { amount, cvu } = ctx.params;
                 const recharge = await this.recharge(amount, cvu, 'Credit Card');
 
-                return recharge && 'The Recharge Was Successful';
+                return recharge && recharge;
             }
         },
         transfer: {
