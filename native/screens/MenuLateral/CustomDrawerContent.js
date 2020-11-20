@@ -29,8 +29,9 @@ export default function CustomDrawerContent(props) {
 	return (
 		<View style={{ flex: 1 }}>
 			<DrawerContentScrollView {...props}>
+				{/* Iconos Superiores */}
 				<View style={styles.headerContainer}>
-					<Ionicons name='ios-menu' color='indigo' size={25} style={{ marginHorizontal: 20 }} onPress={() => props.navigation.closeDrawer()}></Ionicons>
+					<Ionicons name='md-close' color='indigo' size={25} style={{ marginHorizontal: 20 }} onPress={() => props.navigation.closeDrawer()}></Ionicons>
 					<Ionicons name='ios-settings' color='indigo' size={25} style={{ marginHorizontal: 20 }} onPress={() => alert('Opciones')}></Ionicons>
 				</View>
 				{/* Informacion del Ususario */}

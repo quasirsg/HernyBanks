@@ -26,7 +26,7 @@ import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
 import Card from './screens/Card';
 
-// icons
+// Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator(); //contiene la navegacion
@@ -35,7 +35,7 @@ const Drawer = createDrawerNavigator(); // Menu lateral
 // <--------------- ROOT Stack (contiene a LoginStack y MainStack ) --------------->
 function RootStack() {
 	return (
-		<Stack.Navigator initialRouteName='Main'>
+		<Stack.Navigator initialRouteName='Login'>
 			<Stack.Screen name='Login' component={LoginStack} options={{ headerShown: false }} />
 			<Stack.Screen name='Main' component={MainStack} options={{ headerShown: false }} />
 		</Stack.Navigator>
@@ -68,7 +68,7 @@ function LoginStack() {
 function MainStack() {
 	return (
 		<Drawer.Navigator
-			initialRouteName='PosConsolidada'
+			initialRouteName='Inicio'
 			drawerContent={(props) => <CustomDrawerContent {...props} />}
 			screenOptions={{
 				headerShown: true,
@@ -80,17 +80,17 @@ function MainStack() {
 			}}
 			lazy={false}
 		>
-			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} />
-			<Drawer.Screen name='Estatistics' component={Estatistics} />
+			<Drawer.Screen name='Inicio' component={PosConsolidada} />
+			<Drawer.Screen name='Estadisticas' component={Estatistics} />
 			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
-			<Drawer.Screen name='Transactions' component={Transactions} />
+			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
-			<Drawer.Screen name='Recharge' component={Recharge} />
+			<Drawer.Screen name='Recargar Dinero' component={Recharge} />
 			{/* <Drawer.Screen name='Card' component={Card} /> */}
-			<Stack.Screen name='SelectContact' component={SelectContact} />
+			<Stack.Screen name='Transferir Dinero' component={SelectContact} />
 			<Stack.Screen name='FinishSend' component={FinishSend} />
 			<Stack.Screen name='ContactCard' component={ContactCard} />
-			<Stack.Screen name='ContactList' component={ContactList} />
+			<Stack.Screen name='Contactos' component={ContactList} />
 			<Stack.Screen name='Card' component={Card} />
 		</Drawer.Navigator>
 	);
