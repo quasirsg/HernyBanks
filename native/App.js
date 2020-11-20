@@ -80,15 +80,15 @@ function MainStack() {
 			}}
 			lazy={false}
 		>
-			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} />
+			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} options={{ title: ''}}/>
 			<Drawer.Screen name='Estatistics' component={Estatistics} />
 			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
 			<Drawer.Screen name='Transactions' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recharge' component={Recharge} />
 			{/* <Drawer.Screen name='Card' component={Card} /> */}
-			<Stack.Screen name='SelectContact' component={SelectContact} />
-			<Stack.Screen name='FinishSend' component={FinishSend} />
+			<Stack.Screen name='SelectContact' component={SelectContact} options={{ title: ''}}/>
+			<Stack.Screen name='FinishSend' component={FinishSend} options={{ title: ''}}/>
 			<Stack.Screen name='ContactCard' component={ContactCard} />
 			<Stack.Screen name='ContactList' component={ContactList} />
 			<Stack.Screen name='Card' component={Card} />
