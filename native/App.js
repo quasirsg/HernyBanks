@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; //instalar
 import { createStackNavigator } from '@react-navigation/stack'; //instalar
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import CustomDrawerContent from './screens/CustomDrawerContent';
+import CustomDrawerContent from './screens/MenuLateral/CustomDrawerContent';
 import Register from './screens/Register';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { st } from './store/store';
@@ -24,7 +24,7 @@ import ContactList from './screens/Contactos/ContactList';
 import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
-import Card from './screens/Card'
+import Card from './screens/Card';
 
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -35,7 +35,7 @@ const Drawer = createDrawerNavigator(); // Menu lateral
 // <--------------- ROOT Stack (contiene a LoginStack y MainStack ) --------------->
 function RootStack() {
 	return (
-		<Stack.Navigator initialRouteName='Login'>
+		<Stack.Navigator initialRouteName='Main'>
 			<Stack.Screen name='Login' component={LoginStack} options={{ headerShown: false }} />
 			<Stack.Screen name='Main' component={MainStack} options={{ headerShown: false }} />
 		</Stack.Navigator>
