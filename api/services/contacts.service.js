@@ -65,6 +65,7 @@ module.exports = {
                         email : user.email,
                         name : user.name,
                         phone : user.phone,
+                        lastname: user.lastname,
                         accounts : {
                             pesos : user.accounts[0].cvu, 
                             dollars : user.accounts[1].cvu
