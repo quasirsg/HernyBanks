@@ -2,7 +2,7 @@ import axios from "axios";
 import { CREATE_USER, UP_USER } from "../constans/constans";
 
 // const env = require('../../env.js')
-import { BACK_URL } from "../../env" ;
+import { BACK_URL } from "../../env";
 import Toast from "react-native-toast-message";
 //const {URL} = BACK_URL
 
