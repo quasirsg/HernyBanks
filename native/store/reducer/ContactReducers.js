@@ -1,7 +1,14 @@
-import { GET_CONTACTS, EDIT_CONTACT, ADD_CONTACT_EMAIL, ADD_CONTACT_PHONE, DELETE_CONTACT, SEND_WHATSAPP  } from "../constans/constantsContacts";
+import {
+  GET_CONTACTS,
+  EDIT_CONTACT,
+  ADD_CONTACT_EMAIL,
+  ADD_CONTACT_PHONE,
+  DELETE_CONTACT,
+  SEND_WHATSAPP,
+} from "../constans/constantsContacts";
 
 const initialState = {
-  contacts: [],
+  contacts: {},
   contact: [],
   message: [],
 };
@@ -9,31 +16,36 @@ const initialState = {
 const contactsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CONTACTS:
-    return { 
-        ...state, 
-        contacts: action.contacts };
+      return {
+        ...state,
+        contacts: action.contacts,
+      };
     case EDIT_CONTACT:
-    return { 
+      return {
         ...state,
-        message: action.message
-    };
+        message: action.message,
+      };
     case ADD_CONTACT_EMAIL:
-    return { 
+      return {
         ...state,
-        contact: action.contact };
+        contact: action.contact,
+      };
     case ADD_CONTACT_PHONE:
-    return { 
+      return {
         ...state,
-        contact: action.contact };
+        contact: action.contact,
+      };
     case DELETE_CONTACT:
-    return { 
+      return {
         ...state,
-        message: action.message };
+        message: action.message,
+      };
     case SEND_WHATSAPP:
-    return { 
+      return {
         ...state,
-        message: action.message };
-                                                
+        message: action.message,
+      };
+
     default:
       return state;
   }

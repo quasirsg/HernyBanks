@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Dimensions,
   View,
@@ -18,90 +19,42 @@ import * as Animatable from "react-native-animatable";
 import { Searchbar } from "react-native-paper";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
-//Lista Contactos usuarios de HenryBanks Agregados
-//un boton agregar contacto
-//Buscador sobre los contactos
-//lista de usuarios
+//Actions
+import { getAccount } from "../../store/actions/acountActions";
+import { verifySession, logoutUser } from "../../store/actions/jwtUsersActions";
+import { getContacts } from "../../store/actions/contactAction";
+
 
 // Dimensions
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
 const ContactList = ({ navigation }) => {
-  const [contacts, setContacts] = useState([
-    {
-      name: "Carlos",
-      email: "carlos@gmail.com",
-      cvu: "0001234567891011121311",
-      phone: "3011234561",
-    },
-    {
-      name: "Juan",
-      email: "juanito@gmail.com",
-      cvu: "0001234567891011121312",
-      phone: "3011234562",
-    },
-    {
-      name: "Camilo",
-      email: "cami@gmail.com",
-      cvu: "0001234567891011121313",
-      phone: "3011234563",
-    },
-    {
-      name: "Olivert",
-      email: "oli@gmail.com",
-      cvu: "0001234567891011121314",
-      phone: "3011234564",
-    },
-    {
-      name: "Gabriela",
-      email: "gabi@gmail.com",
-      cvu: "0001234567891011121315",
-      phone: "3011234565",
-    },
-    {
-      name: "Sebastian",
-      email: "sebas@gmail.com",
-      cvu: "0001234567891011121316",
-      phone: "3011234566",
-    },
-    {
-      name: "Cecilia",
-      email: "ceci@gmail.com",
-      cvu: "0001234567891011121317",
-      phone: "3011234567",
-    },
-    {
-      name: "Alexis",
-      email: "alex@gmail.com",
-      cvu: "0001234567891011121318",
-      phone: "3011234568",
-    },
-    {
-      name: "Pedro",
-      email: "pedro@gmail.com",
-      cvu: "0001234567891011121319",
-      phone: "3011234569",
-    },
-    {
-      name: "Ana",
-      email: "ana@gmail.com",
-      cvu: "0001234567891011121311",
-      phone: "3011234510",
-    },
-    {
-      name: "Maria",
-      email: "maria@gmail.com",
-      cvu: "0001234567891011121312",
-      phone: "3011234511",
-    },
-  ]);
-
+  const dispatch = useDispatch();
+  const session = useSelector((state) => state.session.userDetail);
+  const accounts = useSelector((state) => state.acoount.account);
+  const contacts = useSelector((state) => state.contacts.contacts);
   const [results, setResults] = useState([]);
 
-  useEffect(() => {}, []);
+  //Vars
+  const bal = session.balance;
+  const id = session._id;
+  //Redux
+  useEffect(() => {
+	dispatch(getContacts(id ? id : null));
+    dispatch(getAccount(id ? id : null));
+    dispatch(verifySession());
 
+  }, []);
+  //Logs
+  console.log(session);
+  console.log(accounts);
+  console.log('soy contactos',contacts);
+  console.log('renderizando');
+  //
   const searchContacts = (value) => {
+
+
     if (!value) {
       setContacts(contacts);
     } else {
@@ -132,20 +85,13 @@ const ContactList = ({ navigation }) => {
                 {item.email.charAt(0).toUpperCase()}
               </Text>
             </View>
+            <Link to="/ContactCard">
+              <View style={{ alignItems: "flex-start", marginLeft: 0 }}>
+                <Text style={styles.text_contactsInfo}>{item.name}</Text>
 
-            <View style={{ alignItems: "flex-start", marginLeft: 0 }}>
-              <Text style={styles.text_contactsInfo}>
-                {item.name}
-              </Text>
-
-              <Text style={styles.text_contactsInfo}>
-                {item.email}
-              </Text>
-            </View>
-
-            <View style={{ alignItems: "center" }}>
-              <Text style={styles.text_ingresosUltimosMovimientos}>1</Text>
-            </View>
+                <Text style={styles.text_contactsInfo}>{item.email}</Text>
+              </View>
+            </Link>
           </View>
           {/* Separador Horizontal */}
           <View
@@ -158,26 +104,6 @@ const ContactList = ({ navigation }) => {
         </View>
       </View>
     </Animatable.View>
-    // <View>
-    //   <Link to="/ContactCard">
-    //     <View
-    //       style={{ flexDirection: "row", alignItems: "center", margin: 10 }}
-    //     >
-    //       <View style={styles.circle}>
-    //         <Text style={{ color: "white" }}>
-    //           {item.name && item.name.charAt(0).toUpperCase()}
-    //           {item.email && item.email.charAt(0).toUpperCase()}
-    //         </Text>
-    //       </View>
-    //       <View style={{ flexDirection: "column" }}>
-
-    //         <Text style={{ color: "blue", fontWeight: "bold", fontSize: 16 }}>
-    //           {item && item.cvu && item.cvu}
-    //         </Text>
-    //       </View>
-    //     </View>
-    //   </Link>
-    // </View>
   );
 
   return (
@@ -186,19 +112,7 @@ const ContactList = ({ navigation }) => {
         source={require("../../assets/background2.png")}
         style={{ position: "absolute" }}
       />
-      {/* <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={styles.text_saldoCuenta2}>
-                  {" "}
-                  {cuenta.type == "Pesos"
-                    ? "$ " + cuenta.balance || 0
-                    : "u$d " + cuenta.balance || 0}
-                </Text>
-              </View> */}
+
       {/* header */}
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View
@@ -221,7 +135,7 @@ const ContactList = ({ navigation }) => {
                   placeholder="     Ingresa un nombre     "
                   placeholderTextColor="grey"
                   style={styles.textTitle}
-                  // onChangeText={(value) => searchContacts(value)}
+                  onChangeText={(value) => searchContacts(value)}
                 />
               </View>
             </View>
@@ -234,7 +148,7 @@ const ContactList = ({ navigation }) => {
             </View>
           </View>
 
-          {/* Container de ULTIMOS MOVIMIENTOS de la cuenta */}
+          {/* Container de CONTACTOS de la cuenta */}
           <Animatable.View animation="fadeInUpBig" duration={1800} delay={1000}>
             <View style={{ marginVertical: 30 }}>
               <View style={styles.ultimosMovimientosContainer}>
@@ -253,15 +167,6 @@ const ContactList = ({ navigation }) => {
                     </View>
                   )}
                 />
-
-                <TouchableOpacity
-                  style={{ alignItems: "flex-end", marginTop: 30 }}
-                  onPress={() => {
-                    alert("Ver mas movimientos");
-                  }}
-                >
-                  <Text style={styles.text_link}>Ver mas movimientos</Text>
-                </TouchableOpacity>
               </View>
             </View>
           </Animatable.View>

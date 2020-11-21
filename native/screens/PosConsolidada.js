@@ -15,7 +15,7 @@ import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
 import { getAccount } from "../store/actions/acountActions";
-
+import { getContacts } from "../store/actions/contactAction";
 // Dimensions
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -32,6 +32,7 @@ export default function PosConsolidada({ navigation }) {
   // const bal1 = accounts ? accounts[0].balance : 0
   // const bal2 = accounts ? accounts[1].balance : 0
   useEffect(() => {
+    dispatch(getContacts(id ? id : null));
     dispatch(getAccount(id ? id : null));
     dispatch(verifySession());
   }, []);
