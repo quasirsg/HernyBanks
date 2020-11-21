@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; //instalar
 import { createStackNavigator } from '@react-navigation/stack'; //instalar
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import CustomDrawerContent from './screens/MenuLateral/CustomDrawerContent';
 import Register from './screens/Register';
@@ -20,9 +19,8 @@ import AltaUser from './screens/AltaUser';
 import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
 import Recharge from './screens/Recharge';
-import ContactCard from './screens/contactos/ContactCard';
-import ContactList from './screens/contactos/ContactList';
-import SearchBar from './components/SearchBar';
+import ContactCard from './screens/Contactos/ContactCard';
+import ContactList from './screens/Contactos/ContactList';
 import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
@@ -33,7 +31,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator(); //contiene la navegacion
 const Drawer = createDrawerNavigator(); // Menu lateral
-const Tab = createMaterialTopTabNavigator();
+
 // <--------------- ROOT Stack (contiene a LoginStack y MainStack ) --------------->
 function RootStack() {
 	return (
@@ -80,7 +78,7 @@ function MainStack() {
 				// headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				// headerLeft: () => <Ionicons name='ios-menu' color='white' size={30} style={{ marginHorizontal: 15 }} onPress={() => props.navigation.openDrawer()}></Ionicons>,
 			}}
-			lazy={true}
+			lazy={false}
 		>
 			<Drawer.Screen name='Inicio' component={PosConsolidada} />
 			<Drawer.Screen name='Estadisticas' component={Estatistics} />
@@ -99,7 +97,6 @@ function MainStack() {
 	);
 }
 // <--------------------- MAIN Stack --------------------->
-
 
 // <--------------------- APP --------------------->
 export default function App() {

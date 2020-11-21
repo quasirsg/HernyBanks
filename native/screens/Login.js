@@ -32,6 +32,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
   };
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      
       <View>
         {/* <Logo style={styles.down}/> */}
         <Text style={styles.title}>Iniciar sesión</Text>
@@ -56,10 +57,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
             startLoading();
             dispatch(
               loguinUser(user.email, user.password, () =>
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: "Main" }],
-                })
+                navigation.navigate("Main")
               )
             );
 
