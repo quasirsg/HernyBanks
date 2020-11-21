@@ -87,7 +87,7 @@ export default function SelectContact({ navigation, route }) {
         dispatch(transferMoney(send))
 
         setTimeout(function () {
-            navigation.navigate('PosConsolidada');
+            navigation.navigate('Inicio');
 
             Toast.show({
                 type: "success",

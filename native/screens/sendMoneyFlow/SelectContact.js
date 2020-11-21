@@ -11,7 +11,12 @@ const { width, height } = Dimensions.get('window');
 
 const SummaryItem = ({ keyName, value }) => {
 
-	if(keyName === 'Nombre' && value.length > 0) value = value[0].toUpperCase() + value.slice(1);
+	if (keyName === 'Nombre' && value.length > 1) {
+		let completeName = value.split(' ')
+		let firstName = completeName[0][0].toUpperCase() + completeName[0].slice(1);
+		let lastName = completeName[1][0].toUpperCase() + completeName[1].slice(1);
+		value = firstName + ' ' + lastName;
+	}
 
 	return (
 		<View style={styles.summary}>
@@ -34,9 +39,11 @@ export default function SelectContact({ navigation }) {
 
 	const [selected, setSelected] = useState({
 		name: '',
+		lastname: '',
 		email: '',
 		accounts: {},
 		phone: '',
+		username: ''
 	});
 
 	const handleSelect = (contact) => {
@@ -55,16 +62,20 @@ export default function SelectContact({ navigation }) {
 						<Text style={styles.title}> Transferir dinero </Text>
 					</View>
 
-					<Text style={styles.instruction}> ¡Empecemos! Primero selecciona a quién le vas a enviar </Text>
+					<Text style={styles.instruction}> ¡Empecemos! Primero elige a quién le vas a enviar dinero </Text>
 				</View>
 
 				<View style={styles.contactContainer}>
-					<Text style={styles.contactTitle}> Selecciona el destinatario </Text>
+					<Text style={styles.contactTitle}> Selecciona el contacto que recibirá la transferencia </Text>
 					<ScrollView>
 						{contacts.length > 0 ?
 							contacts.map((contact, i) => (
 								<TouchableOpacity style={styles.contactList} name={contact} onPress={() => handleSelect(contact)} key={i}>
-									<Text style={styles.name}>{contact.name[0].toUpperCase() + contact.name.slice(1)}</Text>
+									<View style={{flexDirection: 'row', alignItems:'center'}}>
+										<Icon name='user' color={'#ddd'} size={15} />
+										<Text style={styles.name}>{contact.name[0].toUpperCase() + contact.name.slice(1)} </Text>
+									</View>
+
 									<Text style={styles.complement}>{contact.email}</Text>
 								</TouchableOpacity>
 							)) :
@@ -74,12 +85,13 @@ export default function SelectContact({ navigation }) {
 				</View>
 
 				<View>
-					<Text style={styles.summaryTitle}> Se hará la transeferencia a: </Text>
+					<Text style={styles.summaryTitle}> Se hará la transferencia a: </Text>
 
 					<View style={styles.summaryContent}>
-						<SummaryItem keyName={'Nombre'} value={selected.name} />
+						<SummaryItem keyName={'Nombre'} value={selected.name + ' ' + selected.lastname} />
 						<SummaryItem keyName={'Correo'} value={selected.email} />
 						<SummaryItem keyName={'Teléfono'} value={selected.phone} />
+						<SummaryItem keyName={'Usuario'} value={selected.username.length > 0 && '@'+ selected.username} />
 					</View>
 
 				</View>
@@ -157,6 +169,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	name: {
+		paddingLeft: 10,
 		color: theme.colors.secondary,
 		fontWeight: 'bold',
 	},
@@ -168,7 +181,7 @@ const styles = StyleSheet.create({
 		color: theme.colors.secondary,
 		fontWeight: 'bold',
 		textAlign: 'center',
-		fontSize: 17,
+		fontSize: 15,
 		padding: 10,
 	},
 	summaryContent: {
@@ -192,7 +205,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginTop: 20,
-		marginBottom: 30,
+		marginBottom: 20,
 		borderWidth: 1,
 		backgroundColor: theme.colors.primary,
 		width: width * 0.5,
