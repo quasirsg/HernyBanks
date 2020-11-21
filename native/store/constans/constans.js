@@ -20,3 +20,6 @@ export const UP_USER = 'UP_USER';
 export const UPDATE_USER = 'UPDATE_USER';
 
 
+//Acount
+export const GET_ACCOUNT = 'GET_ACCOUNT'
+export const RECHARGE_QR = 'RECHARGE_QR'

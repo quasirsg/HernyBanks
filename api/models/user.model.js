@@ -3,6 +3,7 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
+
 let UserSchema = new Schema(
 	{
 		username: {
@@ -56,15 +57,18 @@ let UserSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
-		cvu:{
-			type: String,
-			trim: true
-		},
-		balance: {
-			type: Number,
-			trim: true,
-			default: 0,
-		}
+		contacts : [
+			{
+				type : Schema.Types.ObjectId,
+				ref: 'Contact'
+			}
+		],
+		accounts : [
+			{
+				type : Schema.Types.ObjectId,
+				ref: 'Account'
+			}
+		]
 	},
 	{
 		timestamps: true,

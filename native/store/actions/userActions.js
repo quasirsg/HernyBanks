@@ -8,7 +8,6 @@ import Toast from "react-native-toast-message";
  * Acción para crear usuario (Desde Register Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function createUser(userData, onSuccess) {
-
   const dataUser = {
     username: userData.username,
     email: userData.email,
@@ -27,31 +26,34 @@ export function createUser(userData, onSuccess) {
           users: res.data || {},
           createUserSuccess: true,
         });
-        Toast.show({
-          type: 'success',
-          position: 'top',
-          text1: 'Registro exitoso',
-          text2: 'Por favor verifique su correo',
-          visibilityTime: 6000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
         setTimeout(function () {
           onSuccess();
+          Toast.show({
+            type: "success",
+            position: "top",
+            text1: "Registro exitoso",
+            text2: "Por favor verifique su correo",
+            visibilityTime: 6000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         }, 3000);
       })
       .catch((error) => {
-        Toast.show({
-          type: 'error',
-          position: 'top',
-          text1: 'Error al registrarse',
-          text2: `${error.message}`,
-          visibilityTime: 6000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
+        console.log(error);
+        setTimeout(function () {
+          Toast.show({
+            type: "error",
+            position: "top",
+            text1: "Error al registrarse",
+            text2: `${error.message.emailError}`,
+            visibilityTime: 6000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
+        }, 2000);
       });
   };
 }
@@ -70,31 +72,33 @@ export function completeUserRegister(userData, onSuccess) {
       .then((res) => {
         console.log("User updated", res.data);
         dispatch({ type: UPDATE_USER, users: res.data });
-        Toast.show({
-          type: 'success',
-          position: 'top',
-          text1: 'Registro exitoso',
-          text2: 'Por favor verifique su correo',
-          visibilityTime: 6000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
         setTimeout(function () {
           onSuccess();
+          Toast.show({
+            type: "success",
+            position: "top",
+            text1: "Alta exitosa",
+            text2: "Ahora puede disfrutar de su henry bank",
+            visibilityTime: 6000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
         }, 3000);
       })
       .catch((error) => {
-        Toast.show({
-          type: 'error',
-          position: 'top',
-          text1: 'Error al registrarse',
-          text2: `${error.message}`,
-          visibilityTime: 6000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
+        setTimeout(() => {
+          Toast.show({
+            type: "error",
+            position: "top",
+            text1: "Error al darse de alta",
+            text2: `${error.message}`,
+            visibilityTime: 6000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
+        }, 2000);
       });
   };
 }

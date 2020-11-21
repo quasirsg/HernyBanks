@@ -120,3 +120,6 @@ native/.expo/
 
 #helper env native
 native/env.js
+
+#idea 
+native/.idea/

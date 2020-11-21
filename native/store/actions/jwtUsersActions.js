@@ -1,31 +1,31 @@
-import axios from "axios";
-import jwt_decode from "jwt-decode";
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
-import { BACK_URL } from "../../env";
+import { BACK_URL } from '../../env';
 
-import Toast from "react-native-toast-message";
+import Toast from 'react-native-toast-message';
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const {URL} = BACK_URL
 
-import * as actionTypes from "../constans/constans";
+import * as actionTypes from '../constans/constans';
 // const env = require('../../env.js')
 
 // const localhost= env.localhost;
 
 //loguin  -> funciona loguin correcto e incorrecto.
 export const loguinUser = (email, password, onSuccess) => (dispatch) => {
-  axios
-    .post(`${BACK_URL}/api/auth/login`, {
-      email: email,
-      password: password,
-    })
-    .then((res) => {
-      console.log(res);
+	axios
+		.post(`${BACK_URL}/api/auth/login`, {
+			email: email,
+			password: password,
+		})
+		.then((res) => {
+      
       const token = res.data;
       var decoded = jwt_decode(token);
-      console.log(decoded.id);
+
       // console.log('soy el token',token);
       if (token) {
         AsyncStorage.setItem("@token", token);
@@ -39,16 +39,18 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
       }
     })
     .catch((error) => {
-      Toast.show({
-        type: "error",
-        position: "top",
-        text1: "Login incorrecto",
-        text2: `Email o password incorrecto`,
-        visibilityTime: 6000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
+      setTimeout(function () {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "Login incorrecto",
+          text2: `Email o password incorrecto`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
     });
 };
 
@@ -68,61 +70,66 @@ export const getCurrentUser = (token) => async (dispatch) => {
         type: actionTypes.CURRENT_USER,
         user: res.data,
       });
-      Toast.show({
-        type: "success",
-        position: "top",
-        text1: `Bienvenido ${res.data.username} `,
-        visibilityTime: 6000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
+      setTimeout(function () {
+        Toast.show({
+          type: "success",
+          position: "top",
+          text1: `Bienvenido ${res.data.username} `,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
+
     })
     .catch((error) => {
-      Toast.show({
-        type: "error",
-        position: "top",
-        text1: "Error",
-        text2: `${error.message}`,
-        visibilityTime: 6000,
-        autoHide: true,
-        topOffset: 30,
-        bottomOffset: 40,
-      });
+      setTimeout(function () {
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: "Error",
+          text2: `${error.message}`,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      }, 1500);
     });
 };
 
 export const verifySession = () => (dispatch) => {
-  const { token } = AsyncStorage;
-  if (token) {
-    alert("usuario logeado");
-    dispatch(getCurrentUser(token));
-  } else {
-    dispatch({
-      type: actionTypes.NOT_CURRENT_USER,
-      message: "No hay un usuario logueado.",
-    });
-  }
+	const { token } = AsyncStorage;
+	if (token) {
+		alert('usuario logeado');
+		dispatch(getCurrentUser(token));
+	} else {
+		dispatch({
+			type: actionTypes.NOT_CURRENT_USER,
+			message: 'No hay un usuario logueado.',
+		});
+	}
 };
 
 //logout
 export const logoutUser = (onSuccess) => (dispatch) => {
-  Toast.show({
-    type: "info",
-    position: "top",
-    text1: "Cerraste sesión",
-    visibilityTime: 2000,
-    autoHide: true,
-    topOffset: 30,
-    bottomOffset: 40,
-  });
-  dispatch({
-    type: actionTypes.LOGOUT_USER,
-  });
-  dispatch({
-    type: actionTypes.DELETE_ALL_CART,
-  });
-  AsyncStorage.removeItem("@token");
+	Toast.show({
+		type: 'info',
+		position: 'top',
+		text1: 'Cerraste sesión',
+		visibilityTime: 3 * 1000,
+		autoHide: true,
+		topOffset: 30,
+		bottomOffset: 40,
+	});
+	dispatch({
+		type: actionTypes.LOGOUT_USER,
+	});
+	dispatch({
+		type: actionTypes.DELETE_ALL_CART,
+	});
+	AsyncStorage.removeItem('@token');
 };
 
 // export const passwordChange = (id, values) => (dispatch) => {

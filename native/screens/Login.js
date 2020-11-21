@@ -15,16 +15,26 @@ import Header from "../components/Header";
 import CustomInput from "../components/CustomInput";
 import { theme } from "../core/theme";
 import Logo from "../components/Logo";
+import * as Animatable from "react-native-animatable";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default function Login({ id, email, password, isValid, navigation }) {
   const [hidePassword, setHidePassword] = useState(false);
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
+  const [loading, setLoading] = useState(false);
 
+  const startLoading = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      
       <View>
-        {/* <Logo /> */}
+        {/* <Logo style={styles.down}/> */}
         <Text style={styles.title}>Iniciar sesión</Text>
 
         <Formik
@@ -40,14 +50,14 @@ export default function Login({ id, email, password, isValid, navigation }) {
           })}
           onSubmit={(values, action) => {
             let user = { ...values };
+            action.resetForm();
 
             //To lower case (wtf?)
             user.email = user.email.toLowerCase();
-
-            action.resetForm();
+            startLoading();
             dispatch(
               loguinUser(user.email, user.password, () =>
-                navigation.navigate("PosConsolidada")
+                navigation.navigate("Main")
               )
             );
 
@@ -56,75 +66,87 @@ export default function Login({ id, email, password, isValid, navigation }) {
         >
           {({ handleChange, handleSubmit, values, errors, touched }) => (
             <View>
-              <CustomInput
-                label="Correo"
-                name="email"
-                returnKeyType="next"
-                onChangeText={handleChange("email")}
-                value={values.email}
-                autoCapitalize="none"
-                autoCompleteType="email"
-                textContentType="emailAddress"
-                keyboardType="email-address"
-                style={styles.input}
+              <Spinner
+                //visibility of Overlay Loading Spinner
+                visible={loading}
+                //Text with the Spinner
+                textContent={"Loading..."}
+                //Text style of the Spinner Text
+                textStyle={styles.spinnerTextStyle}
               />
+              <Animatable.View animation="bounceInUp" delay={500}>
+                <CustomInput
+                  label="Correo"
+                  name="email"
+                  returnKeyType="next"
+                  onChangeText={handleChange("email")}
+                  value={values.email}
+                  autoCapitalize="none"
+                  autoCompleteType="email"
+                  textContentType="emailAddress"
+                  keyboardType="email-address"
+                  style={styles.input}
+                />
 
-              {errors.email ? (
-                <Text style={{ fontSize: 10, color: "red" }}>
-                  {errors.email}
-                </Text>
-              ) : (
-                  <Text style={{ fontSize: 10 }}></Text>
-                )}
-
-              <CustomInput
-                label="Contraseña"
-                name="password"
-                returnKeyType="done"
-                onChangeText={handleChange("password")}
-                value={values.password}
-                secureTextEntry={true}
-                style={styles.input}
-              />
-
-              {errors.password ? (
-                <Text style={{ fontSize: 10, color: "red" }}>
-                  {errors.password}
-                </Text>
-              ) : (
-                  <Text style={{ fontSize: 10 }}></Text>
-                )}
-
-              <Button
-                mode="contained"
-                secureTextEntry={true}
-                title="Register"
-                style={styles.button}
-                onPress={handleSubmit}
-              >
-                Ingresar
-              </Button>
-
-              <View style={styles.down}>
-                <View style={styles.row}>
-                  <Text style={styles.label}>¿Aún no tienes una cuenta? </Text>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("Register")}
-                  >
-                    <Text style={styles.link}>Regístrate aquí</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("Register")}
-                  >
-                    <Text style={styles.forgotPassword}>
-                      ¿Olvidaste tu contraseña?
+                {errors.email ? (
+                  <Text style={{ fontSize: 10, color: "red" }}>
+                    {errors.email}
                   </Text>
-                  </TouchableOpacity>
+                ) : (
+                  <Text style={{ fontSize: 10 }}></Text>
+                )}
+
+                <CustomInput
+                  label="Contraseña"
+                  name="password"
+                  returnKeyType="done"
+                  onChangeText={handleChange("password")}
+                  value={values.password}
+                  secureTextEntry={true}
+                  style={styles.input}
+                />
+
+                {errors.password ? (
+                  <Text style={{ fontSize: 10, color: "red" }}>
+                    {errors.password}
+                  </Text>
+                ) : (
+                  <Text style={{ fontSize: 10 }}></Text>
+                )}
+
+                <Button
+                  mode="contained"
+                  secureTextEntry={true}
+                  title="Register"
+                  style={styles.button}
+                  onPress={handleSubmit}
+                >
+                  Ingresar
+                </Button>
+
+                <View style={styles.down}>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>
+                      ¿Aún no tienes una cuenta?{" "}
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("Register")}
+                    >
+                      <Text style={styles.link}>Regístrate aquí</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("Register")}
+                    >
+                      <Text style={styles.forgotPassword}>
+                        ¿Olvidaste tu contraseña?
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              </Animatable.View>
             </View>
           )}
         </Formik>
@@ -176,6 +198,6 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
   },
   down: {
-    alignItems: 'center',
-  }
+    alignItems: "center",
+  },
 });
