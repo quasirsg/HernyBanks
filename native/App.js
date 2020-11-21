@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; //instalar
 import { createStackNavigator } from '@react-navigation/stack'; //instalar
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import CustomDrawerContent from './screens/CustomDrawerContent';
 import Register from './screens/Register';
@@ -31,7 +32,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Stack = createStackNavigator(); //contiene la navegacion
 const Drawer = createDrawerNavigator(); // Menu lateral
-
+const Tab = createMaterialTopTabNavigator();
 // <--------------- ROOT Stack (contiene a LoginStack y MainStack ) --------------->
 function RootStack() {
 	return (
@@ -78,7 +79,7 @@ function MainStack() {
 				// headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				// headerLeft: () => <Ionicons name='ios-menu' color='white' size={30} style={{ marginHorizontal: 15 }} onPress={() => props.navigation.openDrawer()}></Ionicons>,
 			}}
-			lazy={false}
+			lazy={true}
 		>
 			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} />
 			<Drawer.Screen name='Estatistics' component={Estatistics} />
@@ -88,12 +89,13 @@ function MainStack() {
 			<Drawer.Screen name='Recharge' component={Recharge} />
 			<Stack.Screen name='SelectContact' component={SelectContact} />
 			<Stack.Screen name='FinishSend' component={FinishSend} />
-			<Stack.Screen name='ContactCard' component={ContactCard} />
+			<Stack.Screen name='ContactCard' component={ContactCard}/>
 			<Stack.Screen name='ContactList' component={ContactList} />
 		</Drawer.Navigator>
 	);
 }
 // <--------------------- MAIN Stack --------------------->
+
 
 // <--------------------- APP --------------------->
 export default function App() {

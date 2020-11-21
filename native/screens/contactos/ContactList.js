@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Dimensions,
@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  RefreshControl,
 } from "react-native";
 import { Link } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -24,37 +25,49 @@ import { getAccount } from "../../store/actions/acountActions";
 import { verifySession, logoutUser } from "../../store/actions/jwtUsersActions";
 import { getContacts } from "../../store/actions/contactAction";
 
-
 // Dimensions
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
+//Functions
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
 const ContactList = ({ navigation }) => {
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
   const accounts = useSelector((state) => state.acoount.account);
   const contacts = useSelector((state) => state.contacts.contacts);
   const [results, setResults] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   //Vars
   const bal = session.balance;
   const id = session._id;
+  console.log("renderizando");
+  //Hooks functs
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => {
+      setRefreshing(false);
+      dispatch(getContacts(id ? id : null));
+    });
+  }, [refreshing]);
+
   //Redux
   useEffect(() => {
-	dispatch(getContacts(id ? id : null));
-    dispatch(getAccount(id ? id : null));
-    dispatch(verifySession());
-
+    dispatch(getContacts(id ? id : null));
   }, []);
   //Logs
   console.log(session);
   console.log(accounts);
-  console.log('soy contactos',contacts);
-  console.log('renderizando');
+  console.log("soy contactos", contacts);
+
   //
   const searchContacts = (value) => {
-
-
     if (!value) {
       setContacts(contacts);
     } else {
@@ -85,13 +98,20 @@ const ContactList = ({ navigation }) => {
                 {item.email.charAt(0).toUpperCase()}
               </Text>
             </View>
-            <Link to="/ContactCard">
-              <View style={{ alignItems: "flex-start", marginLeft: 0 }}>
+            <TouchableOpacity
+              style={styles.container}
+              onPress={() =>
+                navigation.navigate("ContactCard", {
+                  item: item,
+                })
+              }
+            >
+              <View style={{ alignItems: "flex-start", marginLeft: 0 }} on>
                 <Text style={styles.text_contactsInfo}>{item.name}</Text>
 
                 <Text style={styles.text_contactsInfo}>{item.email}</Text>
               </View>
-            </Link>
+            </TouchableOpacity>
           </View>
           {/* Separador Horizontal */}
           <View
@@ -114,7 +134,12 @@ const ContactList = ({ navigation }) => {
       />
 
       {/* header */}
-      <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+      <ScrollView
+        contentContainerStyle={{ alignItems: "center" }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View
           style={{
             marginVertical: 0,

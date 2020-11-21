@@ -32,7 +32,6 @@ export default function PosConsolidada({ navigation }) {
   // const bal1 = accounts ? accounts[0].balance : 0
   // const bal2 = accounts ? accounts[1].balance : 0
   useEffect(() => {
-    dispatch(getContacts(id ? id : null));
     dispatch(getAccount(id ? id : null));
     dispatch(verifySession());
   }, []);

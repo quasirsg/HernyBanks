@@ -13,8 +13,8 @@ export const getContacts = (id) => async(dispatch) =>{
         },
       })
       .then((res) => {
-        console.log("action en contact");
-        console.log(res);
+        // console.log("action en contact");
+        // console.log(res);
         dispatch({
           type: GET_CONTACTS,
           contacts: res.data || {},
