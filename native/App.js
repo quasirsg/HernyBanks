@@ -4,14 +4,14 @@ import { NavigationContainer } from '@react-navigation/native'; //instalar
 import { createStackNavigator } from '@react-navigation/stack'; //instalar
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import CustomDrawerContent from './screens/CustomDrawerContent';
+import CustomDrawerContent from './screens/MenuLateral/CustomDrawerContent';
 import Register from './screens/Register';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { st } from './store/store';
 import Estatistics from './screens/Estatistics';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
-import Welcome from './screens/welcome';
+import Welcome from './screens/Welcome';
 import WelcomeRecharge from './screens/WelcomeRecharge';
 import SendMonyScreen from './screens/SendMonyScreen';
 import Transactions from './screens/Transactions';
@@ -26,9 +26,10 @@ import SearchBar from './components/SearchBar';
 import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
+import Card from './screens/Card';
 
-// icons
-import Ionicons from "react-native-vector-icons/Ionicons";
+// Icons
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator(); //contiene la navegacion
 const Drawer = createDrawerNavigator(); // Menu lateral
@@ -69,7 +70,7 @@ function LoginStack() {
 function MainStack() {
 	return (
 		<Drawer.Navigator
-			initialRouteName='PosConsolidada'
+			initialRouteName='Inicio'
 			drawerContent={(props) => <CustomDrawerContent {...props} />}
 			screenOptions={{
 				headerShown: true,
@@ -81,16 +82,19 @@ function MainStack() {
 			}}
 			lazy={true}
 		>
-			<Drawer.Screen name='PosConsolidada' component={PosConsolidada} />
-			<Drawer.Screen name='Estatistics' component={Estatistics} />
+			<Drawer.Screen name='Inicio' component={PosConsolidada} />
+			<Drawer.Screen name='Estadisticas' component={Estatistics} />
 			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
-			<Drawer.Screen name='Transactions' component={Transactions} />
+			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
-			<Drawer.Screen name='Recharge' component={Recharge} />
-			<Stack.Screen name='SelectContact' component={SelectContact} />
-			<Stack.Screen name='FinishSend' component={FinishSend} />
-			<Stack.Screen name='ContactCard' component={ContactCard}/>
-			<Stack.Screen name='ContactList' component={ContactList} />
+			<Drawer.Screen name='Recargar Dinero' component={Recharge} />
+			{/* <Drawer.Screen name='Card' component={Card} /> */}
+
+			<Stack.Screen name='SelectContact' component={SelectContact} options={{ title: ''}}/>
+			<Stack.Screen name='FinishSend' component={FinishSend} options={{ title: ''}}/>
+			<Stack.Screen name='ContactCard' component={ContactCard} />
+			<Stack.Screen name='Contactos' component={ContactList} />
+			<Stack.Screen name='Card' component={Card} />
 		</Drawer.Navigator>
 	);
 }
@@ -112,10 +116,10 @@ export default function App() {
 
 // <--------------------- ESTILOS --------------------->
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+	container: {
+		flex: 1,
+		backgroundColor: 'white',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 });

@@ -181,7 +181,7 @@ module.exports = {
 				const user = ctx.params;
 
 				if (mongoose.Types.ObjectId.isValid(user._id)) {
-					const found = await User.findById({ _id: user._id });
+					const found = await User.findById({ _id: user._id }).populate('accounts');
 
 					if (found) return found;
 				}

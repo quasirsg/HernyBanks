@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Modal } from 'react-native';
-import { Link } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Modal, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { theme } from "../../core/theme";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from "../../components/Button";
 import { Formik } from 'formik';
 import CustomInput from '../../components/CustomInput';
+import { useDispatch, useSelector } from 'react-redux';
+import { transferMoney } from '../../store/actions/acountActions'
+import Toast from "react-native-toast-message";
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,13 +23,13 @@ const ModalSelector = ({ show, control, setter }) => {
                 transparent={true}
             >
                 <View style={styles.modalContent}>
-                    <TouchableOpacity onPress={() => {setter({selected: 'pesos'}); control(false)}}>
+                    <TouchableOpacity onPress={() => { setter({ title: 'pesos', type: 'pesos', pos: 0 }); control(false) }}>
                         <View style={styles.item}>
                             <Text style={styles.itemText}>Cuenta en pesos</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {setter({selected: 'dólares'}); control(false)}}>
+                    <TouchableOpacity onPress={() => { setter({ title: 'dólares', type: 'dollars', pos: 1 }); control(false) }}>
                         <View style={styles.item}>
                             <Text style={styles.itemText}>Cuenta en dólares</Text>
                         </View>
@@ -38,17 +40,67 @@ const ModalSelector = ({ show, control, setter }) => {
     )
 }
 
-export default function SelectContact({ navigation }) {
+export default function SelectContact({ navigation, route }) {
 
-    const [showModal, setShowModal] = React.useState(false);
-    const [currency, setCurrency] = React.useState({
-        selected: 'pesos'
+    console.log('AQUI:::',route.params);
+    const accounts = useSelector((state) => state.acoount.account);
+    const pesosAccount = accounts[0];
+    const dollarsAccount = accounts[1];
+    const pesosBalance = pesosAccount && pesosAccount.balance;
+    const dollarsBalance = dollarsAccount && dollarsAccount.balance;
+    const loggedUser = useSelector((state) => state.session.userDetail);
+    const dispatch = useDispatch();
+
+    const [showModalFrom, setShowModalFrom] = React.useState(false);
+    const [showModalTo, setShowModalTo] = React.useState(false);
+    const [fromAcc, setFromAcc] = React.useState({
+        title: 'pesos',
+        type: 'pesos',
+        pos: 0
+    })
+    const [toAcc, setToAcc] = React.useState({
+        title: 'dólares',
+        type: 'pesos',
+        pos: 0
     })
 
-    const [currentBalance, setCurrentBalance] = React.useState({
-        pesos: 3000000,
-        dollars: 500
+    const [values, setValues] = React.useState({
+        amount: '',
+        description: ''
     })
+
+    const handleInput = (name, text) => {
+        setValues({ ...values, [name]: text });
+    }
+
+    const handleFinish = (data) => {
+
+        const send = {
+            from: loggedUser.accounts[fromAcc.pos].cvu,
+            to: data.accounts[toAcc.type],
+            amount: values.amount,
+            description: values.description,
+        }
+
+        console.log('TRANSACTION DATA::', send);
+
+        dispatch(transferMoney(send))
+
+        setTimeout(function () {
+            navigation.navigate('Inicio');
+
+            Toast.show({
+                type: "success",
+                position: "top",
+                text1: "Transacción exitosa",
+                text2: "Se envió el dinero correctamente",
+                visibilityTime: 5000,
+                autoHide: true,
+                topOffset: 30,
+                bottomOffset: 40,
+            });
+        }, 3000);
+    }
 
     return (
         <ScrollView backgroundColor={'white'}>
@@ -56,12 +108,7 @@ export default function SelectContact({ navigation }) {
 
                 <View style={styles.header}>
 
-                    <Link to="/SelectContact">
-                        <View style={styles.rowI}>
-                            <Icon name="arrow-left" color={'white'} size={25} />
-                            <Text style={styles.back}> Volver </Text>
-                        </View>
-                    </Link>
+                    <Image source={require('../../assets/background2.png')} style={{ position: 'absolute' }} />
 
                     <View style={styles.rowII}>
                         <Icon name="money" color={'white'} size={30} />
@@ -78,12 +125,12 @@ export default function SelectContact({ navigation }) {
 
                         <View style={styles.balance}>
                             <Text style={styles.pesosTitle}> Pesos </Text>
-                            <Text style={styles.pesosValue}>$ {currentBalance.pesos}</Text>
+                            <Text style={styles.pesosValue}>$ {pesosBalance}</Text>
                         </View>
 
                         <View style={styles.balance}>
                             <Text style={styles.dollarsTitle}> Dólares </Text>
-                            <Text style={styles.dollarsValue}>USD {currentBalance.dollars}</Text>
+                            <Text style={styles.dollarsValue}>USD {dollarsBalance}</Text>
                         </View>
 
                     </View>
@@ -91,58 +138,63 @@ export default function SelectContact({ navigation }) {
 
                 <View style={styles.main}>
 
-                    <Text style={styles.from}> Selecciona desde dónde quieres transferir</Text>
+                    <Text style={styles.from}> Selecciona cómo se realizará la transacción</Text>
 
-                    <View style={styles.formContainer}>
+                    <View>
 
-                        <Formik
-                            initialValues={{
-                                ammount: '',
-                                type: '',
-                            }}
-
-                            onSubmit={(values, action) => {
-                                action.resetForm();
-                                dispatch(createUser(values, () => navigation.navigate('CodeVerification')));
-                            }}
-                        >
+                        <Formik>
                             <View style={styles.main}>
 
                                 <View style={styles.summary}>
-                                    <TouchableOpacity onPress={() => setShowModal(true)}>
-                                        <View style={styles.modalshut}>
-                                            <Text style={{ textAlign: 'center' }}>Desde mi cuenta en {currency.selected}</Text>
-                                        </View>
-                                    </TouchableOpacity>
+
+                                    <View style={styles.selector}>
+                                        <TouchableOpacity onPress={() => setShowModalFrom(true)}>
+                                            <View style={styles.modalshut}>
+                                                <Text style={{ textAlign: 'center', fontSize: 12 }}>Mi cuenta en {fromAcc.title}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+
+                                        <Icon name="arrow-right" color={theme.colors.primary} size={15} style={{marginTop:5}}/>
+
+                                        <TouchableOpacity onPress={() => setShowModalTo(true)}>
+                                            <View style={styles.modalshut}>
+                                                <Text style={{ textAlign: 'center', fontSize: 12 }}>Una cuenta en {toAcc.title}</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
 
                                     <CustomInput
                                         label='Valor'
-                                        name='ammount'
+                                        name='amount'
                                         keyboardType={'phone-pad'}
                                         style={styles.input}
+                                        onChangeText={(value) => handleInput('amount', value)}
                                     />
 
                                     <CustomInput
                                         label='Descripción'
                                         name='description'
                                         style={styles.input}
+                                        onChangeText={(value) => handleInput('description', value)}
                                     />
 
-                                    <Text style={styles.description}>Se trasferirán x valor/moneda a tu contacto x</Text>
+                                    { route.params && <Text style={styles.description}>Se trasferirán {values.amount.length > 0 ? (values.amount) : (0)} {fromAcc.title} a tu contacto {route.params.name[0].toUpperCase() + route.params.name.slice(1) }</Text>}
                                     <Text style={styles.foot}>Presiona enviar para finalizar la transacción</Text>
                                 </View>
                                 <Button
                                     mode="contained"
+                                    disabled={ parseInt(values.amount ) > 0 ? false : true}
                                     secureTextEntry={true}
-                                    style={styles.button}
-                                //onPress={() => navigation.navigate('FinishSend')}
+                                    style={ parseInt(values.amount ) > 0 ? styles.button : {...styles.button, backgroundColor: '#ddd'} }
+                                    onPress={() => handleFinish(route.params)}
                                 > Enviar
                                 </Button>
 
                             </View>
                         </Formik>
 
-                        <ModalSelector show={showModal} control={setShowModal} setter={setCurrency}/>
+                        <ModalSelector show={showModalFrom} control={setShowModalFrom} setter={setFromAcc} />
+                        <ModalSelector show={showModalTo} control={setShowModalTo} setter={setToAcc} />
 
                     </View>
                 </View>
@@ -155,8 +207,7 @@ export default function SelectContact({ navigation }) {
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        backgroundColor: theme.colors.primary,
-        paddingTop: 40,
+        //backgroundColor: theme.colors.primary,
         paddingLeft: 15
     },
     rowI: {
@@ -166,7 +217,7 @@ const styles = StyleSheet.create({
     rowII: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 40,
+        paddingVertical: 35,
         justifyContent: 'center',
     },
     back: {
@@ -193,13 +244,14 @@ const styles = StyleSheet.create({
     },
     card: {
         margin: 10,
-        borderWidth: .3,
+        backgroundColor: '#fff',
         borderColor: theme.colors.secondary,
-        borderRadius: 5
+        borderRadius: 5,
+        elevation: 1
     },
     balaceTitle: {
         textAlign: 'center',
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: 'bold',
         color: theme.colors.secondary,
         padding: 14,
@@ -213,7 +265,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: theme.colors.secondary,
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 16,
     },
     pesosValue: {
         textAlign: 'center',
@@ -225,7 +277,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: theme.colors.secondary,
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 16,
     },
     dollarsValue: {
         textAlign: 'center',
@@ -246,16 +298,12 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 30,
         borderWidth: 1,
-        borderColor: theme.colors.primary,
         backgroundColor: theme.colors.primary,
         width: width * .5,
     },
     main: {
         flex: 1,
         alignItems: 'center',
-    },
-    formContainer: {
-        width: '80%'
     },
     modal: {
         flex: 1,
@@ -273,13 +321,13 @@ const styles = StyleSheet.create({
         borderWidth: .3,
         borderRadius: 5
     },
-    ammountSelect: {
+    amountSelect: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '90%',
     },
-    inputAmmount: {
+    inputAmount: {
         width: width * .7,
         height: 40,
         backgroundColor: 'white',
@@ -290,9 +338,9 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
         paddingLeft: 12,
         paddingRight: 12,
-        borderWidth: .3,
-        borderRadius: 5,
-        borderColor: '#669',
+        borderWidth: .5,
+        borderRadius: 20,
+        borderColor: theme.colors.secondary,
     },
     summary: {
         marginTop: 5,
@@ -302,28 +350,35 @@ const styles = StyleSheet.create({
         paddingRight: 12,
         borderWidth: .3,
         borderRadius: 5,
-        borderColor: theme.colors.secondary,
+        borderColor: '#fff',
         width: width * .95,
         height: height * .32
     },
     item: {
-        backgroundColor: 'transparent', 
-        width: width*.9,
+        backgroundColor: 'transparent',
+        width: width * .9,
         marginTop: 10,
     },
     itemText: {
-        fontSize: 20, 
+        fontSize: 20,
         textAlign: 'center',
         color: theme.colors.secondary,
     },
     description: {
         paddingTop: 20,
         color: theme.colors.secondary,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontWeight: 'bold'
     },
     foot: {
         color: theme.colors.secondary,
-        textAlign: 'center'
+        textAlign: 'center',
+
+    },
+    selector: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center'
     }
 
 })

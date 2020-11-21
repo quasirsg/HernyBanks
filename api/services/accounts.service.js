@@ -133,7 +133,7 @@ module.exports = {
                 const { amount, cvu } = ctx.params;
                 const recharge = await this.recharge(amount, cvu, 'Credit Card');
 
-                return recharge && 'The Recharge Was Successful';
+                return recharge && recharge;
             }
         },
         transfer: {
@@ -163,8 +163,8 @@ module.exports = {
 
                     await fromAccount.save()
                     await toAccount.save()
-
-                    return 'the transaction was succesful'
+                       
+                    return fromAccount;
                 } else {
                     return 'You do not have enough balance'
                 };
