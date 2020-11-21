@@ -1,28 +1,3 @@
-<<<<<<< HEAD
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { NavigationContainer } from "@react-navigation/native"; //instalar
-import { createStackNavigator } from "@react-navigation/stack"; //instalar
-import Register from "./screens/Register";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { st } from "./store/store";
-import Estatistics from "./screens/Estatistics";
-import Login from "./screens/Login";
-import PosConsolidada from "./screens/PosConsolidada";
-import welcome from "./screens/welcome";
-import SendMonyScreen from "./screens/SendMonyScreen";
-import Transactions from "./screens/Transactions";
-import CodeVerification from "./screens/CodeVerification";
-import AltaUser from "./screens/AltaUser";
-import FAQ from "./screens/FAQ";
-import Toast from "react-native-toast-message";
-import SideMenu from "react-native-side-menu-updated";
-import MenuLateral from "./screens/MenuLateral";
-import Recharge from "./screens/Recharge";
-import ContactCard from './screens/contactos/ContactCard';
-import ContactList from './screens/contactos/ContactList';
-import SearchBar from './components/SearchBar';
-=======
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; //instalar
@@ -44,12 +19,12 @@ import AltaUser from './screens/AltaUser';
 import FAQ from './screens/FAQ';
 import Toast from 'react-native-toast-message';
 import Recharge from './screens/Recharge';
-import ContactCard from './screens/Contactos/ContactCard';
-import ContactList from './screens/Contactos/ContactList';
+import ContactCard from './screens/contactos/ContactCard';
+import ContactList from './screens/contactos/ContactList';
+import SearchBar from './components/SearchBar';
 import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
->>>>>>> animaciones
 
 // icons
 import Ionicons from "react-native-vector-icons/Ionicons";
