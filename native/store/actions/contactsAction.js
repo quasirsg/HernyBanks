@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_CONTACT } from "../constans/constans";
+import { GET_CONTACT } from "../constans/constantsContacts";
 
 
 import { BACK_URL } from "../../env";

@@ -99,7 +99,7 @@ module.exports = {
         addConcat: {
             //To add a new contact we need first find  if this contact exist in our user db and has an
             //acount with validate in true.
-            rest: 'POST /',
+            rest: 'POST /add',
             async handler(ctx) {
                 const { _id, email } = ctx.params;
 

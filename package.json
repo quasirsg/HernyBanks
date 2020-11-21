@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@react-navigation/material-top-tabs": "^5.3.10",
+    "react-native-tab-view": "^2.15.2"
+  }
+}
