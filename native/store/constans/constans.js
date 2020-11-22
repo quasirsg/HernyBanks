@@ -25,6 +25,7 @@ export const GET_ACCOUNT = 'GET_ACCOUNT'
 export const RECHARGE_QR = 'RECHARGE_QR'
 export const RECHARGE_CARD = 'RECHARGE_CARD'
 export const TRANSFER_MONEY = 'TRANSFER_MONEY'
+export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
 
 //Contact 
 export const GET_CONTACT = 'GET_CONTACT'

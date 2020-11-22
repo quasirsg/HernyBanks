@@ -1,4 +1,4 @@
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS } from "../constans/constans";
 
 const initialState = {
   users: [],
@@ -6,7 +6,8 @@ const initialState = {
   err: [],
   message: "",
   userUp: {},
-  account: []
+  account: [],
+  transactions: []
 };
 
 
@@ -41,6 +42,8 @@ const acoountReducers = (state = initialState, action) => {
       let accountNewC = [...state.account]
       accountNewC[indC].balance = objC.balance
       return { ...state, account: accountNewC };
+    case GET_TRANSACTIONS:
+      return { ...state, transactions: action.data };
     default:
       return state;
   }

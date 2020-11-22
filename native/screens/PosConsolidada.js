@@ -290,7 +290,8 @@ export default function PosConsolidada({ navigation }) {
 								<TouchableOpacity
 									style={{ alignItems: 'flex-end', marginTop: 30 }}
 									onPress={() => {
-										alert('Ver mas movimientos');
+										//alert('Ver mas movimientos');
+										navigation.navigate('Ultimos Movimientos');
 									}}
 								>
 									<Text style={styles.text_link}>Ver mas movimientos</Text>

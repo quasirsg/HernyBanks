@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
@@ -109,6 +109,31 @@ export function transferMoney(data) {
       })
       .catch((error) => {
         console.log('Error en la transferencia',error)
+      });
+  };
+}
+
+export function getTransactions(data) {
+  return (dispatch) => {
+    console.log('Get transactions')
+    console.log(data)
+
+    axios
+      .get(`${BACK_URL}/api/accounts/transactions`, {
+        params: {
+          cvu: data,
+        },
+      })
+      .then((res) => {
+        console.log('Estas son las transacciones',res)
+        dispatch({
+          type: GET_TRANSACTIONS,
+          data: res.data || {},
+        });
+
+      })
+      .catch((error) => {
+        console.log('Error en la consulta',error)
       });
   };
 }
