@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { verifySession, logoutUser } from '../../store/actions/jwtUsersActions';
@@ -37,10 +37,10 @@ export default function CustomDrawerContent(props) {
 				{/* Informacion del Ususario */}
 				<View style={styles.userInfoContainer}>
 					<View>
-						<View style={styles.avatarContainer}></View>
+						<View style={styles.avatarContainer}>{session.image ? <Image source={session.image} style={{ height: 50, width: 50 }}></Image> : <Ionicons name='ios-person' color='indigo' size={25} style={{ marginHorizontal: 0 }}></Ionicons>}</View>
 					</View>
 					<View style={styles.userNameContainer}>
-						<Text>User Name Here</Text>
+						<Text>{session.name || 'User Name Here'}</Text>
 					</View>
 				</View>
 				{/* .map de las secciones */}
@@ -79,13 +79,16 @@ const styles = StyleSheet.create({
 		marginVertical: 10,
 	},
 	avatarContainer: {
-		backgroundColor: 'indigo',
+		// backgroundColor: 'indigo',
+		borderWidth: 1,
+		borderColor: 'indigo',
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginHorizontal: 20,
 		width: 50,
 		aspectRatio: 1,
 		borderRadius: 1000,
+		overflow: 'hidden',
 	},
 	userNameContainer: {
 		justifyContent: 'center',

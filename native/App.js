@@ -88,8 +88,8 @@ function MainStack() {
 			<Drawer.Screen name='Recargar Dinero' component={Recharge} />
 			{/* <Drawer.Screen name='Card' component={Card} /> */}
 
-			<Stack.Screen name='SelectContact' component={SelectContact} options={{ title: ''}}/>
-			<Stack.Screen name='FinishSend' component={FinishSend} options={{ title: ''}}/>
+			<Stack.Screen name='SelectContact' component={SelectContact} options={{ title: '' }} />
+			<Stack.Screen name='FinishSend' component={FinishSend} options={{ title: '' }} />
 			<Stack.Screen name='ContactCard' component={ContactCard} />
 			<Stack.Screen name='Contactos' component={ContactList} />
 			<Stack.Screen name='Card' component={Card} />
