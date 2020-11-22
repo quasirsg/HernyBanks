@@ -18,6 +18,7 @@ export default function PosConsolidada({ navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 	const accounts = useSelector((state) => state.acoount.account);
+	const transactions = useSelector((state) => state.acoount.account);
 	const bal = session.balance;
 	const id = session._id;
 	// const bal1 = accounts ? accounts[0].balance : 0
@@ -26,11 +27,11 @@ export default function PosConsolidada({ navigation }) {
 		dispatch(getAccount(id ? id : null));
 		dispatch(verifySession());
 	}, []);
-	console.log('****Cuentas****');
-	const accountP = accounts[0];
-	const accountD = accounts[1];
-	const balancP = accountP && accountP.balance;
-	const balancD = accountD && accountD.balance;
+	// console.log('****Cuentas****');
+	const accountPesos = accounts[0];
+	const accountDolares = accounts[1];
+	const balancePesos = accountPesos && accountPesos.balance;
+	const balanceDolares = accountDolares && accountDolares.balance;
 	console.log(accounts);
 
 	const logoutHandler = () => {
@@ -44,8 +45,11 @@ export default function PosConsolidada({ navigation }) {
 		dispatch(verifySession());
 	}, []);
 	console.log('****Cuentas****');
-	console.log(accounts);
+	// console.log('these are the accounts: ' + accounts[0].transactions[0]);
 
+	// estado de indice de la cuenta a renderizar
+	const [currentAccountIndex, setCurrentAccountIndex] = useState(0);
+	// estado de indice de la cuenta a renderizar
 	return (
 		<View style={styles.containerPrin}>
 			{/* Imagen de fondo */}
@@ -60,20 +64,72 @@ export default function PosConsolidada({ navigation }) {
 							paddingVertical: accounts.length > 1 ? 0 : 20, // Pone padding solo si hay mas de una cuenta
 						}}
 					>
-						{accounts.length > 0 ? (
-							accounts.map((cuenta, key) => {
-								return (
-									<View key={key}>
+						{/* scrollview HORIZONTAL de balances de cuentas */}
+						<View
+							style={{
+								maxHeight: deviceHeight * 0.4,
+								minHeight: 200,
+								marginVertical: 0,
+								// backgroundColor: 'blue',
+							}}
+						>
+							<ScrollView
+								horizontal={true}
+								decelerationRate={0}
+								snapToInterval={deviceWidth} //your element width
+								snapToAlignment={'center'}
+								showsHorizontalScrollIndicator={false}
+								contentContainerStyle={styles.balance_horizontalScrollview}
+								onMomentumScrollEnd={function (event) {
+									setCurrentAccountIndex(Math.round(event.nativeEvent.contentOffset.x / deviceWidth));
+									// alert(currentAccountIndex);
+									// alert('Cuenta numero: ' + (event.nativeEvent.contentOffset.x / deviceWidth + 1));
+								}}
+							>
+								{accounts.length > 0 ? (
+									accounts.map((cuenta, key) => {
+										return (
+											<View key={key}>
+												{/* Container de BALANCE de la cuenta */}
+												<View style={styles.balanceContainer}>
+													<Text style={styles.textTitle}>Saldo de la cuenta en {cuenta.type}</Text>
+													{/* <Text>currentAccountIndex es {currentAccountIndex}</Text> */}
+													<View
+														style={{
+															flexDirection: 'row',
+															justifyContent: 'center',
+														}}
+													>
+														<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' + cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
+													</View>
+													{/* Separador Vertical */}
+													<View
+														style={{
+															borderBottomColor: 'grey',
+															borderBottomWidth: 1,
+															marginVertical: 5,
+														}}
+													/>
+													<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+													<TouchableOpacity
+														style={{ alignItems: 'flex-end', marginTop: 0 }}
+														onPress={() => {
+															alert('Ver el detalle');
+														}}
+													>
+														<Text style={styles.text_link}>Ver el detalle</Text>
+													</TouchableOpacity>
+												</View>
+											</View>
+										);
+									})
+								) : (
+									<View>
 										{/* Container de BALANCE de la cuenta */}
 										<View style={styles.balanceContainer}>
-											<Text style={styles.textTitle}>Saldo de la cuenta en {cuenta.type}</Text>
-											<View
-												style={{
-													flexDirection: 'row',
-													justifyContent: 'center',
-												}}
-											>
-												<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' + cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
+											<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
+											<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+												<Text style={styles.text_saldoCuenta2}> $ noLogueado</Text>
 											</View>
 											{/* Separador Vertical */}
 											<View
@@ -94,36 +150,10 @@ export default function PosConsolidada({ navigation }) {
 											</TouchableOpacity>
 										</View>
 									</View>
-								);
-							})
-						) : (
-							<View>
-								{/* Container de BALANCE de la cuenta */}
-								<View style={styles.balanceContainer}>
-									<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
-									<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-										<Text style={styles.text_saldoCuenta2}> $ 1234560</Text>
-									</View>
-									{/* Separador Vertical */}
-									<View
-										style={{
-											borderBottomColor: 'grey',
-											borderBottomWidth: 1,
-											marginVertical: 5,
-										}}
-									/>
-									<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
-									<TouchableOpacity
-										style={{ alignItems: 'flex-end', marginTop: 0 }}
-										onPress={() => {
-											alert('Ver el detalle');
-										}}
-									>
-										<Text style={styles.text_link}>Ver el detalle</Text>
-									</TouchableOpacity>
-								</View>
-							</View>
-						)}
+								)}
+							</ScrollView>
+						</View>
+						{/* scrollview HORIZONTAL de balances de cuentas */}
 					</View>
 
 					{/* ACCIONES */}
@@ -136,9 +166,10 @@ export default function PosConsolidada({ navigation }) {
 									justifyContent: 'space-between',
 								}}
 							>
+								{/* Recargar Dinero */}
 								<TouchableOpacity
 									onPress={() => {
-										navigation.navigate('Recharge');
+										navigation.navigate('Recargar Dinero');
 									}}
 									style={{ width: '30%' }}
 								>
@@ -150,9 +181,7 @@ export default function PosConsolidada({ navigation }) {
 									</View>
 								</TouchableOpacity>
 
-								{/* BOTON DE CARLOS, REVISAR SI ESTA BIEN */}
-								{/* <TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}></TouchableOpacity> */}
-
+								{/* Mandar Dinero */}
 								<TouchableOpacity onPress={() => navigation.navigate('SelectContact')} style={{ width: '30%' }}>
 									<View style={{ alignItems: 'center' }}>
 										<View style={styles.mainActionIconContainer}>
@@ -161,6 +190,8 @@ export default function PosConsolidada({ navigation }) {
 										<Text style={styles.text_acciones}>Mandar Dinero</Text>
 									</View>
 								</TouchableOpacity>
+
+								{/* Pagar */}
 								<TouchableOpacity
 									onPress={() => {
 										alert('Pagar');
@@ -200,46 +231,61 @@ export default function PosConsolidada({ navigation }) {
 								<Text style={styles.textTitle_ultimosMovimientos}>Úlitmos movimientos</Text>
 
 								{/* .map de ULTIMOS MOVIMIENTOS */}
-								{arrayDePruebaMovimientos.map((mov, key) => {
-									return (
-										<View key={key}>
-											{/* fila de ULTIMO MOVIMIENTO */}
-											<View
-												style={{
-													flexDirection: 'row',
-													justifyContent: 'space-between',
-													alignItems: 'center',
-												}}
-											>
-												<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-													<View style={styles.shopBrandLogosContainer}>
-														<Image
-															source={{
-																uri: 'https://reactnative.dev/img/tiny_logo.png',
-															}}
-															style={{ height: 30, width: 30 }}
-														></Image>
+								{accounts[currentAccountIndex] && accounts[currentAccountIndex].transactions.length > 0 ? (
+									accounts[currentAccountIndex].transactions.map((mov, key) => {
+										return (
+											<View key={key}>
+												{/* fila de ULTIMO MOVIMIENTO */}
+												<View
+													style={{
+														flexDirection: 'row',
+														justifyContent: 'space-between',
+														alignItems: 'center',
+													}}
+												>
+													<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+														<View style={styles.shopBrandLogosContainer}>
+															<Image
+																source={{
+																	uri: 'https://reactnative.dev/img/tiny_logo.png',
+																}}
+																style={{ height: 30, width: 30 }}
+															></Image>
+														</View>
+														<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
+															<Text style={styles.text_shopUltimosMovimientos}>{mov.from || 'Negocio o Usuario'}</Text>
+															<Text style={styles.text_detailUltimosMovimientos}>{mov.detail || 'Detalle de la transacción'}</Text>
+														</View>
 													</View>
-													<View style={{ alignItems: 'flex-start', marginLeft: 10 }}>
-														<Text style={styles.text_shopUltimosMovimientos}>Negocio o Usuario</Text>
-														<Text style={styles.text_detailUltimosMovimientos}>Detalle de la transaccion</Text>
+													<View style={{ alignItems: 'center' }}>
+														<Text style={styles.text_ingresosUltimosMovimientos}> $ {mov.amount || 999}</Text>
 													</View>
 												</View>
-												<View style={{ alignItems: 'center' }}>
-													<Text style={styles.text_ingresosUltimosMovimientos}> $ {key}</Text>
-												</View>
+												{/* Separador Horizontal */}
+												<View
+													style={{
+														borderBottomColor: 'grey',
+														borderBottomWidth: 1,
+														marginVertical: 10,
+													}}
+												/>
 											</View>
-											{/* Separador Horizontal */}
-											<View
-												style={{
-													borderBottomColor: 'grey',
-													borderBottomWidth: 1,
-													marginVertical: 10,
-												}}
-											/>
+										);
+									})
+								) : (
+									<View>
+										{/* fila de ULTIMO MOVIMIENTO */}
+										<View
+											style={{
+												flexDirection: 'row',
+												justifyContent: 'space-between',
+												alignItems: 'center',
+											}}
+										>
+											<Text style={styles.text_body}>Aún no tienes movimientos en esta cuenta. Cuando realices movimiento en esta cuenta, aquí podrás ver un resumen del mismo.</Text>
 										</View>
-									);
-								})}
+									</View>
+								)}
 
 								<TouchableOpacity
 									style={{ alignItems: 'flex-end', marginTop: 30 }}
