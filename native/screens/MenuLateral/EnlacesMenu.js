@@ -5,7 +5,7 @@
 // Cada enlace tiene a su vez tres propiedades:
 //      label       ------>       Lo que va a decir en el menu lateral
 //      icon      ------->        Nombre del icono, ver el enlace (https://ionicons.com/v4/cheatsheet.html)
-//      screen      ----->        Nombre de la screen a la que tiene que redirigir
+//      screen      ----->        Nombre de la screen a la que tiene que redirigir (propiedad 'name' de cada screen en app.js)
 
 // NO HACE FALTA MODIFICAR EL ARCHIVO CustomDrawerContent.js
 
@@ -22,7 +22,7 @@ export const EnlacesMenuLateral = [
 		sectionTitle: 'Acciones',
 		links: [
 			{ label: 'Recargar dinero', icon: 'ios-wallet', screen: 'Recargar Dinero' },
-			{ label: 'Transferir dinero', icon: 'ios-send', screen: 'Transferir Dinero' },
+			{ label: 'Mandar dinero', icon: 'ios-send', screen: 'SelectContact' },
 			{ label: 'Contactos', icon: 'ios-contact', screen: 'Contactos' },
 		],
 	},
