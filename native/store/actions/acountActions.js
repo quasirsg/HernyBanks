@@ -72,6 +72,7 @@ export function rechargeByCard(data, onSuccess) {
             topOffset: 30,
             bottomOffset: 40,
           });
+          onSuccess()
         }, 3000)
 
         Toast.show({

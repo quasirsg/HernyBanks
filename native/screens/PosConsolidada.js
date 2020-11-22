@@ -138,7 +138,7 @@ export default function PosConsolidada({ navigation }) {
 							>
 								<TouchableOpacity
 									onPress={() => {
-										navigation.navigate('Recharge');
+										navigation.navigate('Recargar Dinero');
 									}}
 									style={{ width: '30%' }}
 								>

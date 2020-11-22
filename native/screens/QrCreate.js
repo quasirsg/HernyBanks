@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rechargeByQr } from '../store/actions/acountActions';
 // import all the components we are going to use
-import { SafeAreaView, ScrollView, Text, View, StyleSheet, TextInput, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { SafeAreaView, ScrollView, Text, View, StyleSheet, TextInput, TouchableOpacity, Picker, Dimensions, Image } from 'react-native';
 import { theme } from '../core/theme';
 import QRCode from 'react-native-qrcode-svg';
 import { set } from 'react-native-reanimated';
@@ -19,8 +19,11 @@ const Qrnative = () => {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 	const accounts = useSelector((state) => state.acoount.account);
-	const account = accounts[0];
-	const cvuV = account && account.cvu;
+	const accountP = accounts[0];
+	const accountD = accounts[1];
+	const cvuP = accountP && accountP.cvu;
+	const cvuD = accountD && accountD.cvu;
+	const [selectedValue, setSelectedValue] = useState("");
 	const [inputText, setInputText] = useState({
 		cvu: "",
 		amount: '',
@@ -28,12 +31,20 @@ const Qrnative = () => {
 	const [qrvalue, setQrvalue] = useState('');
 
 	const handlerSubmit = () => {
-		dispatch(rechargeByQr(inputText));
-		setQrvalue(inputText);
+		let obj = {
+			cvu:selectedValue,
+			amount:inputText.amount
+		}
+		console.log("****Vlires con piker****")
+		console.log(obj)
+		dispatch(rechargeByQr(obj));
+		setQrvalue(obj);
 		return;
 	};
 
-	console.log(inputText);
+	console.log('***CVU CUENTAS*****');
+	console.log(cvuP);
+	console.log(cvuD);
 
 	return (
 		<ScrollView style={{ flex: 1 }}>
@@ -83,9 +94,19 @@ const Qrnative = () => {
 					label='Cantidad de dinero:'
 					name='Cantidad'
 					returnKeyType='done'
-					onChangeText={(text) => setInputText({ ...inputText, amount: text, cvu:cvuV })}
+					onChangeText={(text) => setInputText({ ...inputText, amount: text })}
 					style={styles.inputCantidadDinero}
 				/>
+				<Text style={styles.textStyle}>Cuenta a recargar</Text>
+				<Picker
+				selectedValue={selectedValue}
+				style={{ height: 50, width: 250 }}
+				style={styles.inputSelect}
+				onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+					>
+					<Picker.Item label="Cuenta Pesos" value={cvuP} />
+					<Picker.Item label="Cuenta Dolares" value={cvuD} />
+				</Picker>
 				{/* <TouchableOpacity style={styles.buttonStyle} onPress={handlerSubmit}>
 					<Text style={styles.buttonTextStyle}>Generar codigo!</Text>
 				</TouchableOpacity> */}
@@ -142,14 +163,20 @@ const styles = StyleSheet.create({
 	},
 	inputCantidadDinero: {
 		height: 40,
-		backgroundColor: 'white',
-		borderColor: '#fff',
+        borderBottomColor: 'black',
+        borderBottomWidth: 2,
 		width: width * 0.5,
 		alignSelf: 'center',
-		marginTop: 20,
+		marginTop: 10,
+		marginBottom:10
 	},
 	QRcontainer: {
 		marginTop: 50,
 		marginBottom: 10,
 	},
+	inputSelect: {
+		borderBottomColor: 'black',
+        borderBottomWidth: 6,
+		width: width * 0.5,
+	}
 });
