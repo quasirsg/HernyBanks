@@ -118,6 +118,61 @@ module.exports = {
                 return transactions && transactions;
             }
         },
+         getTransactionsById: {
+            rest: 'GET /transactionbyid',
+            async handler(ctx) {
+                const { _id } = ctx.params; //transaction id
+                
+                //Search Methods
+                const transaction = await Transaction.findOne({ _id }).populate('fromAccount').populate('toAccount')
+                const fromAccount = await Account.findOne({cvu : transaction.fromAccount[0].cvu}).populate('_userId')
+                const toAccount = await Account.findOne({cvu : transaction.toAccount[0].cvu}).populate('_userId')
+
+                //handle error
+                if (!transaction) {
+                    throw new MoleculerClientError(
+                        'there are not transactions for this accounts!',
+                        422,
+                        '', [{ message: 'there are not transactions for this accounts!' }]
+                    )
+                }
+
+                //this is to understad the type of the transaction
+                let by = '';
+                if(transaction.by === 'QR' || transaction.by === 'Credit Card' || transaction.by === 'Debit Card'){
+                    by = 'Recharge'
+                }else {
+                    by = 'Transfer'
+                }
+
+                //These 3 objects are created to order in a readable way the answer of this route
+                const fromUserObj = {
+                    name : fromAccount._userId[0].name,
+                    email : fromAccount._userId[0].email
+                }
+                const toUserObj = {
+                    name : toAccount._userId[0].name,
+                    email : toAccount._userId[0].email
+                }
+                const transObj = {
+                    id : transaction._id,
+                    from : {
+                        account : transaction.fromAccount[0].cvu,
+                        user : fromUserObj
+                    },
+                    to : {
+                        account : transaction.toAccount[0].cvu,
+                        user : toUserObj
+                    },
+                    description : transaction.description,
+                    amount : transaction.amount,
+                    by: transaction.by,
+                    type : by
+                }
+
+                return transObj;
+            }
+        },
         rechargeByQR: {
             rest: 'POST /rechargebyqr',
             async handler(ctx) {
