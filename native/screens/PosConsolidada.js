@@ -129,7 +129,7 @@ export default function PosConsolidada({ navigation }) {
 										<View style={styles.balanceContainer}>
 											<Text style={styles.textTitle}>Saldo de la cuenta en pesos</Text>
 											<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-												<Text style={styles.text_saldoCuenta2}> $ noLogueado</Text>
+												<Text style={styles.text_saldoCuenta2}> Cargando</Text>
 											</View>
 											{/* Separador Vertical */}
 											<View
