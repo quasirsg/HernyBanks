@@ -108,6 +108,10 @@ module.exports = {
                     )
                 }
 
+                let auxArray = [];
+                let auxObj = {};
+                let auxType = '';
+
                 const transactions = await Transaction.find({
                     $or: [
                         { fromAccount: account._id },
@@ -115,7 +119,26 @@ module.exports = {
                     ]
                 }).populate('fromAccount').populate('toAccount')
 
-                return transactions && transactions;
+                for(var i = 0 ; i < transactions.length; i++){
+                    if(cvu === transactions[i].toAccount[0].cvu){
+                        auxType = 'In'
+                    }else {
+                        auxType = 'Out'
+                    }
+                    auxObj = {
+                        _id : transactions[i]._id,
+                        fromAccount : transactions[i].fromAccount[0].cvu,
+                        toAccount : transactions[i].toAccount[0].cvu,
+                        amount : transactions[i].amount,
+                        by : transactions[i].by,
+                        date : transactions[i].createdAt,
+                        description : transactions[i].description,
+                        type : auxType
+                    }
+                    auxArray.push(auxObj)
+                }
+
+                return  auxArray;
             }
         },
          getTransactionsById: {
@@ -164,6 +187,7 @@ module.exports = {
                         account : transaction.toAccount[0].cvu,
                         user : toUserObj
                     },
+                    date : transaction.createdAt,
                     description : transaction.description,
                     amount : transaction.amount,
                     by: transaction.by,
