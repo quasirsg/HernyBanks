@@ -11,7 +11,7 @@ const mainReducers = combineReducers({
   session: jwtUserRducers,
   userUp: userUpReducers,
   acoount : acoountReducers,
-  contact: contactReducers
+  contacts: contactReducers
 });
 
 export default mainReducers;

@@ -78,12 +78,12 @@ function MainStack() {
 				// headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				// headerLeft: () => <Ionicons name='ios-menu' color='white' size={30} style={{ marginHorizontal: 15 }} onPress={() => props.navigation.openDrawer()}></Ionicons>,
 			}}
-			lazy={false}
+			lazy={true}
 		>
 			<Drawer.Screen name='Inicio' component={PosConsolidada} />
 			<Drawer.Screen name='Estadisticas' component={Estatistics} />
 			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
-			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} />
+			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} options={{ title: ''}}/>
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recargar Dinero' component={Recharge} />
 			{/* <Drawer.Screen name='Card' component={Card} /> */}

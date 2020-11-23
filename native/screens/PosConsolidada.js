@@ -6,7 +6,7 @@ import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { getAccount } from '../store/actions/acountActions';
-
+import { getContacts } from "../store/actions/contactsAction";
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -41,6 +41,7 @@ export default function PosConsolidada({ navigation }) {
 	};
 
 	useEffect(() => {
+		dispatch(getContacts(id ? id : null));
 		dispatch(getAccount(id ? id : null));
 		dispatch(verifySession());
 	}, []);
@@ -67,10 +68,10 @@ export default function PosConsolidada({ navigation }) {
 						{/* scrollview HORIZONTAL de balances de cuentas */}
 						<View
 							style={{
-								maxHeight: deviceHeight * 0.4,
+								maxHeight: 250,
 								minHeight: 200,
 								marginVertical: 0,
-								// backgroundColor: 'blue',
+								//backgroundColor: 'blue',
 							}}
 						>
 							<ScrollView
@@ -290,7 +291,8 @@ export default function PosConsolidada({ navigation }) {
 								<TouchableOpacity
 									style={{ alignItems: 'flex-end', marginTop: 30 }}
 									onPress={() => {
-										alert('Ver mas movimientos');
+										//alert('Ver mas movimientos');
+										navigation.navigate('Ultimos Movimientos');
 									}}
 								>
 									<Text style={styles.text_link}>Ver mas movimientos</Text>
