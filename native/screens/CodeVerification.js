@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,16 +12,20 @@ import { Formik } from "formik";
 import { userUp } from "../store/actions/userUpActions";
 import Button from "../components/Button";
 import { theme } from "../core/theme";
-import Icon from "react-native-vector-icons/FontAwesome";
-import Logo from "../components/Logo";
 import Spinner from "react-native-loading-spinner-overlay";
 
-const SingleNumInput = ({ changed, id }) => {
+const SingleNumInput = ({ changed, id, _ref, _next }) => {
+  
   return (
     <TextInput
       style={styles.numInput}
       keyboardType={"phone-pad"}
-      onChangeText={(value) => changed(value, id)}
+      maxLength={1}
+      onChangeText={(value) => {
+        changed(value, id);
+        value && _next && _next.current.focus();
+      }}
+      ref={_ref}
     />
   );
 };
@@ -52,6 +56,13 @@ export default function CodeVerification({ navigation }) {
       setLoading(false);
     }, 1500);
   };
+
+  const pin1 = useRef();
+  const pin2 = useRef();
+  const pin3 = useRef();
+  const pin4 = useRef();
+  const pin5 = useRef();
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View>
@@ -85,11 +96,11 @@ export default function CodeVerification({ navigation }) {
               </Text>
 
               <View style={styles.row}>
-                <SingleNumInput changed={handleInputChange} id={"A"} />
-                <SingleNumInput changed={handleInputChange} id={"B"} />
-                <SingleNumInput changed={handleInputChange} id={"C"} />
-                <SingleNumInput changed={handleInputChange} id={"D"} />
-                <SingleNumInput changed={handleInputChange} id={"E"} />
+                <SingleNumInput changed={handleInputChange} id={"A"} _ref={pin1} _next={pin2}/>
+                <SingleNumInput changed={handleInputChange} id={"B"} _ref={pin2} _next={pin3}/>
+                <SingleNumInput changed={handleInputChange} id={"C"} _ref={pin3} _next={pin4}/>
+                <SingleNumInput changed={handleInputChange} id={"D"} _ref={pin4} _next={pin5}/>
+                <SingleNumInput changed={handleInputChange} id={"E"} _ref={pin5} _next={null}/>
               </View>
 
               <Button
