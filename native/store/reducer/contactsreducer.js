@@ -8,7 +8,8 @@ import {
 } from "../constans/constans";
 
 const initialState = {
-  contacts: {},
+
+  contacts: [],
   contact: [],
   message: [],
 };

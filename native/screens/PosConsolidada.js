@@ -62,16 +62,16 @@ export default function PosConsolidada({ navigation }) {
 							marginVertical: 0,
 							marginTop: 10,
 							// backgroundColor: 'blue',
-							paddingVertical: accounts.length > 1 ? 0 : 20, // Pone padding solo si hay mas de una cuenta
+							// paddingVertical: accounts.length > 1 ? 0 : 20, // Pone padding solo si hay mas de una cuenta
 						}}
 					>
 						{/* scrollview HORIZONTAL de balances de cuentas */}
 						<View
 							style={{
-								maxHeight: deviceHeight * 0.4,
+								maxHeight: 250,
 								minHeight: 200,
 								marginVertical: 0,
-								// backgroundColor: 'blue',
+								//backgroundColor: 'blue',
 							}}
 						>
 							<ScrollView
