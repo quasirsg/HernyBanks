@@ -2,25 +2,26 @@ import React, { useState } from 'react';
 import { CreditCardInput, LiteCreditCardInput } from 'react-native-credit-card-input';
 import { useDispatch, useSelector } from 'react-redux';
 import { theme } from '../core/theme';
-import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, Modal, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, Modal, ScrollView, Picker } from 'react-native';
 import { rechargeByCard } from '../store/actions/acountActions';
 import CustomInput from '../components/CustomInput';
 import Button from '../components/Button';
 import { Value } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
-const Card = ({navigation}) => {
-	const [showModal, setShowModal] = React.useState(false);
-	const [currency, setCurrency] = React.useState({
-		selected: 'pesos',
-	});
+const Card = () => {
 
+	const navigation = useNavigation();
+	const [selectedValue, setSelectedValue] = useState("");
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
 	const accounts = useSelector((state) => state.acoount.account);
-	const account = accounts[0];
-	const cvuV = account && account.cvu;
+	const accountP = accounts[0];
+	const accountD = accounts[1];
+	const cvuP = accountP && accountP.cvu;
+	const cvuD = accountD && accountD.cvu;
 	const [show, setShow] = useState(false);
 	const [inputText, setInputText] = useState({
 		cvu: "",
@@ -34,46 +35,18 @@ const Card = ({navigation}) => {
 	const onFocus = (field) => console.log('focus', field);
 
 	const handlerSubmit = () => {
-    dispatch(rechargeByCard(inputText));
-    
+		let obj = {
+			cvu:selectedValue,
+			amount:inputText.amount
+		}
+   		 dispatch(rechargeByCard(obj, () => navigation.goBack()));
 		return;
   };
   
   const handleChange = (value) => {
-    return setInputText({...inputText, amount:value, cvu:cvuV})
+    return setInputText({...inputText, amount:value})
   }
 
-	const ModalSelector = ({ show, control, setter }) => {
-		return (
-			<View>
-				<Modal visible={show} animated animationType='fade' transparent={true}>
-					<View style={styles.modalContent}>
-						<TouchableOpacity
-							onPress={() => {
-								setter({ selected: 'pesos' });
-								control(false);
-							}}
-						>
-							<View style={styles.item}>
-								<Text style={styles.itemText}>Cuenta en pesos</Text>
-							</View>
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							onPress={() => {
-								setter({ selected: 'dólares' });
-								control(false);
-							}}
-						>
-							<View style={styles.item}>
-								<Text style={styles.itemText}>Cuenta en dólares</Text>
-							</View>
-						</TouchableOpacity>
-					</View>
-				</Modal>
-			</View>
-		);
-	};
 
 	return (
 		<ScrollView>
@@ -105,14 +78,18 @@ const Card = ({navigation}) => {
 				</View>
 				<View style={styles.textSeleccionarContainer}>
 					<Text>Selecciona una cuenta desde la que transferir:</Text>
+					<Picker
+					selectedValue={selectedValue}
+					style={{ height: 50, width: 250 }}
+					style={styles.inputSelect}
+					onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+						>
+						<Picker.Item label="Cuenta Pesos" value={cvuP} />
+						<Picker.Item label="Cuenta Dolares" value={cvuD} />
+					</Picker>
 				</View>
 				<View>
-					<TouchableOpacity onPress={() => setShowModal(true)}>
-						<View style={styles.modalshut}>
-							<Text style={{ textAlign: 'center' }}>Desde mi cuenta en {currency.selected}</Text>
-							<ModalSelector show={showModal} control={setShowModal} setter={setCurrency} />
-						</View>
-					</TouchableOpacity>
+
 					{/* <TouchableOpacity style={styles.buttonStyle} onPress={handlerSubmit}>
 						<Text style={styles.buttonTextStyle}>Recargar</Text>
 					</TouchableOpacity> */}
@@ -166,7 +143,8 @@ const styles = StyleSheet.create({
 	inputCantidadDinero: {
 		height: 40,
 		backgroundColor: 'white',
-		borderColor: '#fff',
+		borderBottomColor: 'black',
+        borderBottomWidth: 2,
 		width: width * 0.5,
 		alignSelf: 'center',
 		marginTop: 20,
@@ -217,13 +195,21 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		textAlign: 'center',
 		color: theme.colors.secondary,
+		justifyContent: 'center',
 	},
 	textSeleccionarContainer: {
 		// width: width * 0.5,
 		alignSelf: 'center',
 		textAlign: 'center',
 		marginVertical: 10,
+		justifyContent: 'center',
 	},
+	inputSelect: {
+		borderBottomColor: 'black',
+        borderBottomWidth: 6,
+		width: 400,
+
+	}
 });
 
 export default Card;

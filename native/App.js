@@ -78,7 +78,7 @@ function MainStack() {
 				// headerRight: () => <Ionicons name='ios-log-out' color='white' size={30} style={{ marginHorizontal: 15 }}></Ionicons>,
 				// headerLeft: () => <Ionicons name='ios-menu' color='white' size={30} style={{ marginHorizontal: 15 }} onPress={() => props.navigation.openDrawer()}></Ionicons>,
 			}}
-			lazy={false}
+			lazy={true}
 		>
 			<Drawer.Screen name='Inicio' component={PosConsolidada} />
 			<Drawer.Screen name='Estadisticas' component={Estatistics} />
