@@ -1,5 +1,7 @@
 'use strict'
 
+const axios = require('axios');
+
 //Imports from moleculer
 const { MoleculerClientError } = require('moleculer').Errors;
 
@@ -39,7 +41,7 @@ module.exports = {
         createdAccounts: {
             rest: 'POST /',
             async handler(ctx) {
-                
+
                 const { _id } = ctx.params; //user id
                 console.log("id cuenta: ", _id)
                 const user = await User.findById(_id)
@@ -93,6 +95,13 @@ module.exports = {
 
             }
         },
+        getDollarRealPrice: {
+            rest: 'GET /dollar',
+            async handler(ctx) {
+                const dollar = this.getDollarPrice();
+                return dollar
+            }
+        },
         //Transaction Actions
         getTransactions: {
             rest: 'GET /transactions',
@@ -119,37 +128,37 @@ module.exports = {
                     ]
                 }).populate('fromAccount').populate('toAccount')
 
-                for(var i = 0 ; i < transactions.length; i++){
-                    if(cvu === transactions[i].toAccount[0].cvu){
+                for (var i = 0; i < transactions.length; i++) {
+                    if (cvu === transactions[i].toAccount[0].cvu) {
                         auxType = 'In'
-                    }else {
+                    } else {
                         auxType = 'Out'
                     }
                     auxObj = {
-                        _id : transactions[i]._id,
-                        fromAccount : transactions[i].fromAccount[0].cvu,
-                        toAccount : transactions[i].toAccount[0].cvu,
-                        amount : transactions[i].amount,
-                        by : transactions[i].by,
-                        date : transactions[i].createdAt,
-                        description : transactions[i].description,
-                        type : auxType
+                        _id: transactions[i]._id,
+                        fromAccount: transactions[i].fromAccount[0].cvu,
+                        toAccount: transactions[i].toAccount[0].cvu,
+                        amount: transactions[i].amount,
+                        by: transactions[i].by,
+                        date: transactions[i].createdAt,
+                        description: transactions[i].description,
+                        type: auxType
                     }
                     auxArray.push(auxObj)
                 }
 
-                return  auxArray;
+                return auxArray;
             }
         },
-         getTransactionsById: {
+        getTransactionsById: {
             rest: 'GET /transactionbyid',
             async handler(ctx) {
                 const { _id } = ctx.params; //transaction id
-                
+
                 //Search Methods
                 const transaction = await Transaction.findOne({ _id }).populate('fromAccount').populate('toAccount')
-                const fromAccount = await Account.findOne({cvu : transaction.fromAccount[0].cvu}).populate('_userId')
-                const toAccount = await Account.findOne({cvu : transaction.toAccount[0].cvu}).populate('_userId')
+                const fromAccount = await Account.findOne({ cvu: transaction.fromAccount[0].cvu }).populate('_userId')
+                const toAccount = await Account.findOne({ cvu: transaction.toAccount[0].cvu }).populate('_userId')
 
                 //handle error
                 if (!transaction) {
@@ -162,36 +171,36 @@ module.exports = {
 
                 //this is to understad the type of the transaction
                 let by = '';
-                if(transaction.by === 'QR' || transaction.by === 'Credit Card' || transaction.by === 'Debit Card'){
+                if (transaction.by === 'QR' || transaction.by === 'Credit Card' || transaction.by === 'Debit Card') {
                     by = 'Recharge'
-                }else {
+                } else {
                     by = 'Transfer'
                 }
 
                 //These 3 objects are created to order in a readable way the answer of this route
                 const fromUserObj = {
-                    name : fromAccount._userId[0].name,
-                    email : fromAccount._userId[0].email
+                    name: fromAccount._userId[0].name,
+                    email: fromAccount._userId[0].email
                 }
                 const toUserObj = {
-                    name : toAccount._userId[0].name,
-                    email : toAccount._userId[0].email
+                    name: toAccount._userId[0].name,
+                    email: toAccount._userId[0].email
                 }
                 const transObj = {
-                    id : transaction._id,
-                    from : {
-                        account : transaction.fromAccount[0].cvu,
-                        user : fromUserObj
+                    id: transaction._id,
+                    from: {
+                        account: transaction.fromAccount[0].cvu,
+                        user: fromUserObj
                     },
-                    to : {
-                        account : transaction.toAccount[0].cvu,
-                        user : toUserObj
+                    to: {
+                        account: transaction.toAccount[0].cvu,
+                        user: toUserObj
                     },
-                    date : transaction.createdAt,
-                    description : transaction.description,
-                    amount : transaction.amount,
+                    date: transaction.createdAt,
+                    description: transaction.description,
+                    amount: transaction.amount,
                     by: transaction.by,
-                    type : by
+                    type: by
                 }
 
                 return transObj;
@@ -219,20 +228,40 @@ module.exports = {
             rest: 'POST /transfer',
             async handler(ctx) {
                 const { from, to, amount, description } = ctx.params;
-
                 const fromAccount = await Account.findOne({ cvu: from })
                 const toAccount = await Account.findOne({ cvu: to })
+                let transferType = 'Transfer'
+                let amountB = 0;
+                //To check if this transfer from one account in 'pesos(Argentina currency)'
+                //to another in 'dollars' or vice versa
+                if(fromAccount.type === 'Pesos' && toAccount.type === 'Dolares'){
+                    amountB = await this.dollarConversion(amount , 'Purchase' )
+                    
+                    transferType = 'Dollar Purchase'
+                }else if (fromAccount.type === 'Dolares' && toAccount.type === 'Pesos'){
+                    amountB = await this.dollarConversion(amount , 'Sale')
+                    transferType = 'Dollar Sales'
+                }
 
-                if (fromAccount.balance - parseInt(amount, 10) >= 0) {
-                    fromAccount.balance = fromAccount.balance - parseInt(amount, 10);
-                    toAccount.balance += parseInt(amount, 10);
+                console.log(amountB)
+                if (fromAccount.balance - parseFloat(amount) >= 0) {
+                    if(transferType === 'Dollar Purchase'){
+                        fromAccount.balance = fromAccount.balance - parseFloat(amount);
+                        toAccount.balance += parseFloat(amountB);
+                    }else if(transferType === 'Dollar Sales'){
+                        fromAccount.balance = fromAccount.balance - parseFloat(amount);
+                        toAccount.balance += parseFloat(amountB);
+                    }else{
+                        fromAccount.balance = fromAccount.balance - parseFloat(amount);
+                        toAccount.balance += parseFloat(amount);
+                    }
 
                     const transaction = await this.generateTransaction(
-                        'Transfer',
+                        transferType,
                         fromAccount._id,
                         toAccount._id,
                         description,
-                        parseInt(amount, 10),
+                        parseFloat(amount),
                     );
 
                     await transaction.save()
@@ -242,8 +271,11 @@ module.exports = {
 
                     await fromAccount.save()
                     await toAccount.save()
-                       
-                    return fromAccount;
+                    const response = {
+                        fromAccountBalance : fromAccount.balance,
+                        toAccountBalance : toAccount.balance
+                    }
+                    return response;
                 } else {
                     return 'You do not have enough balance'
                 };
@@ -292,6 +324,30 @@ module.exports = {
             }
             return transaction
         },
+        async getDollarPrice(){
+                const response = await axios.get('https://www.dolarsi.com/api/api.php?type=valoresprincipales')
+                console.log(response)
+                const data = {
+                    purchase : (response.data[0].casa.compra).replace(',' , '.'),
+                    sale : (response.data[0].casa.venta).replace(',' , '.'),
+                    name: response.data[0].casa.nombre
+                }
+                return data
+        },
+        async dollarConversion(amount,typeOfConversion){
+            if(typeOfConversion === 'Sale'){
+                //Sale Conversion taking the price in 'purchase'
+                const dollar = await this.getDollarPrice()
+                const response = amount * parseFloat(dollar.purchase)
+                return response
+            }else if(typeOfConversion === 'Purchase'){
+                //Purchase Conversion taking the price in 'sale'
+                const dollar = await this.getDollarPrice()
+                const response = amount / parseFloat(dollar.sale)
+                return response
+            }
+             
+        },
         async recharge(amount, cvu, type) {
             const account = await Account.findOne({ cvu })
 
@@ -327,10 +383,3 @@ module.exports = {
     },
 
 }
-
-
-
-
-
-
-
