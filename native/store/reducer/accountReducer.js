@@ -1,4 +1,4 @@
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS, GET_TRANSACTIONS_DOLAR, GET_TRANSACTIONS_PESOS } from "../constans/constans";
 
 const initialState = {
   users: [],
@@ -7,7 +7,9 @@ const initialState = {
   message: "",
   userUp: {},
   account: [],
-  transactions: []
+  transactions: [],
+  transactionsDolar: [],
+  transactionsPesos: []
 };
 
 
@@ -44,6 +46,10 @@ const acoountReducers = (state = initialState, action) => {
       return { ...state, account: accountNewC };
     case GET_TRANSACTIONS:
       return { ...state, transactions: action.data };
+    case GET_TRANSACTIONS_DOLAR:
+      return { ...state, transactionsDolar: action.data };
+    case GET_TRANSACTIONS_PESOS:
+      return { ...state, transactionsPesos: action.data };
     default:
       return state;
   }

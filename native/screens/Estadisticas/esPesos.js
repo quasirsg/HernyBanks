@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, StyleSheet, Dimensions, Text, RefreshControl, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import {getTransactions} from '../store/actions/acountActions'
-import Grafica from '../components/graficas'
+import {getTransactionsPesos} from '../../store/actions/acountActions'
+import Grafica from '../../components/graficas'
+import { DataTable } from 'react-native-paper';
 
 //Functions
 function wait(timeout) {
@@ -11,19 +12,20 @@ function wait(timeout) {
     });
   }
 
-export default function Estatistics() {
+export default function EstadPesos() {
     const dispatch = useDispatch();
-	  const session = useSelector((state) => state.session.userDetail);
+	const session = useSelector((state) => state.session.userDetail);
     const accounts = useSelector((state) => state.acoount.account);
-    const transations = useSelector((state) => state.acoount.transactions);
-	  const accountP = accounts[0];
-	  const accountD = accounts[1];
-	  const cvuP = accountP && accountP.cvu;
+    const transations = useSelector((state) => state.acoount.transactionsPesos);
+	const accountP = accounts[0];
+	const accountD = accounts[1];
+	const cvuP = accountP && accountP.cvu;
     const cvuD = accountD && accountD.cvu;
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        dispatch(getTransactions(cvuP)) 
+        dispatch(getTransactionsPesos(cvuP)) 
+        onRefresh()
     }, [])
 
     const onRefresh = useCallback(() => {
@@ -31,7 +33,7 @@ export default function Estatistics() {
     
         wait(2000).then(() => {
           setRefreshing(false);
-          dispatch(getTransactions(cvuP));
+          dispatch(getTransactionsPesos(cvuP));
         });
       }, [refreshing]);
 
@@ -74,7 +76,7 @@ export default function Estatistics() {
     let arrayTrancInSuccess = arrayTrancIn.filter(x => x !== undefined)
     let arrayTrancOutSuccess = arrayTrancOut.filter(x => x !== undefined)
     console.log('*****Array IN ****')
-    console.log(arrayTrancOutSuccess)
+    console.log(arrayFechCurrentTwo)
 
     
     let daysAv = []
@@ -126,7 +128,8 @@ export default function Estatistics() {
   let vDayFive = fiveDay.length < 1 ? 0 : fiveDay.map((x) => x.amount).reduce((ac, x) =>  ac + x)
   let vDaySix = sixDay.length < 1 ? 0 : sixDay.map((x) => x.amount).reduce((ac, x) =>  ac + x)
   let vDaySeven = sevenDay.length < 1 ? 0 : sevenDay.map((x) => x.amount).reduce((ac, x) =>  ac + x)
-    // /*************Valor por dia General****************** */
+  
+    // /*************Valor por dia Ingresos****************** */
     let vDayOneIn = oneDayIn.length < 1 ? 0 : oneDayIn.map((x) => x.amount).reduce((ac, x) =>  ac + x)
     let vDayTwoIn = twoDayIn.length < 1 ? 0 : twoDayIn.map((x) => x.amount).reduce((ac, x) =>  ac + x)
     let vDayThreeIn = threeDayIn.length < 1 ? 0 : threeDayIn.map((x) => x.amount).reduce((ac, x) =>  ac + x)
@@ -134,7 +137,7 @@ export default function Estatistics() {
     let vDayFiveIn = fiveDayIn.length < 1 ? 0 : fiveDayIn.map((x) => x.amount).reduce((ac, x) =>  ac + x)
     let vDaySixIn = sixDayIn.length < 1 ? 0 : sixDayIn.map((x) => x.amount).reduce((ac, x) =>  ac + x)
     let vDaySevenIn = sevenDayIn.length < 1 ? 0 : sevenDayIn.map((x) => x.amount).reduce((ac, x) =>  ac + x)
-    // /*************Valor por dia General****************** */
+    // /*************Valor por dia Egresos****************** */
     let vDayOneOut = oneDayOut.length < 1 ? 0 : oneDayOut.map((x) => x.amount).reduce((ac, x) =>  ac + x)
     let vDayTwoOut = twoDayOut.length < 1 ? 0 : twoDayOut.map((x) => x.amount).reduce((ac, x) =>  ac + x)
     let vDayThreeOut = threeDayOut.length < 1 ? 0 : threeDayOut.map((x) => x.amount).reduce((ac, x) =>  ac + x)
@@ -150,6 +153,39 @@ export default function Estatistics() {
   let arrayIn = [vDayOneIn/1000, vDayTwoIn/1000, vDayThreeIn/1000, vDayFourIn/1000, vDayFiveIn/1000, vDaySixIn/1000, vDaySevenIn/1000]
   let arrayOut = [vDayOneOut/1000, vDayTwoOut/1000, vDayThreeOut/1000, vDayFourOut/1000, vDayFiveOut/1000, vDaySixOut/1000, vDaySevenOut/1000]
 
+    let arrayForTable = [
+        {
+            amiunt:vDayOne,
+            day : daysAv[0]
+        },
+        {
+            amiunt:vDayTwo,
+            day : daysAv[1]
+        },
+        {
+            amiunt:vDayThree,
+            day : daysAv[2]
+        },
+        {
+            amiunt:vDayFour,
+            day : daysAv[3]
+        },
+        {
+            amiunt:vDayFive,
+            day : daysAv[4]
+        },
+        {
+            amiunt:vDaySix,
+            day : daysAv[5]
+        },
+        {
+            amiunt:vDaySeven,
+            day : daysAv[6]
+        },
+
+    ]
+
+    console.log(arrayForTable)
 
     return (
         <ScrollView
@@ -162,6 +198,27 @@ export default function Estatistics() {
           text='Grafica general de transacciones en los ultimos 7 dias'
           data = {arrayGen}
         /> 
+          <DataTable>
+    <DataTable.Header>
+      <DataTable.Title>Dia</DataTable.Title>
+      <DataTable.Title numeric>Valor $</DataTable.Title>
+    </DataTable.Header>
+        {
+            arrayForTable.map(x => {
+                return (
+                <DataTable.Row>
+                    <DataTable.Cell>{x.day}</DataTable.Cell>
+                    <DataTable.Cell numeric>{x.amiunt}</DataTable.Cell>
+                </DataTable.Row>
+                )
+            })
+        }
+
+
+
+
+
+  </DataTable>
 
         <Grafica 
           text='Grafica general de Ingresos en los ultimos 7 dias'

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS, GET_TRANSACTIONS_DOLAR, GET_TRANSACTIONS_PESOS } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
@@ -114,7 +114,7 @@ export function transferMoney(data) {
   };
 }
 
-export function getTransactions(data) {
+export function getTransaction(data) {
   return (dispatch) => {
     console.log('Get transactions')
     console.log(data)
@@ -126,10 +126,57 @@ export function getTransactions(data) {
         },
       })
       .then((res) => {
-        console.log('Estas son las transacciones',res)
+        console.log('Estas son las transacciones',res.data)
         dispatch({
           type: GET_TRANSACTIONS,
-          data: res.data || {},
+          data: res.data || [],
+        });
+
+      })
+      .catch((error) => {
+        console.log('Error en la consulta',error)
+      });
+  };
+}
+
+export function getTransactionsDolar(data) {
+  return (dispatch) => {
+
+
+    axios
+      .get(`${BACK_URL}/api/accounts/transactions`, {
+        params: {
+          cvu: data,
+        },
+      })
+      .then((res) => {
+        console.log('Estas son las transacciones dolar',res.data)
+        dispatch({
+          type: GET_TRANSACTIONS_DOLAR,
+          data: res.data || [],
+        });
+
+      })
+      .catch((error) => {
+        console.log('Error en la consulta',error)
+      });
+  };
+}
+
+export function getTransactionsPesos(data) {
+  return (dispatch) => {
+
+    axios
+      .get(`${BACK_URL}/api/accounts/transactions`, {
+        params: {
+          cvu: data,
+        },
+      })
+      .then((res) => {
+        console.log('Estas son las transacciones Pesos',res.data)
+        dispatch({
+          type: GET_TRANSACTIONS_PESOS,
+          data: res.data || [],
         });
 
       })
