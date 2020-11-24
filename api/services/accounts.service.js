@@ -228,20 +228,40 @@ module.exports = {
             rest: 'POST /transfer',
             async handler(ctx) {
                 const { from, to, amount, description } = ctx.params;
-
                 const fromAccount = await Account.findOne({ cvu: from })
                 const toAccount = await Account.findOne({ cvu: to })
+                let transferType = 'Transfer'
+                let amountB = 0;
+                //To check if this transfer from one account in 'pesos(Argentina currency)'
+                //to another in 'dollars' or vice versa
+                if(fromAccount.type === 'Pesos' && toAccount.type === 'Dolares'){
+                    amountB = await this.dollarConversion(amount , 'Purchase' )
+                    
+                    transferType = 'Dollar Purchase'
+                }else if (fromAccount.type === 'Dolares' && toAccount.type === 'Pesos'){
+                    amountB = await this.dollarConversion(amount , 'Sale')
+                    transferType = 'Dollar Sales'
+                }
 
-                if (fromAccount.balance - parseInt(amount, 10) >= 0) {
-                    fromAccount.balance = fromAccount.balance - parseInt(amount, 10);
-                    toAccount.balance += parseInt(amount, 10);
+                console.log(amountB)
+                if (fromAccount.balance - parseFloat(amount) >= 0) {
+                    if(transferType === 'Dollar Purchase'){
+                        fromAccount.balance = fromAccount.balance - parseFloat(amount);
+                        toAccount.balance += parseFloat(amountB);
+                    }else if(transferType === 'Dollar Sales'){
+                        fromAccount.balance = fromAccount.balance - parseFloat(amount);
+                        toAccount.balance += parseFloat(amountB);
+                    }else{
+                        fromAccount.balance = fromAccount.balance - parseFloat(amount);
+                        toAccount.balance += parseFloat(amount);
+                    }
 
                     const transaction = await this.generateTransaction(
-                        'Transfer',
+                        transferType,
                         fromAccount._id,
                         toAccount._id,
                         description,
-                        parseInt(amount, 10),
+                        parseFloat(amount),
                     );
 
                     await transaction.save()
@@ -251,8 +271,11 @@ module.exports = {
 
                     await fromAccount.save()
                     await toAccount.save()
-
-                    return fromAccount;
+                    const response = {
+                        fromAccountBalance : fromAccount.balance,
+                        toAccountBalance : toAccount.balance
+                    }
+                    return response;
                 } else {
                     return 'You do not have enough balance'
                 };
