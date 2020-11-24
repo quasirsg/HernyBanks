@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_CONTACTS } from "../constans/constans";
+import { GET_CONTACTS,ADD_CONTACT_EMAIL } from "../constans/constans";
 
 
 import { BACK_URL } from "../../env";
@@ -28,5 +28,35 @@ export function getContacts(id) {
       });
   };
 }
+
+export function addContact(currentId,email) {
+
+  
+  return (dispatch) => {
+    axios
+      .post(`${BACK_URL}/api/contacts/`,{_id:currentId,email:email})
+      .then((res) => {
+          console.log(res.data)
+        dispatch({
+          type: ADD_CONTACT_EMAIL,
+          contact: res.data || [],
+        });
+        Toast.show({
+          type: "success",
+          position: "top",
+          text1: "Contacto agregado",
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  };
+}
+
+
 
 
