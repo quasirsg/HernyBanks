@@ -91,7 +91,7 @@ function MainStack() {
 			<Stack.Screen name='FinishSend' component={FinishSend} options={{ title: '' }} />
 			<Stack.Screen name='ContactCard' component={ContactCard} />
 			<Stack.Screen name='Contactos' component={ContactList} />
-			{/* <Stack.Screen name='Card' component={Card} /> */}
+			<Stack.Screen name='Card' component={Card} />
 			<Stack.Screen name='TransactionDetails' component={TransactionDetails} options={{ title: '' }}/>
 		</Drawer.Navigator>
 	);

@@ -3,7 +3,8 @@ import { View, StyleSheet, Dimensions, Text, RefreshControl, ScrollView } from '
 import { useDispatch, useSelector } from 'react-redux';
 import {getTransactionsPesos} from '../../store/actions/acountActions'
 import Grafica from '../../components/graficas'
-import { DataTable } from 'react-native-paper';
+import Table from '../../components/tablas'
+
 
 //Functions
 function wait(timeout) {
@@ -153,39 +154,9 @@ export default function EstadPesos() {
   let arrayIn = [vDayOneIn/1000, vDayTwoIn/1000, vDayThreeIn/1000, vDayFourIn/1000, vDayFiveIn/1000, vDaySixIn/1000, vDaySevenIn/1000]
   let arrayOut = [vDayOneOut/1000, vDayTwoOut/1000, vDayThreeOut/1000, vDayFourOut/1000, vDayFiveOut/1000, vDaySixOut/1000, vDaySevenOut/1000]
 
-    let arrayForTable = [
-        {
-            amiunt:vDayOne,
-            day : daysAv[0]
-        },
-        {
-            amiunt:vDayTwo,
-            day : daysAv[1]
-        },
-        {
-            amiunt:vDayThree,
-            day : daysAv[2]
-        },
-        {
-            amiunt:vDayFour,
-            day : daysAv[3]
-        },
-        {
-            amiunt:vDayFive,
-            day : daysAv[4]
-        },
-        {
-            amiunt:vDaySix,
-            day : daysAv[5]
-        },
-        {
-            amiunt:vDaySeven,
-            day : daysAv[6]
-        },
+    
 
-    ]
-
-    console.log(arrayForTable)
+   
 
     return (
         <ScrollView
@@ -194,31 +165,16 @@ export default function EstadPesos() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Grafica 
-          text='Grafica general de transacciones en los ultimos 7 dias'
-          data = {arrayGen}
-        /> 
-          <DataTable>
-    <DataTable.Header>
-      <DataTable.Title>Dia</DataTable.Title>
-      <DataTable.Title numeric>Valor $</DataTable.Title>
-    </DataTable.Header>
-        {
-            arrayForTable.map(x => {
-                return (
-                <DataTable.Row>
-                    <DataTable.Cell>{x.day}</DataTable.Cell>
-                    <DataTable.Cell numeric>{x.amiunt}</DataTable.Cell>
-                </DataTable.Row>
-                )
-            })
-        }
-
-
-
-
-
-  </DataTable>
+        <View>
+            <Grafica 
+            text='Grafica general de transacciones en los ultimos 7 dias'
+            data = {arrayGen}
+            /> 
+            <Table   
+                arrayValues={arrayGen}
+                arrayDay= {daysAv}   
+            />
+        </View>
 
         <Grafica 
           text='Grafica general de Ingresos en los ultimos 7 dias'

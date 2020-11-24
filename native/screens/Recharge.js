@@ -22,7 +22,7 @@ function Recharge() {
 	const renderTabBar = (props) => <TabBar {...props} indicatorStyle={{ backgroundColor: 'white' }} style={{ backgroundColor: 'indigo' }} />;
 
 	const renderScene = SceneMap({
-		first: FirstRoute,
+		first: Card,
 		second: Qrnative,
 	});
 
