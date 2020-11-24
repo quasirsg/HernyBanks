@@ -74,7 +74,7 @@ const ContactList = ({ navigation }) => {
   const searchContacts = (value) => {
     setRefresh(true);
     let search = [];
-    // dispatch(getUsers());
+    dispatch(getUsers());
     for (var i = 0; i <= users.length - 1; i++) {
       if (users[i].email.includes(value)) {
         console.log("encontrado");
