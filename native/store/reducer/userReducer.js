@@ -1,4 +1,4 @@
-import { CREATE_USER, LOGIN_USER } from "../constans/constans";
+import { CREATE_USER, LOGIN_USER,GET_USERS } from "../constans/constans";
 
 const initialState = {
   users: [],
@@ -12,8 +12,9 @@ const userReducers = (state = initialState, action) => {
   switch (action.type) {
     case CREATE_USER:
       return { ...state, users: state.users.concat(action.users) };
-    // case LOGIN_USER:
-    //   return { user: action.users };
+    case GET_USERS:
+      return { ...state, users: action.users };
+ 
     default:
       return state;
   }

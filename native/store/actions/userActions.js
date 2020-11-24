@@ -1,5 +1,10 @@
 import axios from "axios";
-import { CREATE_USER, LOGIN_USER, UPDATE_USER } from "../constans/constans";
+import {
+  CREATE_USER,
+  LOGIN_USER,
+  UPDATE_USER,
+  GET_USERS,
+} from "../constans/constans";
 import { BACK_URL } from "../../env";
 import Toast from "react-native-toast-message";
 // const {URL} = BACK_URL
@@ -103,49 +108,29 @@ export function completeUserRegister(userData, onSuccess) {
   };
 }
 
-// export const loginUser = (email, password) => (dispatch) => {
-
-//       axios
-//         .post(`${url}/api/auth/login`, {
-//           email: email,
-//           password: password,
-//         })
-//         .then((res) => {
-//           const token = res.data.token;
-//           console.log(res)
-//           if (token) {
-//             localStorage.setItem("token", token);
-//             dispatch({
-//               type: LOGIN_USER,
-//             });
-
-//             /* dispatch(getCurrentUser(token));
-//             Swal.fire({
-//               position: "center",
-//               icon: "success",
-//               title: `¡Bienvenido!`,
-//               showConfirmButton: false,
-//               timer: 2000,
-//             }); */
-//           }
-
-//         })
-//         .catch((error) => {
-//           console.log(error)
-//           });
-
-// };
-
-/*  export const getCurrentUser = (token) => async (dispatch) => {
-  //Headers con Token
-  let config = {
-    headers: { Authorization: `Bearer ${token}` },
+export function getUsers() {
+  return (dispatch) => {
+    axios
+      .get(`${BACK_URL}/api/users/all`)
+      .then((res) => {
+        console.log('proveniente de get users');
+        dispatch({ type: GET_USERS, users: res.data || []});
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+}
 
-  await axios.get(`${url}/users/me/`, config).then((res) => {
-    dispatch({
-      type: actionTypes.CURRENT_USER,
-      user: res.data,
-    });
-  });
-}; */
+export function clearUserState(){
+  return (dispatch) =>{
+    dispatch({ type: GET_USERS, users:[]});
+  }
+}
+
+export function search(){
+  return (dispatch) =>{
+    
+    dispatch({ type: GET_USERS, users:[]});
+  }
+}

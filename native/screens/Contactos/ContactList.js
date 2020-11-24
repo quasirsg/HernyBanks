@@ -12,6 +12,7 @@ import {
   ScrollView,
   Image,
   RefreshControl,
+  Button,
 } from "react-native";
 import { Link } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -23,7 +24,8 @@ import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 //Actions
 import { getAccount } from "../../store/actions/acountActions";
 import { verifySession, logoutUser } from "../../store/actions/jwtUsersActions";
-import { getContacts } from "../../store/actions/contactsAction";
+import { getContacts, addContact } from "../../store/actions/contactsAction";
+import { getUsers, clearUserState } from "../../store/actions/userActions";
 
 // Dimensions
 const deviceWidth = Dimensions.get("window").width;
@@ -37,22 +39,26 @@ function wait(timeout) {
 }
 const ContactList = ({ navigation }) => {
   const dispatch = useDispatch();
-  const session = useSelector((state) => state.session.userDetail);
-  const accounts = useSelector((state) => state.acoount.account);
-  const contacts = useSelector((state) => state.contacts.contacts);
   const [results, setResults] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [value, setValue] = useState();
 
+  const session = useSelector((state) => state.session.userDetail);
+  var contacts = useSelector((state) => state.contacts.contacts);
+  var users = useSelector((state) => state.users.users);
   //Vars
   const bal = session.balance;
   const id = session._id;
-  console.log("renderizando");
+
   //Hooks functs
   const onRefresh = useCallback(() => {
     setRefreshing(true);
 
     wait(2000).then(() => {
       setRefreshing(false);
+      setResults([]);
       dispatch(getContacts(id ? id : null));
     });
   }, [refreshing]);
@@ -61,23 +67,27 @@ const ContactList = ({ navigation }) => {
   useEffect(() => {
     dispatch(getContacts(id ? id : null));
   }, []);
+
   //Logs
-  console.log(session);
-  console.log(accounts);
-  console.log("soy contactos", contacts);
 
   //
   const searchContacts = (value) => {
-    if (!value) {
-      setContacts(contacts);
-    } else {
-      const filteredContacts = contacts.filter((contact) => {
-        let contactLowercase = contact.name.toLowerCase();
-        let searchTermLowercase = value.toLowerCase();
-        return contactLowercase.indexOf(searchTermLowercase) > -1;
-      });
-      setResults(filteredContacts);
+    setRefresh(true);
+    let search = [];
+    // dispatch(getUsers());
+    for (var i = 0; i <= users.length - 1; i++) {
+      if (users[i].email.includes(value)) {
+        console.log("encontrado");
+        search.push(users[i]);
+        for (var j = 0; j <= contacts.length - 1; j++) {
+          if (contacts[j].email === users[i].email) {
+            search = search.filter((e) => e.email !== contacts[j].email);
+          }
+        }
+      }
     }
+
+    setResults(search);
   };
 
   const renderItem = ({ item }) => (
@@ -92,26 +102,60 @@ const ContactList = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={styles.text_contactsInfo}>
-                {item.name.charAt(0).toUpperCase()}
-                {item.email.charAt(0).toUpperCase()}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.container}
-              onPress={() =>
-                navigation.navigate("ContactCard", {
-                  item: item,
-                })
-              }
-            >
+            {item.address ? (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.text_contactsInfo}>
+                  {item.name.charAt(0).toUpperCase()}
+                  {item.email.charAt(0).toUpperCase()}
+                </Text>
+              </View>
+            ) : (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.text_contactsInfo}>
+                  {item.username.charAt(0).toUpperCase()}
+                  {item.email.charAt(0).toUpperCase()}
+                </Text>
+              </View>
+            )}
+            {item.address ? (
               <View style={{ alignItems: "flex-start", marginLeft: 0 }} on>
                 <Text style={styles.text_contactsInfo}>{item.name}</Text>
 
                 <Text style={styles.text_contactsInfo}>{item.email}</Text>
               </View>
-            </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.container}
+                onPress={() =>
+                  navigation.navigate("ContactCard", {
+                    item: item,
+                  })
+                }
+              >
+                <View style={{ alignItems: "flex-start", marginLeft: 0 }} on>
+                  <Text style={styles.text_contactsInfo}>{item.username}</Text>
+
+                  <Text style={styles.text_contactsInfo}>{item.email}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+
+            {item.address ? (
+              <View style={{ alignItems: "flex-end", marginLeft: 0 }} on>
+                <Icon.Button
+                  name="user-plus"
+                  backgroundColor="#3b5998"
+                  onPress={() => {
+                    dispatch(addContact(session._id, item.email));
+                    setResults([]);
+                  }}
+                ></Icon.Button>
+              </View>
+            ) : (
+              <View style={{ alignItems: "flex-end", marginLeft: 0 }} on>
+                <Text>Contacto</Text>
+              </View>
+            )}
           </View>
           {/* Separador Horizontal */}
           <View
@@ -157,19 +201,32 @@ const ContactList = ({ navigation }) => {
               {/*Buscar en mis contactos */}
               <View>
                 <TextInput
-                  placeholder="     Ingresa un nombre     "
+                  placeholder="Ingresa un nombre"
                   placeholderTextColor="grey"
                   style={styles.textTitle}
                   onChangeText={(value) => searchContacts(value)}
+                  onFocus={() => {
+                    setVisible(true);
+                    setValue();
+                  }}
+                  value={value}
                 />
               </View>
             </View>
-
-            {/* agregar contacto */}
             <View>
-              <Link to="/SearchBar">
-                <Icon name="user-plus" color="black" size={30} />
-              </Link>
+              {visible ? (
+                <Icon.Button
+                  name="close"
+                  backgroundColor="black"
+                  onPress={() => {
+                    setResults([]);
+                    setVisible(false);
+                    setValue("");
+                  }}
+                ></Icon.Button>
+              ) : (
+                <Text>'</Text>
+              )}
             </View>
           </View>
 
@@ -180,8 +237,10 @@ const ContactList = ({ navigation }) => {
                 <Text style={styles.textTitle_ultimosMovimientos}>
                   Mis contactos
                 </Text>
+
                 <FlatList
-                  data={results.length === 0 ? contacts : results}
+                  extraData={results}
+                  data={results.length == 0 ? contacts : results}
                   renderItem={renderItem}
                   keyExtractor={(item, index) => index.toString()}
                   ListEmptyComponent={() => (
@@ -240,7 +299,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'gold',
   },
   searchContainer: {
-    width: deviceWidth * 0.8,
+    width: deviceWidth * 0.7,
     // height: '90%',
     backgroundColor: "white",
     borderRadius: 15,
