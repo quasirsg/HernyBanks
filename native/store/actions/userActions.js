@@ -63,8 +63,8 @@ export function createUser(userData, onSuccess) {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function completeUserRegister(userData, onSuccess) {
   console.log(userData);
-  const { name, lastname, dni, phone, address, dob, _id } = userData;
-  const dataUser = { name, lastname, dni, phone, address, dob, _id };
+  const { name, lastname, dni, phone, address, dob, _id, city, province } = userData;
+  const dataUser = { name, lastname, dni, phone, address, dob, _id, city, province };
 
   return (dispatch) => {
     axios

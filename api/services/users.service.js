@@ -216,12 +216,13 @@ module.exports = {
 		update_user: {
 			rest: "PUT /update",
 			async handler(ctx) {
-				const { _id, name, lastname, phone, address, dob } = ctx.params;
+				const { _id, name, lastname, phone, address, dob, province, city } = ctx.params;
+				console.log("CIUDAD Y PROVINCIA",city,province);
 
 				if (mongoose.Types.ObjectId.isValid(_id)) {
 					await User.findByIdAndUpdate(
 						{ _id },
-						{ name, lastname, phone, address, dob }
+						{ name, lastname, phone, address, dob, province, city }
 					);
 
 					const updated = await User.findById({ _id });

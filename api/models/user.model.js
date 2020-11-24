@@ -45,6 +45,16 @@ let UserSchema = new Schema(
 			lowercase: true,
 			trim: true,
 		},
+		province: {
+			type: String,
+			lowercase: true,
+			trim: true,
+		},
+		city: {
+			type: String,
+			lowercase: true,
+			trim: true,
+		},
 		dob: {
 			type: Date,
 			trim: true,

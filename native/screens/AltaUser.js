@@ -1,32 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import {
   StyleSheet,
   Text,
-  Picker,
   View,
   ScrollView,
-  TextInput,
-  SafeAreaView,
-  FlatList,
 } from "react-native";
-import { Formik, Form, Field } from "formik";
+import { Formik} from "formik";
 import * as Yup from "yup";
-import { Link } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 
 import { useDispatch, useSelector } from "react-redux";
 
 import { completeUserRegister } from "../store/actions/userActions";
 
-import Background from "../components/Background";
-import Logo from "../components/Logo";
 import Button from "../components/Button";
-import Header from "../components/Header";
 import CustomInput from "../components/CustomInput";
 import { theme } from "../core/theme";
-import Icon from "react-native-vector-icons/FontAwesome";
 import axios from "axios";
-import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 import Spinner from "react-native-loading-spinner-overlay";
 const AltaUser = ({
@@ -37,6 +27,8 @@ const AltaUser = ({
   phone,
   address,
   dob,
+  province,
+  city,
   navigation,
 }) => {
   const dispatch = useDispatch();
@@ -44,15 +36,8 @@ const AltaUser = ({
   console.log("*************userUp***************");
   console.log(stateUser.userUp);
   const userUp = stateUser.userUp;
-  const [provinces, setProvinces] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState("");
-  const [departamentos, setDepartamentos] = useState([]);
-  const [selectedDepartamento, setSelectedDepartamento] = useState(
-    departamentos[0]
-  );
-  const [localidades, setLocalidades] = useState([]);
-  const [selectedLocalidad, setSelectedLocalidad] = useState(localidades[0]);
-
+  const [selectedCity,setSelectedCity] =useState("");
   const [loading, setLoading] = useState(false);
 
   const startLoading = () => {
@@ -62,55 +47,72 @@ const AltaUser = ({
     }, 1500);
   };
 
-  //const userId = useSelector(state => state.users[0]._id);
 
-  useEffect(() => {
-    getProvinces();
-  }, []);
-
-  const getProvinces = () => {
-    axios
-      .get(
-        "https://apis.datos.gob.ar/georef/api/provincias?orden=nombre&max=30"
-      )
-      .then((res) => {
-        setProvinces(res.data.provincias);
-        setSelectedProvince(res.data.provincias[0].nombre);
-        getDepartamentos(res.data.provincias[0].nombre);
-      });
-  };
-
-  const getDepartamentos = (province) => {
-    axios
-      .get(
-        `https://apis.datos.gob.ar/georef/api/departamentos?provincia=${province}&max=1000&orden=nombre`
-      )
-      .then((res) => {
-        setDepartamentos(res.data.departamentos);
-        setSelectedDepartamento(res.data.departamentos[0].nombre);
-        getLocalidades(province, res.data.departamentos[0].nombre);
-      });
-  };
-
-  const getLocalidades = (province, departamento) => {
-    console.log("DEPARTAMENTO", departamento);
-    axios
-      .get(
-        `https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&departamento=${departamento}&max=1000&orden=nombre`
-      )
-      .then((res) => {
-        setLocalidades(res.data.localidades);
-        setSelectedLocalidad(res.data.localidades[0].nombre);
-      });
-  };
-
-  async function handleAddress(add) {
+ async function handleProvince  (province){
     var result = await axios
       .get(
-        `https://apis.datos.gob.ar/georef/api/calles?provincia=${selectedProvince}&departamento=${selectedDepartamento}&localidad_censal=${selectedLocalidad}&nombre=${add} `
+        `https://apis.datos.gob.ar/georef/api/provincias?nombre=${province}`
       )
       .then((res) => {
-        //console.log('res',res)
+        if (res.data.provincias[0]) {
+          if (res.data.provincias[0].nombre) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      });
+
+      if(result) setSelectedProvince(province);
+
+      return result
+  };
+
+  async function handleCity (city,province){
+
+    console.log("PROVINCIA",province,"CIUDAD",city)
+    var result;
+    if(!province){
+      return false
+    }else{
+     result = await axios
+      .get(
+        `https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&nombre=${city}`
+      )
+      .then((res) => {
+        //console.log(res.data.localidades)
+        if (res.data.localidades[0]) {
+          if (res.data.localidades[0].nombre) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      });
+    }
+
+    if(result) setSelectedCity(city);
+
+      return result
+  };
+
+  async function handleAddress(address) {
+   
+    var result;
+    if(!address){
+      return false
+    }else{
+      var addressWithNoDigits = address.replace(/[0-9]/g, '');
+      result = await axios
+      .get(
+        `https://apis.datos.gob.ar/georef/api/calles?provincia=${selectedProvince}&localidad_censal=${selectedCity}&nombre=${addressWithNoDigits} `
+      )
+      .then((res) => {
+        console.log('res',res.data.calles)
         if (res.data.calles[0]) {
           if (res.data.calles[0].nombre) {
             return true;
@@ -121,6 +123,7 @@ const AltaUser = ({
           return false;
         }
       });
+    }
 
     return result;
   }
@@ -136,6 +139,8 @@ const AltaUser = ({
               lastname: "",
               phone: "",
               address: "",
+              province:"",
+              city:"",
               // dob: "",
               _id: userUp._id,
             }}
@@ -160,9 +165,31 @@ const AltaUser = ({
                 .required("Debes completar este campo")
                 .test(
                   "verifyAddress",
-                  "Domicilio inexistente en esa Provincia, Departamento o localidad",
+                  "Domicilio inexistente en esas Localidad",
                   (address) => {
                     return handleAddress(address);
+                  }
+                ),
+                province: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo")
+                .test(
+                  "verifyProvince",
+                  "Provincia inexistente en el pais",
+                  (province) => {
+                    return handleProvince(province);
+                  }
+                ),
+                city: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo")
+                .test(
+                  "verifyCity",
+                  "Ciudad inexistente en esa Provincia",
+                  (city) => {
+                    return handleCity(city,selectedProvince);
                   }
                 ),
               // dob: Yup.string()
@@ -172,15 +199,7 @@ const AltaUser = ({
             })}
             onSubmit={async (values, action) => {
               action.resetForm();
-              values.address =
-                values.address +
-                ", " +
-                selectedProvince +
-                ", " +
-                selectedDepartamento +
-                ", " +
-                selectedLocalidad;
-              //console.log('VALORES SUBMIT',values)
+              console.log('VALORES SUBMIT',values)
               startLoading();
               dispatch(
                 completeUserRegister(values, () => navigation.navigate("Login"))
@@ -257,74 +276,49 @@ const AltaUser = ({
                   )}
                   {/*  */}
 
-                  <Text>Provincias</Text>
-                  {provinces && (
-                    <Picker
-                      style={styles.picker}
-                      selectedValue={selectedProvince}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setSelectedProvince(itemValue);
-                        console.log(itemValue);
-                        getDepartamentos(itemValue);
-                      }}
-                    >
-                      {provinces &&
-                        provinces.map((province, i) => {
-                          return (
-                            <Picker.Item
-                              key={i}
-                              label={province.nombre}
-                              value={province.nombre}
-                            ></Picker.Item>
-                          );
-                        })}
-                    </Picker>
-                  )}
-                  <Text>Departamentos</Text>
-                  {departamentos && (
-                    <Picker
-                      style={styles.picker}
-                      selectedValue={selectedDepartamento}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setSelectedDepartamento(itemValue);
-                        getLocalidades(selectedProvince, itemValue);
-                      }}
-                    >
-                      {departamentos &&
-                        departamentos.map((departamento, i) => {
-                          return (
-                            <Picker.Item
-                              key={i}
-                              label={departamento.nombre}
-                              value={departamento.nombre}
-                            ></Picker.Item>
-                          );
-                        })}
-                    </Picker>
-                  )}
-                  <Text>localidades</Text>
-                  {localidades && (
-                    <Picker
-                      style={styles.picker}
-                      selectedValue={selectedLocalidad}
-                      onValueChange={(itemValue, itemIndex) => {
-                        setSelectedLocalidad(itemValue);
-                        console.log(selectedLocalidad);
-                      }}
-                    >
-                      {localidades &&
-                        localidades.map((localidad, i) => {
-                          return (
-                            <Picker.Item
-                              key={i}
-                              label={localidad.nombre}
-                              value={localidad.nombre}
-                            ></Picker.Item>
-                          );
-                        })}
-                    </Picker>
-                  )}
 
+                  <CustomInput
+                    placeholder="Provincia"
+                    name="province"
+                    onChangeText={handleChange("province")}
+                    value={values.province}
+                    style={styles.input}
+                  />
+
+                {errors.province ? (
+                  <Text style={styles.error}>{errors.province}</Text>
+                ) : values.province.length >= 4 ? (
+                  <Text style={{ fontSize: 10, color: "green" }}>
+                    Correcto
+                  </Text>
+                ) : (
+                      <Text style={{ fontSize: 10 }}></Text>
+                    )}
+
+                    {/*  */}
+
+                <CustomInput
+                  placeholder="Ciudad"
+                  name="city"
+                  onChangeText={handleChange("city")}
+                  value={values.city}
+                  style={styles.input}
+                />
+
+                {errors.city ? (
+                  <Text style={styles.error}>{errors.city}</Text>
+                ) : values.city.length >= 4 ? (
+                  <Text style={{ fontSize: 10, color: "green" }}>
+                    Correcto
+                  </Text>
+                ) : (
+                      <Text style={{ fontSize: 10 }}></Text>
+                    )}
+
+
+                    {/*  */}
+
+                 
                   {/* <CustomInput
                   placeholder="Fecha de nacimiento"
                   name="dob"
