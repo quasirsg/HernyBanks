@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { verifySession, logoutUser } from '../../store/actions/jwtUsersActions';
+import { Avatar } from 'react-native-image-avatars'
 
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -37,10 +38,15 @@ export default function CustomDrawerContent(props) {
 				{/* Informacion del Ususario */}
 				<View style={styles.userInfoContainer}>
 					<View>
-						<View style={styles.avatarContainer}>{session.image ? <Image source={session.image} style={{ height: 50, width: 50 }}></Image> : <Ionicons name='ios-person' color='indigo' size={25} style={{ marginHorizontal: 0 }}></Ionicons>}</View>
+						<View>{session.image ? <Image source={session.image} style={{ height: 50, width: 50 }}></Image> : <Ionicons color='indigo'  style={{ left:10 }} onPress={() => props.navigation.navigate('Mis Datos')}><Avatar
+						imageUrl = 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+						size="x-small"
+						borderColor = "#f2f2f2"
+						shadow
+						/></Ionicons>}</View>
 					</View>
 					<View style={styles.userNameContainer}>
-						<Text>{session.name || 'User Name Here'}</Text>
+						<Text style={styles.nombre}>{session.name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ session.lastname.replace(/\b\w/g, l => l.toUpperCase()) || 'User Name Here'}</Text>
 					</View>
 				</View>
 				{/* .map de las secciones */}
@@ -68,6 +74,12 @@ export default function CustomDrawerContent(props) {
 
 // <--------------------- ESTILOS --------------------->
 const styles = StyleSheet.create({
+	nombre: { 		
+        color: 'indigo',
+        fontSize: 20,
+        fontWeight: 'bold',
+        fontStyle: 'italic'
+    },
 	headerContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -91,10 +103,11 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 	},
 	userNameContainer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginHorizontal: 20,
-		overflow: 'hidden',
+		flex: 1,
+		justifyContent: 'center',	
+		marginHorizontal: 40,
+		paddingLeft: 0
+
 	},
 	sectionTitlesContainer: {
 		marginTop: 15,
