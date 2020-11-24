@@ -27,7 +27,7 @@ const Tab = ({ title, active }) => {
     );
 };
 
-export default function Transactions() {
+export default function Transactions({navigation}) {
 
     const dispatch = useDispatch();
     const session = useSelector((state) => state.session.userDetail);
@@ -99,8 +99,11 @@ export default function Transactions() {
             <ScrollView>
                 <View style={{ marginBottom: 250 }}>
                     {
-                        transactions.map((transaction, i) => (
-                            <TouchableOpacity key={i}>
+                        transactions.length > 0 && transactions.map((transaction, i) => (
+                            <TouchableOpacity
+                                key={i}
+                                onPress={() => navigation.navigate('TransactionDetails', transaction )}>
+
                                 <View style={styles.itemContainer}>
                                     <View style={styles.item}>
                                         <Text style={styles.firstItem}>{transaction.by}</Text>
@@ -112,10 +115,10 @@ export default function Transactions() {
                                         <Text style={styles.itemtext}>{transaction.fromAccount[0].type}</Text>
                                     </View>
                                     <View style={styles.item}>
-                                        <Text style={styles.itemtext}>{transaction.createdAt.substring(0, 10)}</Text>
+                                        <Text style={styles.itemtext}>{transaction.date.substring(0, 10)}</Text>
                                     </View>
                                     <View style={styles.item}>
-                                        <Text style={styles.itemtext}>{transaction.createdAt.substring(12, 16) }</Text>
+                                        <Text style={styles.itemtext}>{transaction.date.substring(12, 16)}</Text>
                                     </View>
                                     <Icon name={'angle-right'} color={theme.colors.primary} size={15} />
                                 </View>
@@ -189,9 +192,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: '#f2f2f2',
-    
+
     },
-    item:{
+    item: {
         width: width / 6,
     },
     firstItem: {
