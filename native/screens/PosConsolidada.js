@@ -33,19 +33,14 @@ export default function PosConsolidada({ navigation }) {
 	// const transactions = dispatch(getTransactions(accounts.cvu));
 	const cvuPesos = session.accounts[0].cvu;
 	const cvuDollars = session.accounts[1].cvu;
-	const pesosTransactions = useSelector((state) => state.acoount.pesosTransactions) || ['jaja'];
-	const dollarTransactions = useSelector((state) => state.acoount.dollarTransactions) || ['jaja'];
+	const pesosTransactions = useSelector((state) => state.acoount.pesosTransactions.reverse()) || ['jaja'];
+	const dollarTransactions = useSelector((state) => state.acoount.dollarTransactions.reverse()) || ['jaja'];
 
 	// estado de indice de la cuenta a renderizar
 	const [currentAccountIndex, setCurrentAccountIndex] = useState(0);
-	const [transactions, setTransactions] = useState([pesosTransactions, dollarTransactions]);
 
-	useEffect(() => {
-		setTransactions([pesosTransactions.reverse(), dollarTransactions.reverse()]);
-	}, [pesosTransactions, dollarTransactions]);
-	// estado de indice de la cuenta a renderizar
-
-	// Transacciones
+	// estado de array de transacciones en pesos y dolares
+	const [transactions, setTransactions] = useState([]);
 
 	const logoutHandler = () => {
 		dispatch(logoutUser());
@@ -54,20 +49,23 @@ export default function PosConsolidada({ navigation }) {
 	};
 
 	useEffect(() => {
+		console.log('me ejecute: session');
 		dispatch(getDollarsTransactions(cvuDollars));
 		dispatch(getPesosTransactions(cvuPesos));
 		dispatch(getContacts(id ? id : null));
 		dispatch(getAccount(id ? id : null));
 		dispatch(verifySession());
 	}, []);
-	// console.log('****Cuentas****');
 
-	console.log('pesosTransactions');
-	console.log(pesosTransactions);
-	console.log('pesosTransactions');
-	console.log('dollarTransactions');
-	console.log(dollarTransactions);
-	console.log('dollarTransactions');
+	useEffect(() => {
+		setTransactions([pesosTransactions, dollarTransactions]);
+		console.log('me ejecute: transactions');
+		// console.log(pesosTransactions);
+		return () => {
+			console.log('LIMPIANDO');
+			setTransactions([]);
+		};
+	}, [currentAccountIndex]);
 
 	// Date formatter
 	const dateFormatter = function (dateStr) {
@@ -134,12 +132,15 @@ export default function PosConsolidada({ navigation }) {
 								contentContainerStyle={styles.balance_horizontalScrollview}
 								onMomentumScrollEnd={function (event) {
 									setCurrentAccountIndex(Math.round(event.nativeEvent.contentOffset.x / deviceWidth));
-									// setPesosTransactions(pesosTransactions);
-									// setDollarTransactions(dollarTransactions);
-									setTransactions([pesosTransactions, dollarTransactions]);
-									// dispatch(getTransactions(session.accounts[currentAccountIndex].cvu));
-									// alert(currentAccountIndex);
-									// alert('Cuenta numero: ' + (event.nativeEvent.contentOffset.x / deviceWidth + 1));
+									// if (Math.round(event.nativeEvent.contentOffset.x / deviceWidth) === 1) {
+									// 	dispatch(getDollarsTransactions(cvuDollars));
+									// 	console.log(dollarTransactions)
+									// 	console.log('accion despachada: dolares');
+									// } else {
+									// 	dispatch(getPesosTransactions(cvuPesos));
+									// 	console.log(dollarTransactions)
+									// 	console.log('accion despachada: pesos');
+									// }
 								}}
 							>
 								{accounts.length > 0 ? (

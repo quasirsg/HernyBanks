@@ -13,45 +13,45 @@ export function getAccount(id) {
 				},
 			})
 			.then((res) => {
-				console.log(res.data);
+				// console.log(res.data);
 				dispatch({
 					type: GET_ACCOUNT,
 					data: res.data || [],
 				});
 			})
 			.catch((error) => {
-				console.log(error);
+				// console.log(error);
 			});
 	};
 }
 
 export function rechargeByQr(data) {
 	return (dispatch) => {
-		console.log(data);
+		// console.log(data);
 		axios
 			.post(`${BACK_URL}/api/accounts/rechargeByQR/`, data)
 			.then((res) => {
-				console.log(res.data);
+				// console.log(res.data);
 				dispatch({
 					type: RECHARGE_QR,
 					data: res.data || {},
 				});
 			})
 			.catch((error) => {
-				console.log(error);
+				// console.log(error);
 			});
 	};
 }
 
 export function rechargeByCard(data, onSuccess) {
 	return (dispatch) => {
-		console.log('***est este***');
-		console.log(data);
+		// console.log('***est este***');
+		// console.log(data);
 		axios
 			.post(`${BACK_URL}/api/accounts/rechargeByCard`, data)
 			.then((res) => {
-				console.log('*****res card recharse***');
-				console.log(res.data);
+				// console.log('*****res card recharse***');
+				// console.log(res.data);
 				dispatch({
 					type: RECHARGE_CARD,
 					data: res.data || {},
@@ -80,27 +80,27 @@ export function rechargeByCard(data, onSuccess) {
 				});
 			})
 			.catch((error) => {
-				console.log(error);
+				// console.log(error);
 			});
 	};
 }
 
 export function transferMoney(data) {
 	return (dispatch) => {
-		console.log('Transfer Money');
-		console.log(data);
+		// console.log('Transfer Money');
+		// console.log(data);
 
 		axios
 			.post(`${BACK_URL}/api/accounts/transfer`, data)
 			.then((res) => {
-				console.log('Transferencia exitosa', res);
+				// console.log('Transferencia exitosa', res);
 				dispatch({
 					type: TRANSFER_MONEY,
 					data: res.data || {},
 				});
 			})
 			.catch((error) => {
-				console.log('Error en la transferencia', error);
+				// console.log('Error en la transferencia', error);
 			});
 	};
 }
@@ -108,8 +108,8 @@ export function transferMoney(data) {
 // GET transacciones en pesos
 export function getPesosTransactions(data) {
 	return (dispatch) => {
-		console.log('Get transactions');
-		console.log(data);
+		// console.log('Get transactions');
+		// console.log(data);
 		axios
 			.get(`${BACK_URL}/api/accounts/transactions`, {
 				params: {
@@ -117,14 +117,14 @@ export function getPesosTransactions(data) {
 				},
 			})
 			.then((res) => {
-				console.log('Estas son las transacciones', res);
+				// console.log('Estas son las transacciones', res);
 				dispatch({
 					type: GET_TRANSACTIONS_PESOS,
 					data: res.data || {},
 				});
 			})
 			.catch((error) => {
-				console.log('Error en la consulta', error);
+				// console.log('Error en la consulta', error);
 			});
 	};
 }
@@ -132,8 +132,8 @@ export function getPesosTransactions(data) {
 // GET transacciones en dolares
 export function getDollarsTransactions(data) {
 	return (dispatch) => {
-		console.log('Get transactions');
-		console.log(data);
+		// console.log('Get transactions');
+		// console.log(data);
 		axios
 			.get(`${BACK_URL}/api/accounts/transactions`, {
 				params: {
@@ -141,7 +141,7 @@ export function getDollarsTransactions(data) {
 				},
 			})
 			.then((res) => {
-				console.log('Estas son las transacciones', res);
+				// console.log('Estas son las transacciones', res);
 				dispatch({
 					type: GET_TRANSACTIONS_DOLLARS,
 					data: res.data || {},

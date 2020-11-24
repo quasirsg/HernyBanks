@@ -12,7 +12,7 @@ const initialState = {
 };
 
 const acoountReducers = (state = initialState, action) => {
-	console.log(action);
+	// console.log(action);
 
 	switch (action.type) {
 		case GET_ACCOUNT:
