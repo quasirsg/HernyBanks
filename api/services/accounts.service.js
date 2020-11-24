@@ -98,7 +98,7 @@ module.exports = {
         getDollarRealPrice: {
             rest: 'GET /dollar',
             async handler(ctx) {
-                const dollar = this.getDollarPrice();
+                const dollar = await this.getDollarPrice();
                 return dollar
             }
         },
@@ -243,7 +243,6 @@ module.exports = {
                     transferType = 'Dollar Sales'
                 }
 
-                console.log(amountB)
                 if (fromAccount.balance - parseFloat(amount) >= 0) {
                     if(transferType === 'Dollar Purchase'){
                         fromAccount.balance = fromAccount.balance - parseFloat(amount);
