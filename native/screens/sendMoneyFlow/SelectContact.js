@@ -5,7 +5,7 @@ import { theme } from '../../core/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Button from '../../components/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContact } from '../../store/actions/contactsAction'
+import { getContacts } from '../../store/actions/contactsAction'
 
 const { width, height } = Dimensions.get('window');
 
@@ -30,11 +30,11 @@ export default function SelectContact({ navigation }) {
 
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
-	const contacts = useSelector((state) => state.contact.contact);
+	const contacts = useSelector((state) => state.contacts.contacts);
 
 	useEffect(() => {
 		let id = session._id
-		dispatch(getContact(id))
+		dispatch(getContacts(id))
 	}, []);
 
 	const [selected, setSelected] = useState({
