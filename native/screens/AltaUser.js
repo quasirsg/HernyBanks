@@ -47,6 +47,28 @@ const AltaUser = ({
     }, 1500);
   };
 
+  var normalize = (function() {
+    var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
+        to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+        mapping = {};
+   
+    for(var i = 0, j = from.length; i < j; i++ )
+        mapping[ from.charAt( i ) ] = to.charAt( i );
+   
+    return function( str ) {
+        var ret = [];
+        for( var i = 0, j = str.length; i < j; i++ ) {
+            var c = str.charAt( i );
+            if( mapping.hasOwnProperty( str.charAt( i ) ) )
+                ret.push( mapping[ c ] );
+            else
+                ret.push( c );
+        }      
+        return ret.join( '' );
+    }
+   
+  })();
+
 
  async function handleProvince  (province){
     var result = await axios
@@ -54,15 +76,18 @@ const AltaUser = ({
         `https://apis.datos.gob.ar/georef/api/provincias?nombre=${province}`
       )
       .then((res) => {
-        if (res.data.provincias[0]) {
-          if (res.data.provincias[0].nombre) {
+        //console.log("provincias", res.data.provincias)
+        for(let i=0;i<res.data.provincias.length;i++){
+          var provinceLowCase=res.data.provincias[i].nombre.toLowerCase();
+          //console.log("Provincia en array",res.data.provincias[i].nombre)
+          //console.log("PROVINCIAS includes",provinceLowCase.includes(province.toLowerCase()))
+          if(normalize(provinceLowCase) === normalize(province.toLowerCase()) ){
             return true;
-          } else {
-            return false;
           }
-        } else {
-          return false;
         }
+
+        return false;
+        
       });
 
       if(result) setSelectedProvince(province);
@@ -72,7 +97,7 @@ const AltaUser = ({
 
   async function handleCity (city,province){
 
-    console.log("PROVINCIA",province,"CIUDAD",city)
+    //console.log("PROVINCIA",province,"CIUDAD",city)
     var result;
     if(!province){
       return false
@@ -82,16 +107,17 @@ const AltaUser = ({
         `https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&nombre=${city}`
       )
       .then((res) => {
-        //console.log(res.data.localidades)
-        if (res.data.localidades[0]) {
-          if (res.data.localidades[0].nombre) {
+        //console.log("CIUDADES",res.data.localidades)
+        for(let i=0;i<res.data.localidades.length;i++){
+          var cityLowCase=res.data.localidades[i].nombre.toLowerCase();
+          //console.log("Ciudades en array",res.data.localidades[i].nombre)
+          //console.log("Ciudades includes",cityLowCase.includes(city.toLowerCase()))
+          if(normalize(cityLowCase) === normalize(city.toLowerCase()) ){
             return true;
-          } else {
-            return false;
           }
-        } else {
-          return false;
         }
+
+        return false;
       });
     }
 
@@ -112,13 +138,9 @@ const AltaUser = ({
         `https://apis.datos.gob.ar/georef/api/calles?provincia=${selectedProvince}&localidad_censal=${selectedCity}&nombre=${addressWithNoDigits} `
       )
       .then((res) => {
-        console.log('res',res.data.calles)
-        if (res.data.calles[0]) {
-          if (res.data.calles[0].nombre) {
-            return true;
-          } else {
-            return false;
-          }
+        //console.log('res',res.data.calles)
+        if (res.data.calles.length === 1) {
+          return true
         } else {
           return false;
         }
@@ -165,7 +187,7 @@ const AltaUser = ({
                 .required("Debes completar este campo")
                 .test(
                   "verifyAddress",
-                  "Domicilio inexistente en esas Localidad",
+                  "Domicilio inexistente en esa Localidad",
                   (address) => {
                     return handleAddress(address);
                   }
