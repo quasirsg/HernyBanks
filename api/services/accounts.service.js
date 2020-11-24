@@ -230,29 +230,38 @@ module.exports = {
                 const { from, to, amount, description } = ctx.params;
                 const fromAccount = await Account.findOne({ cvu: from })
                 const toAccount = await Account.findOne({ cvu: to })
-                let transferType = 'Transfer'
+                let transferType = 'Transfer';
                 let amountB = 0;
+
                 //To check if this transfer from one account in 'pesos(Argentina currency)'
                 //to another in 'dollars' or vice versa
-                if(fromAccount.type === 'Pesos' && toAccount.type === 'Dolares'){
-                    amountB = await this.dollarConversion(amount , 'Purchase' )
-                    
+                if (fromAccount.type === 'Pesos' && toAccount.type === 'Dolares') {
+                    amountB = await this.dollarConversion(amount, 'Purchase')
                     transferType = 'Dollar Purchase'
-                }else if (fromAccount.type === 'Dolares' && toAccount.type === 'Pesos'){
-                    amountB = await this.dollarConversion(amount , 'Sale')
+                } else if (fromAccount.type === 'Dolares' && toAccount.type === 'Pesos') {
+                    amountB = await this.dollarConversion(amount, 'Sale')
                     transferType = 'Dollar Sales'
                 }
 
+
                 if (fromAccount.balance - parseFloat(amount) >= 0) {
-                    if(transferType === 'Dollar Purchase'){
+                    if (transferType === 'Dollar Purchase') {
                         fromAccount.balance = fromAccount.balance - parseFloat(amount);
                         toAccount.balance += parseFloat(amountB);
-                    }else if(transferType === 'Dollar Sales'){
+                    } else if (transferType === 'Dollar Sales') {
                         fromAccount.balance = fromAccount.balance - parseFloat(amount);
                         toAccount.balance += parseFloat(amountB);
-                    }else{
+                    } else {
                         fromAccount.balance = fromAccount.balance - parseFloat(amount);
                         toAccount.balance += parseFloat(amount);
+                    }
+                    console.log(fromAccount._userId[0])
+                    console.log(toAccount._userId[0])
+                    const fromUser = fromAccount._userId[0].toString().trim()
+                    const toUser = toAccount._userId[0].toString().trim()
+
+                    if (fromUser !== toUser) {
+                        transferType = 'Dollar Transfer';
                     }
 
                     const transaction = await this.generateTransaction(
@@ -271,8 +280,13 @@ module.exports = {
                     await fromAccount.save()
                     await toAccount.save()
                     const response = {
-                        fromAccountBalance : fromAccount.balance,
-                        toAccountBalance : toAccount.balance
+                        fromAccountBalance: fromAccount.balance,
+                        fromAccountCVU: fromAccount.cvu,
+                        fromUser,
+                        toAccountBalance: toAccount.balance,
+                        toAccountCVU: toAccount.cvu,
+                        toUser,
+                        transferType
                     }
                     return response;
                 } else {
@@ -323,29 +337,28 @@ module.exports = {
             }
             return transaction
         },
-        async getDollarPrice(){
-                const response = await axios.get('https://www.dolarsi.com/api/api.php?type=valoresprincipales')
-                console.log(response)
-                const data = {
-                    purchase : (response.data[0].casa.compra).replace(',' , '.'),
-                    sale : (response.data[0].casa.venta).replace(',' , '.'),
-                    name: response.data[0].casa.nombre
-                }
-                return data
+        async getDollarPrice() {
+            const response = await axios.get('https://www.dolarsi.com/api/api.php?type=valoresprincipales')
+            const data = {
+                purchase: (response.data[0].casa.compra).replace(',', '.'),
+                sale: (response.data[0].casa.venta).replace(',', '.'),
+                name: response.data[0].casa.nombre
+            }
+            return data
         },
-        async dollarConversion(amount,typeOfConversion){
-            if(typeOfConversion === 'Sale'){
+        async dollarConversion(amount, typeOfConversion) {
+            if (typeOfConversion === 'Sale') {
                 //Sale Conversion taking the price in 'purchase'
                 const dollar = await this.getDollarPrice()
                 const response = amount * parseFloat(dollar.purchase)
                 return response
-            }else if(typeOfConversion === 'Purchase'){
+            } else if (typeOfConversion === 'Purchase') {
                 //Purchase Conversion taking the price in 'sale'
                 const dollar = await this.getDollarPrice()
                 const response = amount / parseFloat(dollar.sale)
                 return response
             }
-             
+
         },
         async recharge(amount, cvu, type) {
             const account = await Account.findOne({ cvu })
