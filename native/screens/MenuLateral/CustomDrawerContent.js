@@ -4,6 +4,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { verifySession, logoutUser } from '../../store/actions/jwtUsersActions';
 import { Avatar } from 'react-native-image-avatars'
+import { image } from '../MisDatos'
 
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,6 +16,10 @@ import { EnlacesMenuLateral } from './EnlacesMenu';
 export default function CustomDrawerContent(props) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
+	useEffect(() => {
+		dispatch(verifySession());
+	}, []);
+	
 	useEffect(() => {
 		dispatch(verifySession());
 	}, []);
@@ -39,7 +44,7 @@ export default function CustomDrawerContent(props) {
 				<View style={styles.userInfoContainer}>
 					<View>
 						<View>{session.image ? <Image source={session.image} style={{ height: 50, width: 50 }}></Image> : <Ionicons color='indigo'  style={{ left:10 }} onPress={() => props.navigation.navigate('Mis Datos')}><Avatar
-						imageUrl = 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+						imageUrl = { image }
 						size="x-small"
 						borderColor = "#f2f2f2"
 						shadow
