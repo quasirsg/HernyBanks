@@ -90,7 +90,7 @@ export default function TransactionDetails({ navigation, route }) {
                     <View style={styles.row}>
 
                         <Text style={styles.key}>Fecha:</Text>
-                        <Text style={styles.value}>{details.date.substring(0,10)} </Text>
+                        <Text style={styles.value}>{(new Date(details.date)).toDateString().substring(4,15) + ' - ' + (new Date(details.date)).toLocaleTimeString()} </Text>
 
                     </View>
 
