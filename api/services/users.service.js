@@ -211,14 +211,34 @@ module.exports = {
 		},
 
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Acción/ruta para actualizar el avatar de un usuario *
+		 * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+		update_avatar: {
+			rest: "PUT /updateAvatar",
+			async handler(ctx) {
+				const {avatar,_id} = ctx.params;
+
+				if (mongoose.Types.ObjectId.isValid(_id)) {
+					const updatedAvatar = await User.findByIdAndUpdate(
+						{ _id },
+						{avatar}
+					);
+
+					if (updatedAvatar) return updatedAvatar;
+				}
+
+				return Promise.reject(userNotFound);
+			},
+		},
+
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * *
 		 * Acción/ruta para actualización de un usuario 	   *
 		 * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		update_user: {
 			rest: "PUT /update",
 			async handler(ctx) {
 				const { _id, name, lastname, phone, address, dob, province, city } = ctx.params;
-				console.log("CIUDAD Y PROVINCIA",city,province);
-
+				
 				if (mongoose.Types.ObjectId.isValid(_id)) {
 					await User.findByIdAndUpdate(
 						{ _id },

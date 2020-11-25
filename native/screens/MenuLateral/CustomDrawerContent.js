@@ -4,7 +4,6 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { verifySession, logoutUser } from '../../store/actions/jwtUsersActions';
 import { Avatar } from 'react-native-image-avatars'
-import { image } from '../MisDatos'
 
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -43,12 +42,12 @@ export default function CustomDrawerContent(props) {
 				{/* Informacion del Ususario */}
 				<View style={styles.userInfoContainer}>
 					<View>
-						<View>{session.image ? <Image source={session.image} style={{ height: 50, width: 50 }}></Image> : <Ionicons color='indigo'  style={{ left:10 }} onPress={() => props.navigation.navigate('Mis Datos')}><Avatar
-						imageUrl = { image }
+						<View><Ionicons color='indigo'  style={{ left:10 }} onPress={() => props.navigation.navigate('Mis Datos')}><Avatar
+						imageUrl = { session.avatar }
 						size="x-small"
 						borderColor = "#f2f2f2"
 						shadow
-						/></Ionicons>}</View>
+						/></Ionicons></View>
 					</View>
 					<View style={styles.userNameContainer}>
 						<Text style={styles.nombre}>{session.name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ session.lastname.replace(/\b\w/g, l => l.toUpperCase()) || 'User Name Here'}</Text>

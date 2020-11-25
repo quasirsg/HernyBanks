@@ -2,6 +2,7 @@ import axios from "axios";
 import { CREATE_USER, LOGIN_USER, UPDATE_USER } from "../constans/constans";
 import { BACK_URL } from "../../env";
 import Toast from "react-native-toast-message";
+import { verifySession } from "./jwtUsersActions";
 // const {URL} = BACK_URL
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -101,6 +102,20 @@ export function completeUserRegister(userData, onSuccess) {
         }, 2000);
       });
   };
+}
+
+
+export function updateUserAvatar(userData){
+  console.log("data usuario", userData)
+  console.log("entramos aca")
+  return (dispatch)=>{
+    axios.put(`${BACK_URL}/api/users/updateAvatar`, userData)
+    .then((res) => {
+      console.log("User updated", res.data);
+      dispatch(verifySession())
+      return res
+    })
+  }
 }
 
 // export const loginUser = (email, password) => (dispatch) => {

@@ -67,6 +67,10 @@ let UserSchema = new Schema(
 			type: Boolean,
 			default: false,
 		},
+		avatar:{
+			type: String,
+			default: ""
+		},
 		contacts : [
 			{
 				type : Schema.Types.ObjectId,
