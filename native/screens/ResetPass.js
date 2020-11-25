@@ -52,9 +52,7 @@ export default function ResetPass({ id, email, password, isValid, navigation }) 
             user.email = user.email.toLowerCase();
             startLoading();
             dispatch(
-              loguinUser(user.email, user.password, () =>
-                navigation.navigate("Main")
-              )
+              
             );
 
             // navigation.navigate("RegisterModal");
