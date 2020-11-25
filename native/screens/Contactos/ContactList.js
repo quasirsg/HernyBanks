@@ -148,6 +148,11 @@ const ContactList = ({ navigation }) => {
                   onPress={() => {
                     dispatch(addContact(session._id, item.email));
                     setResults([]);
+                    setValue("");
+                    navigation.reset({
+                      index: 0,
+                      routes: [{ name: "Contactos" }],
+                    });
                   }}
                 ></Icon.Button>
               </View>
