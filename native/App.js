@@ -7,7 +7,7 @@ import CustomDrawerContent from './screens/MenuLateral/CustomDrawerContent';
 import Register from './screens/Register';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { st } from './store/store';
-import Estatistics from './screens/Estatistics';
+import Estadictics from './screens/Estadisticas/main';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
 import Welcome from './screens/Welcome';
@@ -82,7 +82,7 @@ function MainStack() {
 			lazy={true}
 		>
 			<Drawer.Screen name='Inicio' component={PosConsolidada} />
-			<Drawer.Screen name='Estadisticas' component={Estatistics} />
+			<Drawer.Screen name='Estadisticas' component={Estadictics} />
 			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
 			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} options={{ title: '' }} />
 			<Drawer.Screen name='FAQ' component={FAQ} />

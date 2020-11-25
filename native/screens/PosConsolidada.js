@@ -50,8 +50,8 @@ export default function PosConsolidada({ navigation }) {
 
   // Transacciones
   // const transactions = dispatch(getTransactions(accounts.cvu));
-  const cvuPesos = session.accounts[0].cvu;
-  const cvuDollars = session.accounts[1].cvu;
+  const cvuPesos = {} || session.accounts[0].cvu;
+  const cvuDollars = {} ||session.accounts[1].cvu;
   const pesosTransactions = useSelector(
     (state) => state.acoount.pesosTransactions
   );
