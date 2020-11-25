@@ -26,7 +26,8 @@ import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
 import Card from './screens/Card';
 import TransactionDetails from './screens/TransactionDetails';
-
+import ResetPass from './screens/ResetPass';
+import Cuentas from './screens/Cuentas';
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -60,6 +61,7 @@ function LoginStack() {
 			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
 			<Stack.Screen name='AltaUser' component={AltaUser} />
 			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: true, headerStyle: { backgroundColor: 'indigo', shadowColor: 'indigo', elevation: 0 }, headerTitleStyle: { color: 'white', fontSize: 16 } }} />
+			<Stack.Screen name='ResetPass' component={ResetPass} />
 		</Stack.Navigator>
 	);
 }
@@ -93,6 +95,7 @@ function MainStack() {
 			<Stack.Screen name='Contactos' component={ContactList} />
 			<Stack.Screen name='Card' component={Card} />
 			<Stack.Screen name='TransactionDetails' component={TransactionDetails} options={{ title: '' }}/>
+			<Stack.Screen name='Cuentas' component={Cuentas}/>
 		</Drawer.Navigator>
 	);
 }

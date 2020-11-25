@@ -18,8 +18,8 @@ import Logo from "../components/Logo";
 import * as Animatable from "react-native-animatable";
 import Spinner from "react-native-loading-spinner-overlay";
 
-export default function Login({ id, email, password, isValid, navigation }) {
-  const [hidePassword, setHidePassword] = useState(false);
+export default function ResetPass({ id, email, password, isValid, navigation }) {
+ 
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
   const [loading, setLoading] = useState(false);
@@ -35,19 +35,15 @@ export default function Login({ id, email, password, isValid, navigation }) {
       
       <View>
         {/* <Logo style={styles.down}/> */}
-        <Text style={styles.title}>Iniciar sesión</Text>
+        <Text style={styles.title}>Ingresa Tu mail</Text>
+        
 
         <Formik
           initialValues={{
             email: "",
-            password: "",
+            
           }}
-          validationSchema={Yup.object({
-            email: Yup.string()
-              .email("Introduzca un email valido por favor")
-              .required("Ingresa tu correo"),
-            password: Yup.string().required("Ingresa tu contraseña"),
-          })}
+          
           onSubmit={(values, action) => {
             let user = { ...values };
             action.resetForm();
@@ -96,24 +92,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
                   <Text style={{ fontSize: 10 }}></Text>
                 )}
 
-                <CustomInput
-                  label="Contraseña"
-                  name="password"
-                  returnKeyType="done"
-                  onChangeText={handleChange("password")}
-                  value={values.password}
-                  secureTextEntry={true}
-                  style={styles.input}
-                />
-
-                {errors.password ? (
-                  <Text style={{ fontSize: 10, color: "red" }}>
-                    {errors.password}
-                  </Text>
-                ) : (
-                  <Text style={{ fontSize: 10 }}></Text>
-                )}
-
+               
                 <Button
                   mode="contained"
                   secureTextEntry={true}
@@ -121,31 +100,10 @@ export default function Login({ id, email, password, isValid, navigation }) {
                   style={styles.button}
                   onPress={handleSubmit}
                 >
-                  Ingresar
+                  Cambiar Contraseña
                 </Button>
 
-                <View style={styles.down}>
-                  <View style={styles.row}>
-                    <Text style={styles.label}>
-                      ¿Aún no tienes una cuenta?{" "}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("Register")}
-                    >
-                      <Text style={styles.link}>Regístrate aquí</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("ResetPass")}
-                    >
-                      <Text style={styles.forgotPassword}>
-                        ¿Olvidaste tu contraseña?
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+               
               </Animatable.View>
             </View>
           )}
