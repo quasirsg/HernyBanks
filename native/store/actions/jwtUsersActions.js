@@ -11,7 +11,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as actionTypes from '../constans/constans';
 // const env = require('../../env.js')
+import {
 
+  getDollarsTransactions,
+  getPesosTransactions,
+} from "./acountActions";
 // const localhost= env.localhost;
 
 //loguin  -> funciona loguin correcto e incorrecto.
@@ -70,11 +74,14 @@ export const getCurrentUser = (token) => async (dispatch) => {
         type: actionTypes.CURRENT_USER,
         user: res.data,
       });
+      dispatch(getDollarsTransactions(res.data.accounts[1].cvu));
+      dispatch(getPesosTransactions(res.data.accounts[0].cvu));
       setTimeout(function () {
+
         Toast.show({
           type: "success",
           position: "top",
-          text1: `Bienvenido ${res.data.username} `,
+          text1: `Bienvenido ${res.data.accounts[0].cvu} `,
           visibilityTime: 2000,
           autoHide: true,
           topOffset: 30,

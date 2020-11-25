@@ -142,10 +142,14 @@ export function getDollarsTransactions(data) {
 			})
 			.then((res) => {
 				// console.log('Estas son las transacciones', res);
-				dispatch({
-					type: GET_TRANSACTIONS_DOLLARS,
-					data: res.data || {},
-				});
+				return new Promise((resolve,reject)=>{
+					dispatch({
+						type: GET_TRANSACTIONS_DOLLARS,
+						data: res.data || {},
+					});
+					resolve();
+				})
+				
 			})
 			.catch((error) => {
 				console.log('Error en la consulta', error);

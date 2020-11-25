@@ -36,6 +36,7 @@ const Card = () => {
 
 	const handlerSubmit = () => {
 		let obj = {
+			
 			cvu:selectedValue,
 			amount:inputText.amount
 		}
