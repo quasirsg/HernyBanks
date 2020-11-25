@@ -1,52 +1,53 @@
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS_DOLLARS, GET_TRANSACTIONS_PESOS } from '../constans/constans';
 
 const initialState = {
-  users: [],
-  userDetail: [],
-  err: [],
-  message: "",
-  userUp: {},
-  account: [],
-  transactions: []
+	users: [],
+	userDetail: [],
+	err: [],
+	message: '',
+	userUp: {},
+	account: [],
+	dollarTransactions: [],
+	pesosTransactions: [],
 };
 
-
-
 const acoountReducers = (state = initialState, action) => {
-  console.log(action);
+	// console.log(action);
 
-  switch (action.type) {
-    case GET_ACCOUNT:
-      return { ...state, account: action.data };
-    case RECHARGE_QR:
-      let obj = action.data
-      let acc = state.account.find(x => x._id == obj._id)
-      if (acc === undefined) return { ...state };
-      let ind = state.account.indexOf(acc)
-      let accountNew = [...state.account]
-      accountNew[ind].balance = obj.balance
-      return { ...state, account: accountNew };
-    case RECHARGE_CARD:
-      let objT = action.data
-      let accT = state.account.find(x => x._id == objT._id)
-      if (accT === undefined) return { ...state };
-      let indT = state.account.indexOf(accT)
-      let accountNewT = [...state.account]
-      accountNewT[indT].balance = objT.balance
-      return { ...state, account: accountNewT };
-    case TRANSFER_MONEY:
-      let objC = action.data
-      let accC = state.account.find(x => x._id == objC._id)
-      if (accC === undefined) return { ...state };
-      let indC = state.account.indexOf(accC)
-      let accountNewC = [...state.account]
-      accountNewC[indC].balance = objC.balance
-      return { ...state, account: accountNewC };
-    case GET_TRANSACTIONS:
-      return { ...state, transactions: action.data };
-    default:
-      return state;
-  }
+	switch (action.type) {
+		case GET_ACCOUNT:
+			return { ...state, account: action.data };
+		case RECHARGE_QR:
+			let obj = action.data;
+			let acc = state.account.find((x) => x._id == obj._id);
+			if (acc === undefined) return { ...state };
+			let ind = state.account.indexOf(acc);
+			let accountNew = [...state.account];
+			accountNew[ind].balance = obj.balance;
+			return { ...state, account: accountNew };
+		case RECHARGE_CARD:
+			let objT = action.data;
+			let accT = state.account.find((x) => x._id == objT._id);
+			if (accT === undefined) return { ...state };
+			let indT = state.account.indexOf(accT);
+			let accountNewT = [...state.account];
+			accountNewT[indT].balance = objT.balance;
+			return { ...state, account: accountNewT };
+		case TRANSFER_MONEY:
+			let objC = action.data;
+			let accC = state.account.find((x) => x._id == objC._id);
+			if (accC === undefined) return { ...state };
+			let indC = state.account.indexOf(accC);
+			let accountNewC = [...state.account];
+			accountNewC[indC].balance = objC.balance;
+			return { ...state, account: accountNewC };
+		case GET_TRANSACTIONS_PESOS:
+			return { ...state, pesosTransactions: action.data };
+		case GET_TRANSACTIONS_DOLLARS:
+			return { ...state, dollarTransactions: action.data };
+		default:
+			return state;
+	}
 };
 
 export default acoountReducers;

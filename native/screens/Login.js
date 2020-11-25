@@ -5,6 +5,9 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
+  Dimensions,
+  Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
@@ -18,6 +21,10 @@ import Logo from "../components/Logo";
 import * as Animatable from "react-native-animatable";
 import Spinner from "react-native-loading-spinner-overlay";
 
+const background = require("../assets/WelcomeBackground.png");
+const logo = require("../assets/logo.png");
+const { width, height } = Dimensions.get("window");
+
 export default function Login({ id, email, password, isValid, navigation }) {
   const [hidePassword, setHidePassword] = useState(false);
   const dispatch = useDispatch();
@@ -30,12 +37,30 @@ export default function Login({ id, email, password, isValid, navigation }) {
       setLoading(false);
     }, 2000);
   };
+
+  
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      
-      <View>
+    <ImageBackground source={background} style={styles.image}>
+      <ScrollView contentContainerStyle={styles.container}>
         {/* <Logo style={styles.down}/> */}
-        <Text style={styles.title}>Iniciar sesión</Text>
+        <View
+          style={{
+            // backgroundColor: 'gold
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={logo}
+            style={{
+              // flex: 1,
+              width: 500,
+              height: 50,
+              resizeMode: "contain",
+            }}
+          ></Image>
+          <Text style={styles.title}>Iniciar sesión</Text>
+        </View>
 
         <Formik
           initialValues={{
@@ -57,7 +82,10 @@ export default function Login({ id, email, password, isValid, navigation }) {
             startLoading();
             dispatch(
               loguinUser(user.email, user.password, () =>
-                navigation.navigate("Main")
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Main" }],
+                })
               )
             );
 
@@ -70,7 +98,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
                 //visibility of Overlay Loading Spinner
                 visible={loading}
                 //Text with the Spinner
-                textContent={"Loading..."}
+                textContent={"Cargando..."}
                 //Text style of the Spinner Text
                 textStyle={styles.spinnerTextStyle}
               />
@@ -150,8 +178,8 @@ export default function Login({ id, email, password, isValid, navigation }) {
             </View>
           )}
         </Formik>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
@@ -159,11 +187,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#fff",
+    justifyContent: "center",
+    // backgroundColor: 'gold',
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     textAlign: "center",
-    paddingTop: 200,
+    marginTop: 50,
     fontSize: 30,
     paddingBottom: 20,
     fontWeight: "bold",
