@@ -81,7 +81,7 @@ export const getCurrentUser = (token) => async (dispatch) => {
         Toast.show({
           type: "success",
           position: "top",
-          text1: `Bienvenido ${res.data.accounts[0].cvu} `,
+          text1: `Bienvenido ${res.data.username} `,
           visibilityTime: 2000,
           autoHide: true,
           topOffset: 30,
