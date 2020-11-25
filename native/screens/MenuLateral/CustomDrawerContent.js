@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { verifySession, logoutUser } from '../../store/actions/jwtUsersActions';
@@ -42,7 +42,7 @@ export default function CustomDrawerContent(props) {
 				{/* Informacion del Ususario */}
 				<View style={styles.userInfoContainer}>
 					<View>
-						<View><Ionicons color='indigo'  style={{ left:10 }} onPress={() => props.navigation.navigate('Mis Datos')}><Avatar
+						<View><Ionicons color='indigo'  style={{ left:10 }}><Avatar
 						imageUrl = { session.avatar }
 						size="x-small"
 						borderColor = "#f2f2f2"
@@ -51,6 +51,9 @@ export default function CustomDrawerContent(props) {
 					</View>
 					<View style={styles.userNameContainer}>
 						<Text style={styles.nombre}>{session.name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ session.lastname.replace(/\b\w/g, l => l.toUpperCase()) || 'User Name Here'}</Text>
+						<View style={styles.boton}>
+							<Text style={styles.perfil} onPress={() => props.navigation.navigate('Mis Datos')}>Ver Perfil</Text>
+						</View>
 					</View>
 				</View>
 				{/* .map de las secciones */}
@@ -83,7 +86,22 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         fontStyle: 'italic'
-    },
+	},
+	boton: {
+		backgroundColor: 'white',
+		borderRadius: 30,
+		borderWidth: 1,
+		width: 110,
+		marginTop: 10
+	},
+	perfil: {
+		fontSize: 20,
+		fontWeight: 'bold',
+		fontStyle: 'italic',
+		left: 12,
+		color: 'indigo'
+		
+	},
 	headerContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',

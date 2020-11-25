@@ -98,7 +98,7 @@ export default function MisDatos(props) {
 						shadow
 						/></Ionicons>}
                         <View style={styles.upload}>
-                            <Text style={styles.plus}><Ionicons name="ios-brush" size={30} onPress={pickImage}></Ionicons></Text>
+                            <Text style={styles.plus}><Ionicons name="ios-camera" size={40} onPress={pickImage}></Ionicons></Text>
                         </View> 
                 <View style={styles.text}>
                     <Text style={styles.nombre}>{session.name.replace(/\b\w/g, l => l.toUpperCase())} {session.lastname.replace(/\b\w/g, l => l.toUpperCase())}</Text>
@@ -156,16 +156,14 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         backgroundColor: 'black',
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 3 },
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.5,
         shadowRadius: 5,
     },
-    plus: {
-        fontStyle: 'italic',
-        marginTop: 10,
-        borderRadius: 10,
+    plus: {               
+        marginTop: 2,
         color: 'white',
-        left: 12,
+        left: 11,
         marginBottom: -10,
 
     },
@@ -178,8 +176,8 @@ const styles = StyleSheet.create({
 
     usuario: {
         color: 'white',
-        fontSize: 15,
-        fontStyle: 'italic'
+        fontSize: 17,
+        fontStyle: 'italic',      
     },
     datos: {      
         marginTop: 20,

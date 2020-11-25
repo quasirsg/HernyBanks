@@ -69,7 +69,7 @@ let UserSchema = new Schema(
 		},
 		avatar:{
 			type: String,
-			default: ""
+			default: "https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_960_720.png"
 		},
 		contacts : [
 			{
