@@ -23,7 +23,8 @@ export const EnlacesMenuLateral = [
 		links: [
 			{ label: 'Recargar dinero', icon: 'ios-wallet', screen: 'Recargar Dinero' },
 			{ label: 'Mandar dinero', icon: 'ios-send', screen: 'SelectContact' },
-			{ label: 'Contactos', icon: 'ios-contact', screen: 'Contactos' },
+			{ label: 'Contactos', icon: 'ios-people', screen: 'Contactos' },
+			{ label: 'Ver Perfil', icon: 'ios-contact', screen: 'Mis Datos' },
 		],
 	},
 	{

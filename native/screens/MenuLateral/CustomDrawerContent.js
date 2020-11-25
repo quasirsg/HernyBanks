@@ -51,9 +51,7 @@ export default function CustomDrawerContent(props) {
 					</View>
 					<View style={styles.userNameContainer}>
 						<Text style={styles.nombre}>{session.name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ session.lastname.replace(/\b\w/g, l => l.toUpperCase()) || 'User Name Here'}</Text>
-						<View style={styles.boton}>
-							<Text style={styles.perfil} onPress={() => props.navigation.navigate('Mis Datos')}>Ver Perfil</Text>
-						</View>
+
 					</View>
 				</View>
 				{/* .map de las secciones */}
@@ -82,7 +80,7 @@ export default function CustomDrawerContent(props) {
 // <--------------------- ESTILOS --------------------->
 const styles = StyleSheet.create({
 	nombre: { 		
-        color: 'indigo',
+        color: 'black',
         fontSize: 20,
         fontWeight: 'bold',
         fontStyle: 'italic'
