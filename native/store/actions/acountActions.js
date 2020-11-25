@@ -54,7 +54,6 @@ export function rechargeByCard(data, onSuccess) {
       .post(`${BACK_URL}/api/accounts/rechargebycard`, data)
       .then((res) => {
         console.log('*****res card recharse***')
-          console.log(res.data)
         dispatch({
           type: RECHARGE_CARD,
           data: res.data || {},
@@ -98,7 +97,7 @@ export function transferMoney(data) {
 		axios
 			.post(`${BACK_URL}/api/accounts/transfer`, data)
 			.then((res) => {
-				// console.log('Transferencia exitosa', res);
+				console.log('Transferencia exitosa', res.data);
 				dispatch({
 					type: TRANSFER_MONEY,
 					data: res.data || {},

@@ -3,7 +3,7 @@ import { CreditCardInput, LiteCreditCardInput } from 'react-native-credit-card-i
 import { useDispatch, useSelector } from 'react-redux';
 import { theme } from '../core/theme';
 import { StyleSheet, Text, TouchableOpacity, View, Image, Dimensions, Modal, ScrollView, Picker } from 'react-native';
-import { rechargeByCard } from '../store/actions/acountActions';
+import { rechargeByCard, getTransactions } from '../store/actions/acountActions';
 import CustomInput from '../components/CustomInput';
 import Button from '../components/Button';
 import { Value } from 'react-native-reanimated';
@@ -14,7 +14,6 @@ const { width, height } = Dimensions.get('window');
 const Card = () => {
 
 const navigation = useNavigation();
-const [selectedValue, setSelectedValue] = useState("");
 const dispatch = useDispatch();
 const session = useSelector((state) => state.session.userDetail);
 const accounts = useSelector((state) => state.acoount.account);
@@ -22,6 +21,7 @@ const accountP = accounts[0];
 const accountD = accounts[1];
 const cvuP = accountP && accountP.cvu;
 const cvuD = accountD && accountD.cvu;
+const [selectedValue, setSelectedValue] = useState(cvuP);
 const [show, setShow] = useState(false);
 const [inputText, setInputText] = useState({
  		cvu: "",
@@ -39,6 +39,7 @@ const handlerSubmit = () => {
 		cvu:selectedValue,
 		amount:inputText.amount
 	}
+		dispatch(getTransactions(selectedValue));
   		 dispatch(rechargeByCard(obj, () => navigation.goBack()));
 	return;
  };
