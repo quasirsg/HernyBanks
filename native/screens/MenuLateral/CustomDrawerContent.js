@@ -45,11 +45,11 @@ export default function CustomDrawerContent(props) {
 				</View>
 				{/* .map de las secciones */}
 				{EnlacesMenuLateral ? (
-					EnlacesMenuLateral.map((seccion) => (
-						<View style={styles.sectionTitlesContainer}>
+					EnlacesMenuLateral.map((seccion, key) => (
+						<View style={styles.sectionTitlesContainer} key={key}>
 							<Text style={styles.text_sectionTitle}>{seccion.sectionTitle}</Text>
-							{seccion.links.map((enlace) => (
-								<DrawerItem icon={() => <Ionicons name={enlace.icon} color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label={enlace.label} onPress={() => props.navigation.navigate(`${enlace.screen}`)} />
+							{seccion.links.map((enlace, key) => (
+								<DrawerItem key={key} icon={() => <Ionicons name={enlace.icon} color='indigo' size={20} style={{ marginHorizontal: 0 }}></Ionicons>} label={enlace.label} onPress={() => props.navigation.navigate(`${enlace.screen}`)} />
 							))}
 						</View>
 					))

@@ -1,4 +1,5 @@
-import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS, GET_TRANSACTIONS_DOLAR, GET_TRANSACTIONS_PESOS } from "../constans/constans";
+import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS,
+   GET_TRANSACTIONS_DOLAR, GET_TRANSACTIONS_PESOS, GET_TRANSACTIONS_PESOS_GRAP, GET_TRANSACTIONS_DOLLARS } from "../constans/constans";
 
 const initialState = {
   users: [],
@@ -9,13 +10,13 @@ const initialState = {
   account: [],
   transactions: [],
   transactionsDolar: [],
-  transactionsPesos: []
-};
-
-
+  transactionsPesos: [],
+  dollarTransactions: [],
+	pesosTransactions: [],
+}
 
 const acoountReducers = (state = initialState, action) => {
-  console.log(action);
+	// console.log(action);
 
   switch (action.type) {
     case GET_ACCOUNT:
@@ -48,11 +49,16 @@ const acoountReducers = (state = initialState, action) => {
       return { ...state, transactions: action.data };
     case GET_TRANSACTIONS_DOLAR:
       return { ...state, transactionsDolar: action.data };
-    case GET_TRANSACTIONS_PESOS:
+    case GET_TRANSACTIONS_PESOS_GRAP:
       return { ...state, transactionsPesos: action.data };
+    case GET_TRANSACTIONS_PESOS:
+        return { ...state, pesosTransactions: action.data };
+    case GET_TRANSACTIONS_DOLLARS:
+        return { ...state, dollarTransactions: action.data };
     default:
       return state;
   }
+	
 };
 
 export default acoountReducers;

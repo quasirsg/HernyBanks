@@ -16,12 +16,12 @@ function wait(timeout) {
 
 export default function EstadPesos() {
     const dispatch = useDispatch();
-	const session = useSelector((state) => state.session.userDetail);
+	  const session = useSelector((state) => state.session.userDetail);
     const accounts = useSelector((state) => state.acoount.account);
     const transations = useSelector((state) => state.acoount.transactionsPesos);
-	const accountP = accounts[0];
-	const accountD = accounts[1];
-	const cvuP = accountP && accountP.cvu;
+	  const accountP = accounts[0];
+	  const accountD = accounts[1];
+	  const cvuP = accountP && accountP.cvu;
     const cvuD = accountD && accountD.cvu;
     const [refreshing, setRefreshing] = useState(false);
 

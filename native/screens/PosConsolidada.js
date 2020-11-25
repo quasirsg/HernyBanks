@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   View,
@@ -9,40 +9,73 @@ import {
   ScrollView,
   ImageBackground,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 import { verifySession, logoutUser } from "../store/actions/jwtUsersActions";
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
-import { getAccount } from "../store/actions/acountActions";
+import {
+  getAccount,
+  getDollarsTransactions,
+  getPesosTransactions,
+} from "../store/actions/acountActions";
 import { getContacts } from "../store/actions/contactsAction";
-import { getUsers } from "../store/actions/userActions";
 // Dimensions
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
-
-var arrayDePrueba = [1, 2];
-var arrayDePruebaMovimientos = [1, 2, 3, 4, 5];
-
+//Functions
+function wait(timeout) {
+	return new Promise((resolve) => {
+	  setTimeout(resolve, timeout);
+	});
+  }
 export default function PosConsolidada({ navigation }) {
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
   const accounts = useSelector((state) => state.acoount.account);
-  const transactions = useSelector((state) => state.acoount.account);
+  // const transactions = useSelector((state) => state.acoount.transactions);
+
   const bal = session.balance;
   const id = session._id;
   // const bal1 = accounts ? accounts[0].balance : 0
   // const bal2 = accounts ? accounts[1].balance : 0
-  useEffect(() => {
-    dispatch(getAccount(id ? id : null));
-    dispatch(verifySession());
-  }, []);
+
   // console.log('****Cuentas****');
   const accountPesos = accounts[0];
   const accountDolares = accounts[1];
   const balancePesos = accountPesos && accountPesos.balance;
   const balanceDolares = accountDolares && accountDolares.balance;
-  console.log(accounts);
+  // console.log(accounts);
+
+  // Transacciones
+  // const transactions = dispatch(getTransactions(accounts.cvu));
+  const cvuPesos = {} || session.accounts[0].cvu;
+  const cvuDollars = {} ||session.accounts[1].cvu;
+  const pesosTransactions = useSelector(
+    (state) => state.acoount.pesosTransactions
+  );
+  const dollarTransactions = useSelector(
+    (state) => state.acoount.dollarTransactions
+  );
+
+  // estado de indice de la cuenta a renderizar
+  const [currentAccountIndex, setCurrentAccountIndex] = useState(0);
+
+  // estado de array de transacciones en pesos y dolares
+  const [transactions, setTransactions] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  //Hooks functs
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => {
+	  setRefreshing(false);
+	  dispatch(getDollarsTransactions(cvuDollars));
+	  dispatch(getPesosTransactions(cvuPesos));
+    });
+  }, [refreshing]);
 
   const logoutHandler = () => {
     dispatch(logoutUser());
@@ -51,17 +84,63 @@ export default function PosConsolidada({ navigation }) {
   };
 
   useEffect(() => {
+	
+    dispatch(verifySession());
     dispatch(getContacts(id ? id : null));
     dispatch(getAccount(id ? id : null));
+    dispatch(getDollarsTransactions(cvuDollars));
+    dispatch(getPesosTransactions(cvuPesos));
+    setTransactions([pesosTransactions, dollarTransactions]);
 
-    dispatch(verifySession());
-  }, []);
-  console.log("****Cuentas****");
-  // console.log('these are the accounts: ' + accounts[0].transactions[0]);
+    console.log("me ejecute: transactions");
 
-  // estado de indice de la cuenta a renderizar
-  const [currentAccountIndex, setCurrentAccountIndex] = useState(0);
-  // estado de indice de la cuenta a renderizar
+    return () => {
+      console.log("LIMPIANDO");
+      setTransactions([]);
+    };
+  }, [currentAccountIndex]);
+
+
+  // Date formatter
+  const dateFormatter = function (dateStr) {
+    var date = new Date(dateStr);
+    // Nombres de los meses
+    var meses = new Array();
+    meses[meses.length] = "Enero";
+    meses[meses.length] = "Febrero";
+    meses[meses.length] = "Marzo";
+    meses[meses.length] = "Abril";
+    meses[meses.length] = "Mayo";
+    meses[meses.length] = "Junio";
+    meses[meses.length] = "Julio";
+    meses[meses.length] = "Agosto";
+    meses[meses.length] = "Septiembre";
+    meses[meses.length] = "Octubre";
+    meses[meses.length] = "Noviembre";
+    meses[meses.length] = "Diciembre";
+    // Nombres de los dias
+    var dias = new Array();
+    dias[dias.length] = "Domingo";
+    dias[dias.length] = "Lunes";
+    dias[dias.length] = "Martes";
+    dias[dias.length] = "Miercoles";
+    dias[dias.length] = "Jueves";
+    dias[dias.length] = "Viernes";
+    dias[dias.length] = "Sabado";
+
+    var stringDate =
+      dias[date.getDay()] +
+      " " +
+      date.getDate() +
+      " de " +
+      meses[date.getMonth()] +
+      " de " +
+      date.getFullYear();
+
+    return stringDate;
+  };
+  // Date formatter
+
   return (
     <View style={styles.containerPrin}>
       {/* Imagen de fondo */}
@@ -70,7 +149,11 @@ export default function PosConsolidada({ navigation }) {
         style={{ position: "absolute" }}
       />
       {session && (
-        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <ScrollView contentContainerStyle={{ alignItems: "center" }}
+		refreshControl={
+			<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+		  }
+		  >
           <View
             style={{
               marginVertical: 0,
@@ -99,8 +182,15 @@ export default function PosConsolidada({ navigation }) {
                   setCurrentAccountIndex(
                     Math.round(event.nativeEvent.contentOffset.x / deviceWidth)
                   );
-                  // alert(currentAccountIndex);
-                  // alert('Cuenta numero: ' + (event.nativeEvent.contentOffset.x / deviceWidth + 1));
+                  // if (Math.round(event.nativeEvent.contentOffset.x / deviceWidth) === 1) {
+                  // 	dispatch(getDollarsTransactions(cvuDollars));
+                  // 	console.log(dollarTransactions)
+                  // 	console.log('accion despachada: dolares');
+                  // } else {
+                  // 	dispatch(getPesosTransactions(cvuPesos));
+                  // 	console.log(dollarTransactions)
+                  // 	console.log('accion despachada: pesos');
+                  // }
                 }}
               >
                 {accounts.length > 0 ? (
@@ -163,10 +253,7 @@ export default function PosConsolidada({ navigation }) {
                           justifyContent: "center",
                         }}
                       >
-                        <Text style={styles.text_saldoCuenta2}>
-                          {" "}
-                          $ noLogueado
-                        </Text>
+                        <Text style={styles.text_saldoCuenta2}> Cargando</Text>
                       </View>
                       {/* Separador Vertical */}
                       <View
@@ -292,11 +379,14 @@ export default function PosConsolidada({ navigation }) {
                 </Text>
 
                 {/* .map de ULTIMOS MOVIMIENTOS */}
-                {accounts[currentAccountIndex] &&
-                accounts[currentAccountIndex].transactions.length > 0 ? (
-                  accounts[currentAccountIndex].transactions.map((mov, key) => {
+                {transactions[currentAccountIndex] &&
+                transactions[currentAccountIndex].length >= 0 ? (
+                  transactions[currentAccountIndex].map((mov, key) => {
                     return (
-                      <View key={key}>
+                      <TouchableOpacity
+                        key={key}
+                        onPress={() => alert(`detalle de esta transaccion`)}
+                      >
                         {/* fila de ULTIMO MOVIMIENTO */}
                         <View
                           style={{
@@ -311,15 +401,14 @@ export default function PosConsolidada({ navigation }) {
                               alignItems: "center",
                             }}
                           >
-                            <View style={styles.shopBrandLogosContainer}>
-                              <Image
-                                source={{
-                                  uri:
-                                    "https://reactnative.dev/img/tiny_logo.png",
-                                }}
-                                style={{ height: 30, width: 30 }}
-                              ></Image>
-                            </View>
+                            {/* <View style={styles.shopBrandLogosContainer}>
+															<Image
+																source={{
+																	uri: 'https://reactnative.dev/img/tiny_logo.png',
+																}}
+																style={{ height: 30, width: 30 }}
+															></Image>
+														</View> */}
                             <View
                               style={{
                                 alignItems: "flex-start",
@@ -327,22 +416,33 @@ export default function PosConsolidada({ navigation }) {
                               }}
                             >
                               <Text style={styles.text_shopUltimosMovimientos}>
-                                {mov.from || "Negocio o Usuario"}
+                                {`${mov.description} (${mov.by})` ||
+                                  "Negocio o Usuario"}
                               </Text>
                               <Text
                                 style={styles.text_detailUltimosMovimientos}
                               >
-                                {mov.detail || "Detalle de la transacción"}
+                                {dateFormatter(mov.date) ||
+                                  "Detalle de la transacción"}
                               </Text>
                             </View>
                           </View>
                           <View style={{ alignItems: "center" }}>
-                            <Text
-                              style={styles.text_ingresosUltimosMovimientos}
-                            >
-                              {" "}
-                              $ {mov.amount || 999}
-                            </Text>
+                            {mov.type === "In" ? (
+                              <Text
+                                style={styles.text_ingresosUltimosMovimientos}
+                              >
+                                {" "}
+                                $ {mov.amount || 999}
+                              </Text>
+                            ) : (
+                              <Text
+                                style={styles.text_egresosUltimosMovimientos}
+                              >
+                                - $ {mov.amount || 999}
+                              </Text>
+                            )}
+                            {/* <Text style={mov.type === 'In' ? styles.text_ingresosUltimosMovimientos : styles.text_egresosUltimosMovimientos}> $ {mov.amount || 999}</Text> */}
                           </View>
                         </View>
                         {/* Separador Horizontal */}
@@ -353,7 +453,7 @@ export default function PosConsolidada({ navigation }) {
                             marginVertical: 10,
                           }}
                         />
-                      </View>
+                      </TouchableOpacity>
                     );
                   })
                 ) : (
