@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, StyleSheet, Dimensions, Text, RefreshControl, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import {getTransactions} from '../store/actions/acountActions'
-import Grafica from '../components/graficas'
+import {getTransactionsDolar} from '../../store/actions/acountActions'
+import Grafica from '../../components/graficas';
+import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
+import Table from '../../components/tablas';
 
 //Functions
 function wait(timeout) {
@@ -11,19 +13,19 @@ function wait(timeout) {
     });
   }
 
-export default function Estatistics() {
+export default function EstadDolar() {
     const dispatch = useDispatch();
-	  const session = useSelector((state) => state.session.userDetail);
+	const session = useSelector((state) => state.session.userDetail);
     const accounts = useSelector((state) => state.acoount.account);
-    const transations = useSelector((state) => state.acoount.transactions);
-	  const accountP = accounts[0];
-	  const accountD = accounts[1];
-	  const cvuP = accountP && accountP.cvu;
+    const transations = useSelector((state) => state.acoount.transactionsDolar);
+	const accountP = accounts[0];
+	const accountD = accounts[1];
+	const cvuP = accountP && accountP.cvu;
     const cvuD = accountD && accountD.cvu;
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
-        dispatch(getTransactions(cvuP)) 
+        dispatch(getTransactionsDolar(cvuD)) 
     }, [])
 
     const onRefresh = useCallback(() => {
@@ -31,7 +33,7 @@ export default function Estatistics() {
     
         wait(2000).then(() => {
           setRefreshing(false);
-          dispatch(getTransactions(cvuP));
+          dispatch(getTransactionsDolar(cvuD));
         });
       }, [refreshing]);
 
@@ -152,26 +154,61 @@ export default function Estatistics() {
 
 
     return (
-        <ScrollView
-        contentContainerStyle={{ alignItems: "center" }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <Grafica 
-          text='Grafica general de transacciones en los ultimos 7 dias'
-          data = {arrayGen}
-        /> 
-
-        <Grafica 
-          text='Grafica general de Ingresos en los ultimos 7 dias'
-          data = {arrayIn}
-        /> 
-
-        <Grafica 
-          text='Grafica general de Egresos en los ultimos 7 dias'
-          data = {arrayOut}
-        /> 
-        </ScrollView>
+       
+            <ScrollView
+            contentContainerStyle={{ alignItems: "center" }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={styles.container}>
+                <Grafica 
+                text='Grafica general de transacciones en los ultimos 7 dias'
+                data = {arrayGen}
+                /> 
+                <Table   
+                    arrayValues={arrayGen}
+                    arrayDay= {daysAv}   
+                />
+            </View>
+    
+            <View style={styles.container}>
+            <Grafica 
+              text='Grafica general de Ingresos en los ultimos 7 dias'
+              data = {arrayIn}
+            /> 
+                <Table   
+                    arrayValues={arrayIn}
+                    arrayDay= {daysAv}   
+                />
+            </View>
+    
+            <View style={styles.container}>
+                <Grafica 
+                text='Grafica general de Egresos en los ultimos 7 dias'
+                data = {arrayOut}
+                /> 
+                <Table   
+                        arrayValues={arrayOut}
+                        arrayDay= {daysAv}   
+                />
+            </View>
+            </ScrollView>
+        
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent:"center",
+      alignContent:'center',
+      backgroundColor: "#fff",
+      height:vh(90),
+      margin:10,
+      padding:10
+    },
+
+
+  });

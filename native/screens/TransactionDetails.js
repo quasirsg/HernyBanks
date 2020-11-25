@@ -42,6 +42,7 @@ export default function TransactionDetails({ navigation, route }) {
         <View>
             { details._id !== '' &&
                 <View style={styles.container}>
+
                     <View style={styles.rowI}>
                         <Icon name='info-circle' color={theme.colors.primary} size={25} />
                         <Text style={styles.title}>  Detalles de la transacción</Text>
@@ -54,10 +55,8 @@ export default function TransactionDetails({ navigation, route }) {
                     </View>
 
                     <View style={styles.row}>
-
                         <Text style={styles.key}>Transacción:</Text>
                         <Text style={styles.value}>{details.id} </Text>
-
                     </View>
 
                     <View style={styles.row}>
@@ -81,17 +80,13 @@ export default function TransactionDetails({ navigation, route }) {
                     </View>
 
                     <View style={styles.row}>
-
                         <Text style={styles.key}>Monto total:</Text>
-                        <Text style={styles.value}>{details.amount} pesos</Text>
-
+                        <Text style={styles.value}>{details.amount}</Text>
                     </View>
 
                     <View style={styles.row}>
-
                         <Text style={styles.key}>Fecha:</Text>
-                        <Text style={styles.value}>{details.date.substring(0,10)} </Text>
-
+                        <Text style={styles.value}>{(new Date(details.date)).toDateString().substring(4,15) + ' - ' + (new Date(details.date)).toLocaleTimeString()} </Text>
                     </View>
 
                     <View style={styles.row}>
@@ -104,7 +99,11 @@ export default function TransactionDetails({ navigation, route }) {
                     <View style={styles.row}>
 
                         <Text style={styles.key}>Movimiento en la cuenta:</Text>
-                        <Text style={styles.value}>{details.type} </Text>
+                        {
+                            details.type === 'Transfer' ?
+                            <Text style={styles.value}>Egreso </Text> :
+                            <Text style={styles.value}>Ingreso </Text> 
+                        } 
 
                     </View>
 

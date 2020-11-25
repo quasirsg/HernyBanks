@@ -117,6 +117,7 @@ module.exports = {
                     )
                 }
 
+
                 let auxArray = [];
                 let auxObj = {};
                 let auxType = '';

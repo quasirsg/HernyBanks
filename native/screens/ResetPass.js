@@ -5,9 +5,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  ImageBackground,
-  Dimensions,
-  Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
@@ -21,12 +18,8 @@ import Logo from "../components/Logo";
 import * as Animatable from "react-native-animatable";
 import Spinner from "react-native-loading-spinner-overlay";
 
-const background = require("../assets/WelcomeBackground.png");
-const logo = require("../assets/logo.png");
-const { width, height } = Dimensions.get("window");
-
-export default function Login({ id, email, password, isValid, navigation }) {
-  const [hidePassword, setHidePassword] = useState(false);
+export default function ResetPass({ id, email, password, isValid, navigation }) {
+ 
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
   const [loading, setLoading] = useState(false);
@@ -37,42 +30,20 @@ export default function Login({ id, email, password, isValid, navigation }) {
       setLoading(false);
     }, 2000);
   };
-
-  
   return (
-    <ImageBackground source={background} style={styles.image}>
-      <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      
+      <View>
         {/* <Logo style={styles.down}/> */}
-        <View
-          style={{
-            // backgroundColor: 'gold
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Image
-            source={logo}
-            style={{
-              // flex: 1,
-              width: 500,
-              height: 50,
-              resizeMode: "contain",
-            }}
-          ></Image>
-          <Text style={styles.title}>Iniciar sesión</Text>
-        </View>
+        <Text style={styles.title}>Ingresa Tu mail</Text>
+        
 
         <Formik
           initialValues={{
             email: "",
-            password: "",
+            
           }}
-          validationSchema={Yup.object({
-            email: Yup.string()
-              .email("Introduzca un email valido por favor")
-              .required("Ingresa tu correo"),
-            password: Yup.string().required("Ingresa tu contraseña"),
-          })}
+          
           onSubmit={(values, action) => {
             let user = { ...values };
             action.resetForm();
@@ -81,12 +52,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
             user.email = user.email.toLowerCase();
             startLoading();
             dispatch(
-              loguinUser(user.email, user.password, () =>
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: "Main" }],
-                })
-              )
+              
             );
 
             // navigation.navigate("RegisterModal");
@@ -98,7 +64,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
                 //visibility of Overlay Loading Spinner
                 visible={loading}
                 //Text with the Spinner
-                textContent={"Cargando..."}
+                textContent={"Loading..."}
                 //Text style of the Spinner Text
                 textStyle={styles.spinnerTextStyle}
               />
@@ -124,24 +90,7 @@ export default function Login({ id, email, password, isValid, navigation }) {
                   <Text style={{ fontSize: 10 }}></Text>
                 )}
 
-                <CustomInput
-                  label="Contraseña"
-                  name="password"
-                  returnKeyType="done"
-                  onChangeText={handleChange("password")}
-                  value={values.password}
-                  secureTextEntry={true}
-                  style={styles.input}
-                />
-
-                {errors.password ? (
-                  <Text style={{ fontSize: 10, color: "red" }}>
-                    {errors.password}
-                  </Text>
-                ) : (
-                  <Text style={{ fontSize: 10 }}></Text>
-                )}
-
+               
                 <Button
                   mode="contained"
                   secureTextEntry={true}
@@ -149,37 +98,16 @@ export default function Login({ id, email, password, isValid, navigation }) {
                   style={styles.button}
                   onPress={handleSubmit}
                 >
-                  Ingresar
+                  Cambiar Contraseña
                 </Button>
 
-                <View style={styles.down}>
-                  <View style={styles.row}>
-                    <Text style={styles.label}>
-                      ¿Aún no tienes una cuenta?{" "}
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("Register")}
-                    >
-                      <Text style={styles.link}>Regístrate aquí</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("ResetPass")}
-                    >
-                      <Text style={styles.forgotPassword}>
-                        ¿Olvidaste tu contraseña?
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+               
               </Animatable.View>
             </View>
           )}
         </Formik>
-      </ScrollView>
-    </ImageBackground>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -187,18 +115,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    // backgroundColor: 'gold',
-  },
-  image: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#fff",
   },
   title: {
     textAlign: "center",
-    marginTop: 50,
+    paddingTop: 200,
     fontSize: 30,
     paddingBottom: 20,
     fontWeight: "bold",
