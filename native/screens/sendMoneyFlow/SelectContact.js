@@ -53,15 +53,13 @@ export default function SelectContact({ navigation }) {
 	return (
 		<ScrollView backgroundColor={'white'}>
 			<View>
+
 				<View style={styles.header}>
-
 					<Image source={require('../../assets/background2.png')} style={{ position: 'absolute' }} />
-
 					<View style={styles.rowII}>
 						<Icon name='user' color={'white'} size={30} />
 						<Text style={styles.title}> Transferir dinero </Text>
 					</View>
-
 					<Text style={styles.instruction}> ¡Empecemos! Primero elige a quién le vas a enviar dinero </Text>
 				</View>
 
@@ -71,7 +69,7 @@ export default function SelectContact({ navigation }) {
 						{contacts.length > 0 ?
 							contacts.map((contact, i) => (
 								<TouchableOpacity style={styles.contactList} name={contact} onPress={() => handleSelect(contact)} key={i}>
-									<View style={{flexDirection: 'row', alignItems:'center'}}>
+									<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 										<Icon name='user' color={'#ddd'} size={15} />
 										<Text style={styles.name}>{contact.name[0].toUpperCase() + contact.name.slice(1)} </Text>
 									</View>
@@ -86,14 +84,12 @@ export default function SelectContact({ navigation }) {
 
 				<View>
 					<Text style={styles.summaryTitle}> Se hará la transferencia a: </Text>
-
 					<View style={styles.summaryContent}>
 						<SummaryItem keyName={'Nombre'} value={selected.name + ' ' + selected.lastname} />
 						<SummaryItem keyName={'Correo'} value={selected.email} />
 						<SummaryItem keyName={'Teléfono'} value={selected.phone} />
-						<SummaryItem keyName={'Usuario'} value={selected.username.length > 0 && '@'+ selected.username} />
+						<SummaryItem keyName={'Usuario'} value={selected.username.length > 0 && '@' + selected.username} />
 					</View>
-
 				</View>
 
 				<View style={styles.buttonContainer}>
@@ -106,6 +102,7 @@ export default function SelectContact({ navigation }) {
 						Siguiente
 					</Button>
 				</View>
+				
 			</View>
 		</ScrollView>
 	);
@@ -114,7 +111,6 @@ export default function SelectContact({ navigation }) {
 const styles = StyleSheet.create({
 	header: {
 		width: '100%',
-		// backgroundColor: theme.colors.primary,
 		paddingLeft: 15,
 	},
 	rowI: {
