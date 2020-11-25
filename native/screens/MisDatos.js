@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, Text, View, Image, Platform, Button } from 'react-native'
+import { StyleSheet, ScrollView, Text, View, Image, Platform, Button } from 'react-native'
 import { Avatar } from 'react-native-image-avatars'
 import { color, set } from 'react-native-reanimated';
 import * as Animatable from 'react-native-animatable';
@@ -83,6 +83,7 @@ export default function MisDatos(props) {
         
       };
     return (
+        <ScrollView> 
         <View style={styles.avatar}>
         {/* Imagen de fondo */}
         {console.log("imagen",image)}
@@ -136,6 +137,7 @@ export default function MisDatos(props) {
            
                
         </View>
+    </ScrollView>
     )
 }
 
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     },
     datosEntry: {  
         color: 'white',
-        fontSize: 20,
+        fontSize: 15,
         fontWeight: 'bold',
         fontStyle: 'italic', 
         alignItems:'center'
