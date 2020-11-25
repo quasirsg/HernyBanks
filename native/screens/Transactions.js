@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TouchableOpacityComponent } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { theme } from '../core/theme';
@@ -28,15 +28,14 @@ const Tab = ({ title, active }) => {
 };
 
 export default function Transactions({ navigation }) {
-    
-    const date = new Date();
-    const today = Date.now()
+
     const dispatch = useDispatch();
     const session = useSelector((state) => state.session.userDetail);
     const cvuPesos = {} || session.accounts[0].cvu;
     const cvuDollars = {} || session.accounts[1].cvu || '';
     const transactions = useSelector((state) => state.acoount.transactions) || ['jaja'];
-    const weekTransactions = transactions.filter(trans => Date.parse(trans.date) > today);
+
+    console.log('ULTIMA TRANSACCION', transactions[transactions.length - 1]);
 
     const [tabState, setTabState] = useState({
         all: true,
@@ -48,18 +47,17 @@ export default function Transactions({ navigation }) {
     const pressedTab = (key) => {
         if (key === 'A') {
             setTabState({ all: true, first: false, second: false, custom: false });
-
-            console.log('LA A', date+12)
+            console.log('TODAS' )
         } else if (key === 'B') {
             setTabState({ all: false, first: true, second: false, custom: false });
-            console.log('LA B', weekTransactions)
+            console.log('7 DIAS' )
         } else if (key === 'C') {
             setTabState({ all: false, first: false, second: true, custom: false });
-            console.log('LA C', date)
+            console.log('15 DIAS' )
         }
         else {
             setTabState({ all: false, first: false, second: false, custom: true });
-            console.log('LA D', date)
+            console.log('FILTRAR')
         }
     };
 
@@ -86,19 +84,19 @@ export default function Transactions({ navigation }) {
 
             <Tabs>
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('A')}>
-                    <Tab title='Todas' active={tabState.all} icon_name={'user'} />
+                    <Tab title='Todas' active={tabState.all} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('B')}>
-                    <Tab title='7 días' active={tabState.first} icon_name={'check-circle'} />
+                    <Tab title='7 días' active={tabState.first} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('C')}>
-                    <Tab title='15 días' active={tabState.second} icon_name={'question-circle'} />
+                    <Tab title='15 días' active={tabState.second} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('D')}>
-                    <Tab title='Filtrar' active={tabState.custom} icon_name={'question-circle'} />
+                    <Tab title='Filtrar' active={tabState.custom} />
                 </TouchableOpacity>
             </Tabs>
 
@@ -114,22 +112,23 @@ export default function Transactions({ navigation }) {
 
                                     <View style={styles.firstItem}>
                                         {
-                                            transaction.by === 'Transfer' ?
-                                                <Icon name={'location-arrow'} color={theme.colors.secondary} size={20} /> :
-                                                transaction.by === 'Credit Card' ?
-                                                    <Icon name={'credit-card'} color={theme.colors.secondary} size={15} /> :
-                                                    <Icon name={'qrcode'} color={theme.colors.secondary} size={20} />
+                                            transaction.by === 'QR' ?
+                                                <Icon name={'qrcode'} color={theme.colors.secondary} size={20} /> :
+                                            transaction.by === 'Credit Card' || transaction.by === 'Debit Card' ?
+                                                <Icon name={'credit-card'} color={theme.colors.secondary} size={15} /> :
+                                                <Icon name={'location-arrow'} color={theme.colors.secondary} size={20} />
                                         }
 
                                         <View>
                                             {
-                                                transaction.by === 'Transfer' ?
-                                                    <Text style={styles.firstItemData}>Transferencia</Text> :
-                                                    transaction.by === 'Credit Card' ?
-                                                        <Text style={styles.firstItemData}>Tarjeta</Text> :
-                                                        <Text style={styles.firstItemData}>QR</Text>
+                                                transaction.by === 'QR' ?
+                                                    <Text style={styles.firstItemData}>QR</Text> :
+                                                transaction.by === 'Credit Card' || transaction.by === 'Debit Card' ?
+                                                    <Text style={styles.firstItemData}>Tarjeta</Text> :
+                                                    <Text style={styles.firstItemData}>Transferencia</Text> 
+                                   
                                             }
-                                            <Text style={styles.date}>{(new Date(transaction.date)).toDateString().substring(4,15) + ' - ' + (new Date(transaction.date)).toLocaleTimeString()}</Text>
+                                            <Text style={styles.date}>{(new Date(transaction.date)).toDateString().substring(4, 15) + ' - ' + (new Date(transaction.date)).toLocaleTimeString()}</Text>
                                         </View>
                                     </View>
 
@@ -150,10 +149,10 @@ export default function Transactions({ navigation }) {
 
                             </TouchableOpacity>
                         )) :
-                        <View style={styles.loading}>
-                            <Icon name={'download'} color={theme.colors.secondary} size={55} />
-                            <Text style={{color: theme.colors.secondary, paddingTop: 20}}>Descargando...</Text>
-                        </View>
+                            <View style={styles.loading}>
+                                <Icon name={'download'} color={theme.colors.secondary} size={55} />
+                                <Text style={{ color: theme.colors.secondary, paddingTop: 20 }}>Descargando...</Text>
+                            </View>
                     }
                 </View>
             </ScrollView>
@@ -218,7 +217,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 12,
         alignItems: 'center',
-        //justifyContent: 'space-between',
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: '#f2f2f2',
@@ -239,10 +237,12 @@ const styles = StyleSheet.create({
     secondItemIn: {
         color: 'green',
         fontSize: 12,
+        fontWeight: 'bold'
     },
     secondItemOut: {
         color: 'red',
         fontSize: 12,
+        fontWeight: 'bold'
     },
     thirdItem: {
         width: width / 4,
