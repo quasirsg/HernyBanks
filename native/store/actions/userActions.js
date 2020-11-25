@@ -1,5 +1,10 @@
 import axios from "axios";
-import { CREATE_USER, LOGIN_USER, UPDATE_USER } from "../constans/constans";
+import {
+  CREATE_USER,
+  LOGIN_USER,
+  UPDATE_USER,
+  GET_USERS,
+} from "../constans/constans";
 import { BACK_URL } from "../../env";
 import Toast from "react-native-toast-message";
 import { verifySession } from "./jwtUsersActions";
@@ -104,7 +109,7 @@ export function completeUserRegister(userData, onSuccess) {
   };
 }
 
-
+//action para modificar el avatar
 export function updateUserAvatar(userData){
   console.log("data usuario", userData)
   console.log("entramos aca")
@@ -156,11 +161,17 @@ export function updateUserAvatar(userData){
   let config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+}
 
-  await axios.get(`${url}/users/me/`, config).then((res) => {
-    dispatch({
-      type: actionTypes.CURRENT_USER,
-      user: res.data,
-    });
-  });
-}; */
+export function clearUserState(){
+  return (dispatch) =>{
+    dispatch({ type: GET_USERS, users:[]});
+  }
+}
+
+export function search(){
+  return (dispatch) =>{
+    
+    dispatch({ type: GET_USERS, users:[]});
+  }
+}*/

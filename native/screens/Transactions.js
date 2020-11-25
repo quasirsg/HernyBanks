@@ -6,7 +6,7 @@ import { theme } from '../core/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTransactions } from '../store/actions/acountActions';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const tabWidth = width / 4;
 
 /* * * * * * * * * * * * * * * * *
@@ -27,15 +27,16 @@ const Tab = ({ title, active }) => {
     );
 };
 
-export default function Transactions() {
-
+export default function Transactions({ navigation }) {
+    
+    const date = new Date();
+    const today = Date.now()
     const dispatch = useDispatch();
     const session = useSelector((state) => state.session.userDetail);
     const cvuPesos = {} || session.accounts[0].cvu;
     const cvuDollars = {} || session.accounts[1].cvu || '';
     const transactions = useSelector((state) => state.acoount.transactions) || ['jaja'];
-
-    console.log(transactions[0]);
+    const weekTransactions = transactions.filter(trans => Date.parse(trans.date) > today);
 
     const [tabState, setTabState] = useState({
         all: true,
@@ -47,13 +48,18 @@ export default function Transactions() {
     const pressedTab = (key) => {
         if (key === 'A') {
             setTabState({ all: true, first: false, second: false, custom: false });
+
+            console.log('LA A', date+12)
         } else if (key === 'B') {
             setTabState({ all: false, first: true, second: false, custom: false });
+            console.log('LA B', weekTransactions)
         } else if (key === 'C') {
             setTabState({ all: false, first: false, second: true, custom: false });
+            console.log('LA C', date)
         }
         else {
             setTabState({ all: false, first: false, second: false, custom: true });
+            console.log('LA D', date)
         }
     };
 
@@ -84,43 +90,70 @@ export default function Transactions() {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('B')}>
-                    <Tab title='15 días' active={tabState.first} icon_name={'check-circle'} />
+                    <Tab title='7 días' active={tabState.first} icon_name={'check-circle'} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('C')}>
-                    <Tab title='30 días' active={tabState.second} icon_name={'question-circle'} />
+                    <Tab title='15 días' active={tabState.second} icon_name={'question-circle'} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('D')}>
-                    <Tab title='filtrar' active={tabState.custom} icon_name={'question-circle'} />
+                    <Tab title='Filtrar' active={tabState.custom} icon_name={'question-circle'} />
                 </TouchableOpacity>
             </Tabs>
 
             <ScrollView>
                 <View style={{ marginBottom: 250 }}>
                     {
-                        transactions.map((transaction, i) => (
-                            <TouchableOpacity key={i}>
+                        transactions.length > 0 ? transactions.map((transaction, i) => (
+                            <TouchableOpacity
+                                key={i}
+                                onPress={() => navigation.navigate('TransactionDetails', transaction)}>
+
                                 <View style={styles.itemContainer}>
-                                    <View style={styles.item}>
-                                        <Text style={styles.firstItem}>{transaction.by}</Text>
+
+                                    <View style={styles.firstItem}>
+                                        {
+                                            transaction.by === 'Transfer' ?
+                                                <Icon name={'location-arrow'} color={theme.colors.secondary} size={20} /> :
+                                                transaction.by === 'Credit Card' ?
+                                                    <Icon name={'credit-card'} color={theme.colors.secondary} size={15} /> :
+                                                    <Icon name={'qrcode'} color={theme.colors.secondary} size={20} />
+                                        }
+
+                                        <View>
+                                            {
+                                                transaction.by === 'Transfer' ?
+                                                    <Text style={styles.firstItemData}>Transferencia</Text> :
+                                                    transaction.by === 'Credit Card' ?
+                                                        <Text style={styles.firstItemData}>Tarjeta</Text> :
+                                                        <Text style={styles.firstItemData}>QR</Text>
+                                            }
+                                            <Text style={styles.date}>{(new Date(transaction.date)).toDateString().substring(4,15) + ' - ' + (new Date(transaction.date)).toLocaleTimeString()}</Text>
+                                        </View>
                                     </View>
-                                    <View style={styles.item}>
-                                        <Text style={styles.itemtext}>{transaction.amount}</Text>
+
+                                    <View style={styles.secondItem}>
+                                        {
+                                            transaction.type == 'In' ?
+                                                <Text style={styles.secondItemIn}>{transaction.amount}</Text> :
+                                                <Text style={styles.secondItemOut}>{transaction.amount}</Text>
+                                        }
                                     </View>
-                                    <View style={styles.item}>
-                                        <Text style={styles.itemtext}>{transaction.fromAccount[0].type}</Text>
+
+                                    <View style={styles.thirdItem}>
+                                        <Icon name={'angle-right'} color={theme.colors.primary} size={15} />
                                     </View>
-                                    <View style={styles.item}>
-                                        <Text style={styles.itemtext}>{transaction.createdAt.substring(0, 10)}</Text>
-                                    </View>
-                                    <View style={styles.item}>
-                                        <Text style={styles.itemtext}>{transaction.createdAt.substring(12, 16) }</Text>
-                                    </View>
-                                    <Icon name={'angle-right'} color={theme.colors.primary} size={15} />
+
                                 </View>
+
+
                             </TouchableOpacity>
-                        ))
+                        )) :
+                        <View style={styles.loading}>
+                            <Icon name={'download'} color={theme.colors.secondary} size={55} />
+                            <Text style={{color: theme.colors.secondary, paddingTop: 20}}>Descargando...</Text>
+                        </View>
                     }
                 </View>
             </ScrollView>
@@ -183,22 +216,49 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         flexDirection: 'row',
-        padding: 15,
+        padding: 12,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        //justifyContent: 'space-between',
         backgroundColor: 'white',
         borderWidth: 1,
         borderColor: '#f2f2f2',
-    
-    },
-    item:{
-        width: width / 6,
     },
     firstItem: {
-        fontSize: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: width / 2
     },
-    itemtext: {
-        fontSize: 10,
-        textAlign: 'center'
+    firstItemData: {
+        fontSize: 11,
+        paddingLeft: 15,
+    },
+    secondItem: {
+        width: width / 4,
+        alignItems: 'center'
+    },
+    secondItemIn: {
+        color: 'green',
+        fontSize: 12,
+    },
+    secondItemOut: {
+        color: 'red',
+        fontSize: 12,
+    },
+    thirdItem: {
+        width: width / 4,
+        alignItems: 'center',
+    },
+    date: {
+        fontSize: 11,
+        paddingLeft: 15,
+        color: theme.colors.secondary,
+    },
+    loading: {
+        height: height,
+        width: width,
+        backgroundColor: 'white',
+        flex: 1,
+        paddingTop: 100,
+        alignItems: 'center'
     }
 })
