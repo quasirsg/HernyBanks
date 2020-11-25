@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, StyleSheet, Dimensions, Text, RefreshControl, ScrollView } from 'react-native';
 import { DataTable } from 'react-native-paper';
-
+import { color } from "react-native-reanimated";
+import { theme } from "../core/theme";;
 
 
 
@@ -38,22 +39,18 @@ import { DataTable } from 'react-native-paper';
 
     ]
      return (
-        <View style={{
-            marginVertical:15
-        }
-                    
-        }>
-            <DataTable>
-                    <DataTable.Header>
-                    <DataTable.Title>Dia</DataTable.Title>
-                    <DataTable.Title numeric>Valor $</DataTable.Title>
+        <View style={styles.container}>
+            <DataTable >
+                    <DataTable.Header style={styles.row}>
+                    <DataTable.Title style={styles.head}>Dia</DataTable.Title>
+                    <DataTable.Title numeric style={styles.head}>Valor $</DataTable.Title>
                     </DataTable.Header>
                 {
                     arrayForTable.map(x => {
                         return (
-                        <DataTable.Row>
+                        <DataTable.Row >
                             <DataTable.Cell>{x.day}</DataTable.Cell>
-                            <DataTable.Cell numeric>{x.amiunt}</DataTable.Cell>
+                            <DataTable.Cell numeric>$ {x.amiunt}</DataTable.Cell>
                         </DataTable.Row>
                         )
                     })
@@ -65,3 +62,23 @@ import { DataTable } from 'react-native-paper';
  }
 
  export default Table
+
+ const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: "#E6E6E6",
+      margin:10,
+      padding:10,
+      borderRadius:15,
+    },
+    row:{
+
+        borderBottomWidth:4,
+        borderBottomColor: theme.colors.primary,
+        
+    },
+    head:{
+        color:"white"
+    }
+
+  });

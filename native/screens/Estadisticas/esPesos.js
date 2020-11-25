@@ -3,7 +3,8 @@ import { View, StyleSheet, Dimensions, Text, RefreshControl, ScrollView } from '
 import { useDispatch, useSelector } from 'react-redux';
 import {getTransactionsPesos} from '../../store/actions/acountActions'
 import Grafica from '../../components/graficas'
-import Table from '../../components/tablas'
+import Table from '../../components/tablas';
+import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";;
 
 
 //Functions
@@ -32,7 +33,7 @@ export default function EstadPesos() {
     const onRefresh = useCallback(() => {
         setRefreshing(true);
     
-        wait(2000).then(() => {
+        wait(1000).then(() => {
           setRefreshing(false);
           dispatch(getTransactionsPesos(cvuP));
         });
@@ -165,7 +166,7 @@ export default function EstadPesos() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View>
+        <View style={styles.container}>
             <Grafica 
             text='Grafica general de transacciones en los ultimos 7 dias'
             data = {arrayGen}
@@ -176,15 +177,42 @@ export default function EstadPesos() {
             />
         </View>
 
+        <View style={styles.container}>
         <Grafica 
           text='Grafica general de Ingresos en los ultimos 7 dias'
           data = {arrayIn}
         /> 
+            <Table   
+                arrayValues={arrayIn}
+                arrayDay= {daysAv}   
+            />
+        </View>
 
-        <Grafica 
-          text='Grafica general de Egresos en los ultimos 7 dias'
-          data = {arrayOut}
-        /> 
+        <View style={styles.container}>
+            <Grafica 
+            text='Grafica general de Egresos en los ultimos 7 dias'
+            data = {arrayOut}
+            /> 
+            <Table   
+                    arrayValues={arrayOut}
+                    arrayDay= {daysAv}   
+            />
+        </View>
         </ScrollView>
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent:"center",
+      alignContent:'center',
+      backgroundColor: "#fff",
+      height:vh(90),
+      margin:10,
+      padding:10
+    },
+
+
+  });

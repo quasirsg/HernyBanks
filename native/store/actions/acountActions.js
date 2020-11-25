@@ -34,7 +34,7 @@ export function rechargeByQr(data) {
   return (dispatch) => {
     console.log(data)
     axios
-      .post(`${BACK_URL}/api/accounts/rechargeByQR/`, data)
+      .post(`${BACK_URL}/api/accounts/rechargebyqr/`, data)
       .then((res) => {
           console.log(res.data)
         dispatch({
@@ -54,7 +54,7 @@ export function rechargeByCard(data, onSuccess) {
     console.log('***est este***')
     console.log(data)
     axios
-      .post(`${BACK_URL}/api/accounts/rechargeByCard`, data)
+      .post(`${BACK_URL}/api/accounts/rechargebycard`, data)
       .then((res) => {
         console.log('*****res card recharse***')
           console.log(res.data)
@@ -114,7 +114,7 @@ export function transferMoney(data) {
   };
 }
 
-export function getTransaction(data) {
+export function getTransactions(data) {
   return (dispatch) => {
     console.log('Get transactions')
     console.log(data)

@@ -15,11 +15,7 @@ import { theme } from '../core/theme';
 
  const Grafica  = ({text, data})=>{
      return (
-                <View style={{
-                    marginVertical:15
-                }
-                    
-                }>
+                <View >
                 <Text>{text}</Text>
                     <LineChart
                         data={{
@@ -31,7 +27,7 @@ import { theme } from '../core/theme';
                         ]
                         }}
                         width={Dimensions.get("window").width} // from react-native
-                        height={300}
+                        height={350}
                         yAxisLabel="$"
                         xAxisLabel = 'Dia '
                         yAxisSuffix="k"
@@ -54,9 +50,9 @@ import { theme } from '../core/theme';
                         }}
                         bezier
                         style={{
-                        marginVertical: 25,
+                        marginVertical: 15,
                         borderRadius: 16,
-                        margin:15,
+                        margin:10,
 
                         
                         }}
