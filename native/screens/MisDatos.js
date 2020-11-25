@@ -101,8 +101,8 @@ export default function MisDatos(props) {
                             <Text style={styles.plus}><Ionicons name="ios-camera" size={40} onPress={pickImage}></Ionicons></Text>
                         </View> 
                 <View style={styles.text}>
-                    <Text style={styles.nombre}>{session.name.replace(/\b\w/g, l => l.toUpperCase())} {session.lastname.replace(/\b\w/g, l => l.toUpperCase())}</Text>
-                    <Text style={styles.usuario}>@{session.username}</Text>
+                    <Text style={styles.nombre}>{(session)?session.name.replace(/\b\w/g, l => l.toUpperCase()):""} {(session)?session.lastname.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
+                    <Text style={styles.usuario}>@{(session)?session.username:""}</Text>
 
                 </View>  
 
@@ -117,22 +117,22 @@ export default function MisDatos(props) {
             </View>
             <View style={styles.divider}>  
                 <View>
-                 <Text style={styles.datosEntry}>Provincia:  {session.province.replace(/\b\w/g, l => l.toUpperCase())}</Text>
+                 <Text style={styles.datosEntry}>Provincia:  {(session)?session.province.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
                 </View>          
 
             </View>
 
             <View style={styles.divider}>
-                <Text style={styles.datosEntry}>Ciudad:   {session.city.replace(/\b\w/g, l => l.toUpperCase())}</Text>
+                <Text style={styles.datosEntry}>Ciudad:   {(session)?session.city.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
             </View>
             <View style={styles.divider}>
-                <Text style={styles.datosEntry}>Direccion:   {session.address.replace(/\b\w/g, l => l.toUpperCase())}</Text>
+                <Text style={styles.datosEntry}>Direccion:   {(session)?session.address.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
             </View>
             <View style={styles.divider}>  
-                <Text style={styles.datosEntry}>Telefono:   {session.phone}</Text>             
+                <Text style={styles.datosEntry}>Telefono:   {(session)?session.phone:""}</Text>             
             </View>
             <View style={styles.divider}>  
-            <Text style={styles.datosEntry}>DNI:   {session.dni}</Text>               
+            <Text style={styles.datosEntry}>DNI:   {(session)?session.dni:""}</Text>               
             </View> 
            
                
