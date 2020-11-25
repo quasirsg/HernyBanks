@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   StyleSheet,
@@ -12,12 +13,14 @@ import {
   Dimensions,
 } from "react-native";
 import { theme } from "../../core/theme";
-
+import { deleteContact } from "../../store/actions/contactsAction";
 // Dimensions
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
-export default function ContactCard({props, route}){
+export default function ContactCard({ props, route, navigation }) {
+  const dispatch = useDispatch();
+  const session = useSelector((state) => state.session.userDetail);
 
   if (route.params) {
     console.log("dame los params wacho");
@@ -45,6 +48,14 @@ export default function ContactCard({props, route}){
             }}
           >
             <Button
+              title="Borrar contacto"
+              color="red"
+              onPress={() => {
+                console.log(user);
+              }}
+            ></Button>
+            <Text></Text>
+            <Button
               title="Transferir Dinero"
               onPress={() => navigation.navigate("FinishSend")}
             ></Button>
@@ -53,7 +64,7 @@ export default function ContactCard({props, route}){
       </View>
     </ScrollView>
   );
-};
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
