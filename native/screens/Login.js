@@ -31,11 +31,11 @@ export default function Login({ id, email, password, isValid, navigation }) {
 
 	return (
 		<ImageBackground source={background} style={styles.image}>
-			<ScrollView contentContainerStyle={styles.container}>
+			<View style={styles.container}>
 				{/* <Logo style={styles.down}/> */}
 				<View
 					style={{
-						// backgroundColor: 'gold
+						// backgroundColor: 'gold',
 						justifyContent: 'center',
 						alignItems: 'center',
 					}}
@@ -121,23 +121,24 @@ export default function Login({ id, email, password, isValid, navigation }) {
 						</View>
 					)}
 				</Formik>
-			</ScrollView>
+			</View>
 		</ImageBackground>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		// backgroundColor: 'gold',
-	},
 	image: {
 		flex: 1,
 		resizeMode: 'cover',
 		justifyContent: 'center',
 		alignItems: 'center',
+		// backgroundColor: 'blue',
+	},
+	container: {
+		// flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		// backgroundColor: 'gold',
 	},
 	title: {
 		textAlign: 'center',

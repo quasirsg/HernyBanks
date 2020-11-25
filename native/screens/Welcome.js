@@ -20,20 +20,19 @@ function Welcome({ navigation }) {
 	};
 
 	return (
-		<View style={styles.container}>
-			<ImageBackground source={background} style={styles.image}>
+		<ImageBackground source={background} style={styles.image}>
+			<View style={styles.container}>
 				<View
-					style={
-						{
-							// backgroundColor: 'gold',
-						}
-					}
+					style={{
+						marginBottom: 20,
+						// backgroundColor: 'gold',
+					}}
 				>
 					<Image
 						source={logo}
 						style={{
 							// flex: 1,
-							width: 500,
+							width: 0.5 * width,
 							height: 50,
 							resizeMode: 'contain',
 						}}
@@ -51,7 +50,7 @@ function Welcome({ navigation }) {
 							Registrarse
 						</Button>
 					</View>
-					<View style={styles.buttonContainer}>
+					<View style={styles.helpButtonContainer}>
 						<TouchableOpacity onPress={onPressFAQ}>
 							<View>
 								<Text style={styles.help}>¿Necesitas ayuda?</Text>
@@ -59,26 +58,39 @@ function Welcome({ navigation }) {
 						</TouchableOpacity>
 					</View>
 				</Animatable.View>
-			</ImageBackground>
-		</View>
+			</View>
+		</ImageBackground>
 	);
 }
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#1D3448',
-	},
 	image: {
 		flex: 1,
 		resizeMode: 'cover',
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
+	container: {
+		// flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderColor: 'red',
+		borderWidth: 1,
+		marginBottom: 90,
+		// minHeight: 0.5 * height,
+	},
 	buttonContainer: {
 		// backgroundColor: 'green',
 		fontSize: 30,
 		color: '#fff',
-		marginTop: 120,
+		marginTop: 60,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	helpButtonContainer: {
+		// backgroundColor: 'green',
+		fontSize: 30,
+		color: '#fff',
+		marginTop: 60,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
