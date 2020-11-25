@@ -243,26 +243,24 @@ module.exports = {
                     transferType = 'Dollar Sales'
                 }
 
+                const fromUser = fromAccount._userId[0].toString().trim()
+                const toUser = toAccount._userId[0].toString().trim()
 
                 if (fromAccount.balance - parseFloat(amount) >= 0) {
                     if (transferType === 'Dollar Purchase') {
                         fromAccount.balance = fromAccount.balance - parseFloat(amount);
                         toAccount.balance += parseFloat(amountB);
+                        if (fromUser !== toUser) transferType = 'Dollar Transfer';
                     } else if (transferType === 'Dollar Sales') {
                         fromAccount.balance = fromAccount.balance - parseFloat(amount);
                         toAccount.balance += parseFloat(amountB);
+                        if (fromUser !== toUser) transferType = 'Dollar Transfer';
                     } else {
                         fromAccount.balance = fromAccount.balance - parseFloat(amount);
                         toAccount.balance += parseFloat(amount);
                     }
-                    console.log(fromAccount._userId[0])
-                    console.log(toAccount._userId[0])
-                    const fromUser = fromAccount._userId[0].toString().trim()
-                    const toUser = toAccount._userId[0].toString().trim()
 
-                    if (fromUser !== toUser) {
-                        transferType = 'Dollar Transfer';
-                    }
+
 
                     const transaction = await this.generateTransaction(
                         transferType,
