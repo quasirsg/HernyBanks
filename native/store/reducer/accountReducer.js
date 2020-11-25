@@ -43,7 +43,7 @@ const acoountReducers = (state = initialState, action) => {
       if (accC === undefined) return { ...state };
       let indC = state.account.indexOf(accC)
       let accountNewC = [...state.account]
-      accountNewC[indC].balance = objC.balance
+      accountNewC[indC].balance = objC.fromAccountBalance
       return { ...state, account: accountNewC };
     case GET_TRANSACTIONS:
       return { ...state, transactions: action.data };

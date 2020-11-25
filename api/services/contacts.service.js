@@ -184,12 +184,12 @@ module.exports = {
             //To delete this contact , we need an id from our ctx
             rest: 'DELETE /',
             async handler(ctx) {
-                const { id , idUserLoggedIn } = ctx.params;
+                const { email , idUserLoggedIn } = ctx.params;
                 const user = await User.findById(idUserLoggedIn)
-                await Contact.findByIdAndRemove(id)
+                await Contact.findOneAndRemove({email})
 
                 //Removing from the contact list of our user logged in
-                let contact = user.contacts.indexOf(id)
+                let contact = user.contacts.indexOf(email)
                 if (contact !== -1) user.contacts.splice(contact,1)
                 await user.save()
                 
