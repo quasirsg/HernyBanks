@@ -5,25 +5,21 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   TextInput,
   FlatList,
   TouchableOpacity,
   ScrollView,
   Image,
   RefreshControl,
-  Button,
 } from "react-native";
-import { Link } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
+
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as Animatable from "react-native-animatable";
-import { Searchbar } from "react-native-paper";
+
 import { vw, vh, vmin, vmax } from "react-native-expo-viewport-units";
 
 //Actions
-import { getAccount } from "../../store/actions/acountActions";
-import { verifySession, logoutUser } from "../../store/actions/jwtUsersActions";
+
 import { getContacts, addContact } from "../../store/actions/contactsAction";
 import { getUsers, clearUserState } from "../../store/actions/userActions";
 
@@ -44,6 +40,7 @@ const ContactList = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState();
+  const [bool, setBool] = useState(false);
 
   const session = useSelector((state) => state.session.userDetail);
   var contacts = useSelector((state) => state.contacts.contacts);
@@ -77,7 +74,6 @@ const ContactList = ({ navigation }) => {
     dispatch(getUsers());
     for (var i = 0; i <= users.length - 1; i++) {
       if (users[i].email.includes(value) || users[i].username.includes(value)) {
-        console.log("encontrado");
         search.push(users[i]);
         for (var j = 0; j <= contacts.length - 1; j++) {
           if (contacts[j].email === users[i].email) {
@@ -103,12 +99,14 @@ const ContactList = ({ navigation }) => {
             }}
           >
             {item.address ? (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={styles.text_contactsInfo}>
-                  {item.name.charAt(0).toUpperCase()}
-                  {item.email.charAt(0).toUpperCase()}
-                </Text>
-              </View>
+              setBool(true) && (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text style={styles.text_contactsInfo}>
+                    {item.name.charAt(0).toUpperCase()}
+                    {item.email.charAt(0).toUpperCase()}
+                  </Text>
+                </View>
+              )
             ) : (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text style={styles.text_contactsInfo}>
@@ -149,6 +147,7 @@ const ContactList = ({ navigation }) => {
                     dispatch(addContact(session._id, item.email));
                     setResults([]);
                     setValue("");
+                    setBool(false);
                     dispatch(getContacts(id ? id : null));
                     navigation.reset({
                       index: 0,
@@ -228,8 +227,11 @@ const ContactList = ({ navigation }) => {
                     setResults([]);
                     setVisible(false);
                     setValue("");
+                    setBool(false);
                   }}
-                >Cancelar</Icon.Button>
+                >
+                  Cancelar
+                </Icon.Button>
               ) : (
                 <Text>'</Text>
               )}
@@ -240,9 +242,15 @@ const ContactList = ({ navigation }) => {
           <Animatable.View animation="fadeInUpBig" duration={1800} delay={1000}>
             <View style={{ marginVertical: 30 }}>
               <View style={styles.ultimosMovimientosContainer}>
-                <Text style={styles.textTitle_ultimosMovimientos}>
-                  Mis contactos
-                </Text>
+                {bool ? (
+                  <Text style={styles.textTitle_ultimosMovimientos}>
+                    Agregar contactos
+                  </Text>
+                ) : (
+                  <Text style={styles.textTitle_ultimosMovimientos}>
+                    Mis contactos
+                  </Text>
+                )}
 
                 <FlatList
                   extraData={results}

@@ -7,9 +7,6 @@ import {
   Text,
   ScrollView,
   Button,
-  ActivityIndicator,
-  Image,
-  Alert,
   Dimensions,
 } from "react-native";
 import { theme } from "../../core/theme";
@@ -23,10 +20,10 @@ export default function ContactCard({ props, route, navigation }) {
   const session = useSelector((state) => state.session.userDetail);
 
   if (route.params) {
-    console.log("dame los params wacho");
+
     var user = route.params.item;
   }
-  console.log("dame los params wacho");
+
   useEffect(() => {
     /* getUserById(props.route.params.userId) */
   }, []);
