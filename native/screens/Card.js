@@ -40,7 +40,8 @@ const handlerSubmit = () => {
 		amount:inputText.amount
 	}
 		dispatch(getTransactions(selectedValue));
-  		 dispatch(rechargeByCard(obj, () => navigation.goBack()));
+           dispatch(rechargeByCard(obj, () => navigation.goBack()));
+        //    dispatch(rechargeByCard(obj, () => navigation.navigate('Inicio')));
 	return;
  };
   
