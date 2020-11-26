@@ -50,7 +50,7 @@ export default function CustomDrawerContent(props) {
 						/></Ionicons></View>
 					</View>
 					<View style={styles.userNameContainer}>
-						<Text style={styles.nombre}>{session.name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ session.lastname.replace(/\b\w/g, l => l.toUpperCase()) || 'User Name Here'}</Text>
+						<Text style={styles.nombre}>{(session)?(session.name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ session.lastname.replace(/\b\w/g, l => l.toUpperCase())):'User Name Here'}</Text>
 
 					</View>
 				</View>
