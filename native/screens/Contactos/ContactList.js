@@ -175,6 +175,7 @@ const ContactList = ({ navigation }) => {
 						marginVertical: 0,
 						marginTop: 10,
 						// backgroundColor: 'blue',
+						alignItems: 'center',
 						// paddingVertical: accounts.length > 1 ? 0 : 20, // Pone padding solo si hay mas de una cuenta
 					}}
 				>

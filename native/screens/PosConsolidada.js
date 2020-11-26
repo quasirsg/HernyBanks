@@ -162,22 +162,22 @@ export default function PosConsolidada({ navigation }) {
 														<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' + cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
 													</View>
 													{/* Separador Vertical */}
-													{/* <View
+													<View
 														style={{
 															borderBottomColor: 'grey',
 															borderBottomWidth: 1,
 															marginVertical: 5,
 														}}
 													/>
-													<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+													<Text style={styles.text_body}>xxxxxxxxxxxxxxxxxxx</Text>
 													<TouchableOpacity
 														style={{ alignItems: 'flex-end', marginTop: 0 }}
 														onPress={() => {
-															alert('Ver el detalle');
+															navigation.navigate('Ultimos Movimientos');
 														}}
 													>
-														<Text style={styles.text_link}>Ver el detalle</Text>
-													</TouchableOpacity> */}
+														<Text style={styles.text_link}>Ver detalles</Text>
+													</TouchableOpacity>
 												</View>
 											</View>
 										);
@@ -193,7 +193,7 @@ export default function PosConsolidada({ navigation }) {
 													justifyContent: 'center',
 												}}
 											>
-												<Text style={styles.text_saldoCuenta2}> Cargando</Text>
+												<Text style={styles.text_saldoCuenta2}>Cargando</Text>
 											</View>
 											{/* Separador Vertical */}
 											<View
@@ -203,14 +203,14 @@ export default function PosConsolidada({ navigation }) {
 													marginVertical: 5,
 												}}
 											/>
-											<Text style={styles.text_body}>El balance de su cuenta en los ultimos "7 dias" fue de $3.326 a favor.</Text>
+											<Text style={styles.text_body}>Cargando...</Text>
 											<TouchableOpacity
 												style={{ alignItems: 'flex-end', marginTop: 0 }}
 												onPress={() => {
-													alert('Ver el detalle');
+													navigation.navigate('Estadisticas');
 												}}
 											>
-												<Text style={styles.text_link}>Ver el detalle</Text>
+												<Text style={styles.text_link}>Ver detalles</Text>
 											</TouchableOpacity>
 										</View>
 									</View>
@@ -283,7 +283,7 @@ export default function PosConsolidada({ navigation }) {
 									alert('Ver todas las acciones');
 								}}
 							>
-								<Text style={styles.text_link}>Ver todas las acciones</Text>
+								{/* <Text style={styles.text_link}>Ver todas las acciones</Text> */}
 							</TouchableOpacity>
 						</Animatable.View>
 					</View>
