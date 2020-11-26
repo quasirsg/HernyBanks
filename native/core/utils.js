@@ -1,3 +1,6 @@
+
+import Intl from 'react-native-intl'
+
 export const emailValidator = email => {
   const re = /\S+@\S+\.\S+/;
 
@@ -18,3 +21,20 @@ export const nameValidator = name => {
 
   return '';
 };
+
+
+export function formatCurrency (locales, currency, number) {
+  // var formatted = new Intl.NumberFormat(locales, {
+  //   style: 'currency',
+  //   currency: currency,
+  //   minimumFractionDigits: fractionDigits
+  // }).format(number).then(res => {
+  //   return res;
+  // });
+
+  new Intl.NumberFormat(locales, { style: 'currency', currency: currency }).format(number).then(res => {
+    return res
+  } )
+  
+}
+
