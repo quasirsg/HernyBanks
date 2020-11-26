@@ -23,7 +23,7 @@ import QRCode from "react-native-qrcode-svg";
 import { set } from "react-native-reanimated";
 import Button from "../components/Button";
 import CustomInput from "../components/CustomInput";
-
+import Spinner from "react-native-loading-spinner-overlay";
 const { width, height } = Dimensions.get("window");
 
 const Qrnative = () => {
@@ -41,6 +41,14 @@ const Qrnative = () => {
   const [qrvalue, setQrvalue] = useState("");
   const [selectedValue, setSelectedValue] = useState(cvuP);
   const [value, setValue] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const startLoading = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 4000);
+  };
 
   const handlerSubmit = () => {
     let obj = {
@@ -50,6 +58,7 @@ const Qrnative = () => {
     console.log("****Vlires con piker****");
     console.log(obj);
     dispatch(getTransactions(selectedValue));
+    startLoading();
     dispatch(rechargeByQr(obj, cvuD, cvuP));
     setQrvalue(obj);
     return;
@@ -62,6 +71,14 @@ const Qrnative = () => {
   return (
     <ScrollView style={{ flex: 1 }}>
       {/* Imagen de fondo */}
+      <Spinner
+        //visibility of Overlay Loading Spinner
+        visible={loading}
+        //Text with the Spinner
+        textContent={"Cargando..."}
+        //Text style of the Spinner Text
+        textStyle={styles.spinnerTextStyle}
+      />
       <Image
         source={require("../assets/background1.png")}
         style={{ position: "absolute", backgroundColor: "white" }}
@@ -116,9 +133,9 @@ const Qrnative = () => {
           name="Cantidad"
           returnKeyType="done"
           onChangeText={(text) => setInputText({ ...inputText, amount: text })}
-		  style={styles.inputCantidadDinero}
-		  onFocus={()=>setValue()}
-		  value={value}
+          style={styles.inputCantidadDinero}
+          onFocus={() => setValue()}
+          value={value}
         />
         <Text style={styles.textStyle}>Cuenta a recargar</Text>
         <Picker
@@ -138,8 +155,8 @@ const Qrnative = () => {
           secureTextEntry={true}
           style={styles.buttonStyle}
           onPress={() => {
-			handlerSubmit();
-			setValue('');
+            handlerSubmit();
+            setValue("");
           }}
         >
           Generar codigo
