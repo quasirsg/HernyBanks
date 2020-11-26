@@ -11,11 +11,11 @@ import Toast from "react-native-toast-message";
 // CREAR USUARIO
 export function userUp(code, onSuccess) {
   return (dispatch) => {
-    console.log(code);
+    // console.log(code);
     axios
       .get(`${BACK_URL}/api/emails/confirm/${code}`)
-      .then((res) => {
-        console.log("Funciona el Action UPUSER");
+      .then((res) => {1
+        // console.log("Funciona el Action UPUSER");
         dispatch({
           type: UP_USER,
           user: res.data || {},

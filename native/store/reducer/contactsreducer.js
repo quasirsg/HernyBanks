@@ -11,6 +11,7 @@ const initialState = {
 
   contacts: [],
   contact: [],
+  contactD: [],
   message: [],
 };
 
@@ -39,7 +40,7 @@ const contactsReducer = (state = initialState, action) => {
     case DELETE_CONTACT:
       return {
         ...state,
-        message: action.message,
+        contactD: action.contactD,
       };
     case SEND_WHATSAPP:
       return {

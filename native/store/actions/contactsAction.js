@@ -1,5 +1,9 @@
 import axios from "axios";
-import { GET_CONTACTS, ADD_CONTACT_EMAIL } from "../constans/constans";
+import {
+  GET_CONTACTS,
+  ADD_CONTACT_EMAIL,
+  DELETE_CONTACT,
+} from "../constans/constans";
 
 import { BACK_URL } from "../../env";
 import Toast from "react-native-toast-message";
@@ -13,7 +17,6 @@ export function getContacts(id) {
         },
       })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: GET_CONTACTS,
           contacts: res.data || [],
@@ -30,7 +33,6 @@ export function addContact(currentId, email) {
     axios
       .post(`${BACK_URL}/api/contacts/`, { _id: currentId, email: email })
       .then((res) => {
-        console.log(res.data);
         dispatch({
           type: ADD_CONTACT_EMAIL,
           contact: res.data || [],
@@ -50,18 +52,18 @@ export function addContact(currentId, email) {
       });
   };
 }
-export function deleteContact(id, loginId, OnSucess) {
+export function deleteContact(email, id, OnSucess) {
   return (dispatch) => {
     axios
-      .delete(`${BACK_URL}/api/contacts/`, { id: id, loginId: loginId })
+      .delete(`${BACK_URL}/api/contacts/`, {
+        params: { email: email, idUserLoggedIn: id },
+      })
       .then((res) => {
-        console.log(res.data);
         dispatch({
-          type: ADD_CONTACT_EMAIL,
-          contact: res.data || [],
+          type: DELETE_CONTACT,
+          contactD: res.data || [],
         });
         setTimeout(function () {
-          OnSucess();
           Toast.show({
             type: "success",
             position: "top",
@@ -71,10 +73,19 @@ export function deleteContact(id, loginId, OnSucess) {
             topOffset: 30,
             bottomOffset: 40,
           });
+          OnSucess();
         }, 3000);
       })
       .catch((error) => {
-        console.log(error);
+        Toast.show({
+          type: "error",
+          position: "top",
+          text1: error.message,
+          visibilityTime: 6000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
       });
   };
 }

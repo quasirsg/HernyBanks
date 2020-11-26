@@ -50,8 +50,10 @@ export default function PosConsolidada({ navigation }) {
 
   // Transacciones
   // const transactions = dispatch(getTransactions(accounts.cvu));
-  const cvuPesos = {} || session.accounts[0].cvu;
-  const cvuDollars = {} ||session.accounts[1].cvu;
+
+  const cvuPesos = session.accounts[0].cvu;
+  const cvuDollars = session.accounts[1].cvu;
+
   const pesosTransactions = useSelector(
     (state) => state.acoount.pesosTransactions
   );
@@ -71,11 +73,13 @@ export default function PosConsolidada({ navigation }) {
     setRefreshing(true);
 
     wait(2000).then(() => {
-	  setRefreshing(false);
+    setRefreshing(false);
+    dispatch(getAccount(id ? id : null));
 	  dispatch(getDollarsTransactions(cvuDollars));
-	  dispatch(getPesosTransactions(cvuPesos));
+    dispatch(getPesosTransactions(cvuPesos));
+    setTransactions([pesosTransactions.reverse(), dollarTransactions.reverse()]);
     });
-  }, [refreshing]);
+  }, [refreshing,currentAccountIndex]);
 
   const logoutHandler = () => {
     dispatch(logoutUser());
@@ -90,7 +94,7 @@ export default function PosConsolidada({ navigation }) {
     dispatch(getAccount(id ? id : null));
     dispatch(getDollarsTransactions(cvuDollars));
     dispatch(getPesosTransactions(cvuPesos));
-    setTransactions([pesosTransactions, dollarTransactions]);
+    setTransactions([pesosTransactions.reverse(), dollarTransactions.reverse()]);
 
     console.log("me ejecute: transactions");
 
@@ -100,6 +104,9 @@ export default function PosConsolidada({ navigation }) {
     };
   }, [currentAccountIndex]);
 
+  console.log("soy",transactions[0]);
+  console.log("soyCVU",cvuDollars);
+  console.log("soyCVU",cvuPesos);
 
   // Date formatter
   const dateFormatter = function (dateStr) {
