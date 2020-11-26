@@ -147,9 +147,9 @@ const ContactList = ({ navigation }) => {
                   backgroundColor="#3b5998"
                   onPress={() => {
                     dispatch(addContact(session._id, item.email));
-                    dispatch(getContacts(id ? id : null));
                     setResults([]);
                     setValue("");
+                    dispatch(getContacts(id ? id : null));
                     navigation.reset({
                       index: 0,
                       routes: [{ name: "Contactos" }],
