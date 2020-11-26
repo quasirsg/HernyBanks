@@ -164,7 +164,7 @@ export default function PosConsolidada({ navigation }) {
 														<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' + cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
 													</View>
 													{/* Separador Vertical */}
-													<View
+													{/* <View
 														style={{
 															borderBottomColor: 'grey',
 															borderBottomWidth: 1,
@@ -179,7 +179,7 @@ export default function PosConsolidada({ navigation }) {
 														}}
 													>
 														<Text style={styles.text_link}>Ver el detalle</Text>
-													</TouchableOpacity>
+													</TouchableOpacity> */}
 												</View>
 											</View>
 										);
