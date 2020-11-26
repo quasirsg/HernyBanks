@@ -217,7 +217,7 @@ const AltaUser = ({ id, name, lastname, dni, phone, address, dob, navigation }) 
             })}
             onSubmit={async (values, action) => {
               action.resetForm();
-              console.log('VALORES SUBMIT',values)
+              //console.log('VALORES SUBMIT',values)
               startLoading();
               dispatch(
                 completeUserRegister(values, () => navigation.navigate("Login"))
@@ -373,15 +373,9 @@ const AltaUser = ({ id, name, lastname, dni, phone, address, dob, navigation }) 
                   )}
                   {/*  */}
 
-                  <Button
-                    mode="contained"
-                    secureTextEntry={true}
-                    title="Register"
-                    style={styles.button}
-                    onPress={handleSubmit}
-                  >
-                    Enviar
-                  </Button>
+                  <Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+									Enviar
+								</Button>
                 </Animatable.View>
               </View>
             )}
