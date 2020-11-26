@@ -7,7 +7,7 @@ import CustomDrawerContent from './screens/MenuLateral/CustomDrawerContent';
 import Register from './screens/Register';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { st } from './store/store';
-import Estatistics from './screens/Estatistics';
+import Estadictics from './screens/Estadisticas/main';
 import Login from './screens/Login';
 import PosConsolidada from './screens/PosConsolidada';
 import Welcome from './screens/Welcome';
@@ -27,7 +27,8 @@ import FinishSend from './screens/sendMoneyFlow/FinishSend';
 import Card from './screens/Card';
 import MisDatos from './screens/MisDatos';
 import TransactionDetails from './screens/TransactionDetails';
-
+import ResetPass from './screens/ResetPass';
+import Cuentas from './screens/Cuentas';
 // Icons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -62,6 +63,7 @@ function LoginStack() {
 			<Stack.Screen name='Register' component={Register} options={{ title: 'Registrarse' }} options={{ headerShown: false }} />
 			<Stack.Screen name='AltaUser' component={AltaUser} />
 			<Stack.Screen name='FAQ' component={FAQ} options={{ headerShown: true, headerStyle: { backgroundColor: 'indigo', shadowColor: 'indigo', elevation: 0 }, headerTitleStyle: { color: 'white', fontSize: 16 } }} />
+			<Stack.Screen name='ResetPass' component={ResetPass} />
 		</Stack.Navigator>
 	);
 }
@@ -84,9 +86,9 @@ function MainStack() {
 			lazy={true}
 		>
 			<Drawer.Screen name='Inicio' component={PosConsolidada} />
-			<Drawer.Screen name='Estadisticas' component={Estatistics} />
+			<Drawer.Screen name='Estadisticas' component={Estadictics} />
 			<Drawer.Screen name='SendMonyScreen' component={SendMonyScreen} />
-			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} options={{ title: ''}}/>
+			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} options={{ title: '' }} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recargar Dinero' component={Recharge} />
 			<Drawer.Screen name='Mis Datos' component={MisDatos} />
@@ -98,6 +100,7 @@ function MainStack() {
 			<Stack.Screen name='Contactos' component={ContactList} />
 			<Stack.Screen name='Card' component={Card} />
 			<Stack.Screen name='TransactionDetails' component={TransactionDetails} options={{ title: '' }}/>
+			<Stack.Screen name='Cuentas' component={Cuentas}/>
 		</Drawer.Navigator>
 	);
 }

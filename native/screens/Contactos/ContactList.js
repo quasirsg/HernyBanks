@@ -76,7 +76,7 @@ const ContactList = ({ navigation }) => {
     let search = [];
     dispatch(getUsers());
     for (var i = 0; i <= users.length - 1; i++) {
-      if (users[i].email.includes(value)) {
+      if (users[i].email.includes(value) || users[i].username.includes(value)) {
         console.log("encontrado");
         search.push(users[i]);
         for (var j = 0; j <= contacts.length - 1; j++) {
@@ -147,7 +147,13 @@ const ContactList = ({ navigation }) => {
                   backgroundColor="#3b5998"
                   onPress={() => {
                     dispatch(addContact(session._id, item.email));
+                    dispatch(getContacts(id ? id : null));
                     setResults([]);
+                    setValue("");
+                    navigation.reset({
+                      index: 0,
+                      routes: [{ name: "Contactos" }],
+                    });
                   }}
                 ></Icon.Button>
               </View>
@@ -201,7 +207,7 @@ const ContactList = ({ navigation }) => {
               {/*Buscar en mis contactos */}
               <View>
                 <TextInput
-                  placeholder="Ingresa un nombre"
+                  placeholder="Buscar un contacto"
                   placeholderTextColor="grey"
                   style={styles.textTitle}
                   onChangeText={(value) => searchContacts(value)}
@@ -223,7 +229,7 @@ const ContactList = ({ navigation }) => {
                     setVisible(false);
                     setValue("");
                   }}
-                ></Icon.Button>
+                >Cancelar</Icon.Button>
               ) : (
                 <Text>'</Text>
               )}

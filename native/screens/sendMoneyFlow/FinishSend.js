@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import { Formik } from 'formik';
 import CustomInput from '../../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { transferMoney } from '../../store/actions/acountActions'
+import { transferMoney, getTransactions } from '../../store/actions/acountActions'
 import Toast from "react-native-toast-message";
 
 const { width, height } = Dimensions.get('window');
@@ -42,7 +42,6 @@ const ModalSelector = ({ show, control, setter }) => {
 
 export default function SelectContact({ navigation, route }) {
 
-    console.log('AQUI:::',route.params);
     const accounts = useSelector((state) => state.acoount.account);
     const pesosAccount = accounts[0];
     const dollarsAccount = accounts[1];
@@ -58,6 +57,7 @@ export default function SelectContact({ navigation, route }) {
         type: 'pesos',
         pos: 0
     })
+
     const [toAcc, setToAcc] = React.useState({
         title: 'dólares',
         type: 'pesos',
@@ -82,11 +82,22 @@ export default function SelectContact({ navigation, route }) {
             description: values.description,
         }
 
-        console.log('TRANSACTION DATA::', send);
+        dispatch(transferMoney(send));
 
-        dispatch(transferMoney(send))
+        Toast.show({
+            type: "success",
+            position: "top",
+            text1: "Cargando...",
+            text2: "Ejecutando la transacción",
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+        });
 
         setTimeout(function () {
+
+            dispatch(getTransactions(loggedUser.accounts[fromAcc.pos].cvu));
             navigation.navigate('Inicio');
 
             Toast.show({
@@ -94,12 +105,13 @@ export default function SelectContact({ navigation, route }) {
                 position: "top",
                 text1: "Transacción exitosa",
                 text2: "Se envió el dinero correctamente",
-                visibilityTime: 5000,
+                visibilityTime: 3000,
                 autoHide: true,
                 topOffset: 30,
                 bottomOffset: 40,
             });
         }, 3000);
+        
     }
 
     return (
@@ -107,41 +119,31 @@ export default function SelectContact({ navigation, route }) {
             <View>
 
                 <View style={styles.header}>
-
                     <Image source={require('../../assets/background2.png')} style={{ position: 'absolute' }} />
-
                     <View style={styles.rowII}>
                         <Icon name="money" color={'white'} size={30} />
                         <Text style={styles.title}> Transferir dinero </Text>
                     </View>
-
                     <Text style={styles.instruction}> Por último completa esta información </Text>
                 </View>
 
                 <View style={styles.card}>
-
                     <Text style={styles.balaceTitle}> Tu balance actual </Text>
                     <View style={styles.totalContainer}>
-
                         <View style={styles.balance}>
                             <Text style={styles.pesosTitle}> Pesos </Text>
                             <Text style={styles.pesosValue}>$ {pesosBalance}</Text>
                         </View>
-
                         <View style={styles.balance}>
                             <Text style={styles.dollarsTitle}> Dólares </Text>
                             <Text style={styles.dollarsValue}>USD {dollarsBalance}</Text>
                         </View>
-
                     </View>
                 </View>
 
                 <View style={styles.main}>
-
                     <Text style={styles.from}> Selecciona cómo se realizará la transacción</Text>
-
                     <View>
-
                         <Formik>
                             <View style={styles.main}>
 
@@ -207,7 +209,6 @@ export default function SelectContact({ navigation, route }) {
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        //backgroundColor: theme.colors.primary,
         paddingLeft: 15
     },
     rowI: {

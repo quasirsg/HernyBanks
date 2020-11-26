@@ -4,7 +4,7 @@
 // import React in our code
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { rechargeByQr } from '../store/actions/acountActions';
+import { rechargeByQr, getTransactions } from '../store/actions/acountActions';
 // import all the components we are going to use
 import { SafeAreaView, ScrollView, Text, View, StyleSheet, TextInput, TouchableOpacity, Picker, Dimensions, Image } from 'react-native';
 import { theme } from '../core/theme';
@@ -23,12 +23,12 @@ const Qrnative = () => {
 	const accountD = accounts[1];
 	const cvuP = accountP && accountP.cvu;
 	const cvuD = accountD && accountD.cvu;
-	const [selectedValue, setSelectedValue] = useState("");
 	const [inputText, setInputText] = useState({
 		cvu: "",
 		amount: '',
 	});
 	const [qrvalue, setQrvalue] = useState('');
+	const [selectedValue, setSelectedValue] = useState(cvuP);
 
 	const handlerSubmit = () => {
 		let obj = {
@@ -37,6 +37,7 @@ const Qrnative = () => {
 		}
 		console.log("****Vlires con piker****")
 		console.log(obj)
+		dispatch(getTransactions(selectedValue));
 		dispatch(rechargeByQr(obj));
 		setQrvalue(obj);
 		return;
