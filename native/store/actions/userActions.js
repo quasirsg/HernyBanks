@@ -20,12 +20,12 @@ export function createUser(userData, onSuccess) {
     password: userData.password,
   };
   return (dispatch) => {
-    console.log(BACK_URL);
+    // console.log(BACK_URL);
 
     axios
       .post(`${BACK_URL}/api/users/create`, dataUser)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch({
           type: CREATE_USER,
           users: res.data || {},
@@ -67,7 +67,7 @@ export function createUser(userData, onSuccess) {
  * Acción para completar registro usuario(Desde AltaUser Screen) *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 export function completeUserRegister(userData, onSuccess) {
-  console.log(userData);
+  // console.log(userData);
   const { name, lastname, dni, phone, address, dob, _id } = userData;
   const dataUser = { name, lastname, dni, phone, address, dob, _id };
 
@@ -75,7 +75,7 @@ export function completeUserRegister(userData, onSuccess) {
     axios
       .put(`${BACK_URL}/api/users/update`, dataUser)
       .then((res) => {
-        console.log("User updated", res.data);
+        // console.log("User updated", res.data);
         dispatch({ type: UPDATE_USER, users: res.data });
         setTimeout(function () {
           onSuccess();
@@ -113,7 +113,7 @@ export function getUsers() {
     axios
       .get(`${BACK_URL}/api/users/all`)
       .then((res) => {
-        console.log('proveniente de get users');
+        // console.log('proveniente de get users');
         dispatch({ type: GET_USERS, users: res.data || []});
       })
       .catch((error) => {

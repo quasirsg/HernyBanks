@@ -65,7 +65,7 @@ export default function PosConsolidada({ navigation }) {
 		dispatch(getAccount(id ? id : null));
 		dispatch(getDollarsTransactions(cvuDollars));
 		dispatch(getPesosTransactions(cvuPesos));
-		setTransactions([pesosTransactions, dollarTransactions]);
+		setTransactions([pesosTransactions.reverse(), dollarTransactions.reverse()]);
 
 		console.log('me ejecute: transactions');
 

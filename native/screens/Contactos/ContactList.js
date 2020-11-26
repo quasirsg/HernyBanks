@@ -31,6 +31,7 @@ const ContactList = ({ navigation }) => {
 	const [refreshing, setRefreshing] = useState(false);
 	const [visible, setVisible] = useState(false);
 	const [value, setValue] = useState();
+	const [bool, setBool] = useState(false);
 
 	const session = useSelector((state) => state.session.userDetail);
 	var contacts = useSelector((state) => state.contacts.contacts);
@@ -64,7 +65,6 @@ const ContactList = ({ navigation }) => {
 		dispatch(getUsers());
 		for (var i = 0; i <= users.length - 1; i++) {
 			if (users[i].email.includes(value) || users[i].username.includes(value)) {
-				console.log('encontrado');
 				search.push(users[i]);
 				for (var j = 0; j <= contacts.length - 1; j++) {
 					if (contacts[j].email === users[i].email) {
@@ -136,6 +136,7 @@ const ContactList = ({ navigation }) => {
 										dispatch(addContact(session._id, item.email));
 										setResults([]);
 										setValue('');
+										setBool(false);
 										dispatch(getContacts(id ? id : null));
 										navigation.reset({
 											index: 0,
@@ -171,9 +172,8 @@ const ContactList = ({ navigation }) => {
 			<ScrollView contentContainerStyle={{ alignItems: 'center' }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 				<View
 					style={{
-						// marginVertical: 0,
+						marginVertical: 0,
 						marginTop: 10,
-						alignItems: 'center',
 						// backgroundColor: 'blue',
 						// paddingVertical: accounts.length > 1 ? 0 : 20, // Pone padding solo si hay mas de una cuenta
 					}}
@@ -201,21 +201,24 @@ const ContactList = ({ navigation }) => {
 					>
 						<View style={styles.searchContainer}>
 							{/*Buscar en mis contactos */}
-							<TextInput
-								placeholder='Buscar un contacto'
-								placeholderTextColor='grey'
-								style={
-									{
-										// backgroundColor: 'red',
+							<View>
+								<TextInput
+									placeholder='Buscar un contacto'
+									placeholderTextColor='grey'
+									style={
+										{
+											// backgroundColor: 'red',
+										}
 									}
-								}
-								onChangeText={(value) => searchContacts(value)}
-								onFocus={() => {
-									setVisible(true);
-									setValue();
-								}}
-								value={value}
-							/>
+									onChangeText={(value) => searchContacts(value)}
+									onFocus={() => {
+										setVisible(true);
+										setValue();
+										setBool(true);
+									}}
+									value={value}
+								/>
+							</View>
 						</View>
 						<View>
 							{visible ? (
@@ -227,6 +230,7 @@ const ContactList = ({ navigation }) => {
 										setResults([]);
 										setVisible(false);
 										setValue('');
+										setBool(false);
 									}}
 								>
 									Cancelar
@@ -241,7 +245,7 @@ const ContactList = ({ navigation }) => {
 					<Animatable.View animation='fadeInUpBig' duration={1800} delay={1000}>
 						<View style={{ marginVertical: 30 }}>
 							<View style={styles.ultimosMovimientosContainer}>
-								<Text style={styles.textTitle_ultimosMovimientos}>Mis contactos</Text>
+								{bool ? <Text style={styles.textTitle_ultimosMovimientos}>Agregar contactos</Text> : <Text style={styles.textTitle_ultimosMovimientos}>Mis contactos</Text>}
 
 								<FlatList
 									extraData={results}

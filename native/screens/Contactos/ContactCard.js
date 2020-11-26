@@ -4,6 +4,8 @@ import { View, StyleSheet, TextInput, Text, ScrollView, ActivityIndicator, Image
 import { theme } from '../../core/theme';
 import Button from '../../components/Button';
 import { deleteContact } from '../../store/actions/contactsAction';
+
+import Spinner from 'react-native-loading-spinner-overlay';
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -11,7 +13,7 @@ const deviceHeight = Dimensions.get('window').height;
 export default function ContactCard({ props, route, navigation }) {
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
-
+	const [loading, setLoading] = useState(false);
 	if (route.params) {
 		console.log('dame los params wacho');
 		var user = route.params.item;
@@ -24,6 +26,14 @@ export default function ContactCard({ props, route, navigation }) {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<Image source={require('../../assets/background2.png')} style={{ position: 'absolute' }} />
+			<Spinner
+				//visibility of Overlay Loading Spinner
+				visible={loading}
+				//Text with the Spinner
+				textContent={'Cargando...'}
+				//Text style of the Spinner Text
+				textStyle={styles.spinnerTextStyle}
+			/>
 			<View
 				style={
 					{
