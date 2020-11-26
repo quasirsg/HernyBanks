@@ -147,7 +147,7 @@ const AltaUser = ({ id, name, lastname, dni, phone, address, dob, navigation }) 
   return (
 
 	<ImageBackground source={background} style={styles.image}>
-    <ScrollView backgroundColor={"white"}>
+    
 
         <View style={styles.container}>
           <Text style={styles.title}>Darse de alta</Text>
@@ -381,7 +381,7 @@ const AltaUser = ({ id, name, lastname, dni, phone, address, dob, navigation }) 
             )}
           </Formik>
         </View>
-    </ScrollView>
+    
 	</ImageBackground>
   );
 };
