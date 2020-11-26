@@ -1,5 +1,7 @@
 import { GET_ACCOUNT, RECHARGE_QR, RECHARGE_CARD, TRANSFER_MONEY, GET_TRANSACTIONS,
-   GET_TRANSACTIONS_DOLAR, GET_TRANSACTIONS_PESOS, GET_TRANSACTIONS_PESOS_GRAP, GET_TRANSACTIONS_DOLLARS } from "../constans/constans";
+   GET_TRANSACTIONS_DOLAR, GET_TRANSACTIONS_PESOS, GET_TRANSACTIONS_PESOS_GRAP, GET_TRANSACTIONS_DOLLARS,
+   BALANCE_PESOS_EGRESOS,
+   BALANCE_PESOS_INGRESOS } from "../constans/constans";
 
 const initialState = {
   users: [],
@@ -12,7 +14,10 @@ const initialState = {
   transactionsDolar: [],
   transactionsPesos: [],
   dollarTransactions: [],
-	pesosTransactions: [],
+  pesosTransactions: [],
+  ingresoPesos:"",
+  egresosPesos:"",
+
 }
 
 const acoountReducers = (state = initialState, action) => {
@@ -55,6 +60,12 @@ const acoountReducers = (state = initialState, action) => {
         return { ...state, pesosTransactions: action.data };
     case GET_TRANSACTIONS_DOLLARS:
         return { ...state, dollarTransactions: action.data };
+    case GET_TRANSACTIONS_DOLLARS:
+        return { ...state, dollarTransactions: action.data };
+    case BALANCE_PESOS_EGRESOS:
+        return { ...state, ingresoPesos: action.payload };
+    case BALANCE_PESOS_INGRESOS:
+        return { ...state, egresosPesos: action.payload };
     default:
       return state;
   }

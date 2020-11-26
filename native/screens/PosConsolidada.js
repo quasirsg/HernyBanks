@@ -34,6 +34,8 @@ export default function PosConsolidada({ navigation }) {
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
   const accounts = useSelector((state) => state.acoount.account);
+  const ingresosPesos = useSelector((state) => state.acoount.ingresosPesos);
+  const ingresosDolares = useSelector((state) => state.acoount.egresosPesos);
   // const transactions = useSelector((state) => state.acoount.transactions);
 
   const bal = session.balance;
@@ -50,8 +52,10 @@ export default function PosConsolidada({ navigation }) {
 
   // Transacciones
   // const transactions = dispatch(getTransactions(accounts.cvu));
+
   const cvuPesos = {} || session.accounts[0].cvu;
-  const cvuDollars = {} ||session.accounts[1].cvu;
+  const cvuDollars = {} || session.accounts[1].cvu;
+
   const pesosTransactions = useSelector(
     (state) => state.acoount.pesosTransactions
   );
@@ -71,11 +75,13 @@ export default function PosConsolidada({ navigation }) {
     setRefreshing(true);
 
     wait(2000).then(() => {
-	  setRefreshing(false);
+    setRefreshing(false);
+    dispatch(getAccount(id ? id : null));
 	  dispatch(getDollarsTransactions(cvuDollars));
-	  dispatch(getPesosTransactions(cvuPesos));
+    dispatch(getPesosTransactions(cvuPesos));
+    setTransactions([pesosTransactions.reverse(), dollarTransactions.reverse()]);
     });
-  }, [refreshing]);
+  }, [refreshing,currentAccountIndex]);
 
   const logoutHandler = () => {
     dispatch(logoutUser());
@@ -90,7 +96,7 @@ export default function PosConsolidada({ navigation }) {
     dispatch(getAccount(id ? id : null));
     dispatch(getDollarsTransactions(cvuDollars));
     dispatch(getPesosTransactions(cvuPesos));
-    setTransactions([pesosTransactions, dollarTransactions]);
+    setTransactions([pesosTransactions.reverse(), dollarTransactions.reverse()]);
 
     console.log("me ejecute: transactions");
 
@@ -100,6 +106,9 @@ export default function PosConsolidada({ navigation }) {
     };
   }, [currentAccountIndex]);
 
+  console.log("soy",transactions[0]);
+  console.log("soyCVU",cvuDollars);
+  console.log("soyCVU",cvuPesos);
 
   // Date formatter
   const dateFormatter = function (dateStr) {
@@ -225,8 +234,7 @@ export default function PosConsolidada({ navigation }) {
                             }}
                           />
                           <Text style={styles.text_body}>
-                            El balance de su cuenta en los ultimos "7 dias" fue
-                            de $3.326 a favor.
+                            Su cuenta tuvo ingresos por  $ {ingresosPesos} y egresos por {ingresosDolares} en los ultimos 7 dias.
                           </Text>
                           <TouchableOpacity
                             style={{ alignItems: "flex-end", marginTop: 0 }}

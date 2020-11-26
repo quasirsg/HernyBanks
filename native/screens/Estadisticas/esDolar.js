@@ -49,11 +49,11 @@ export default function EstadDolar() {
     var dayCurrentMount = date.getDate()
     var dayOne = dayCurrentMount-7
 
-    console.log(transations)
+
     let arrayFechCurrent = transations.map(element => {
         let dateSet = new Date( element.date )
         let day = dateSet.getDate()
-        console.log(dayOne)
+
         if(day >= dayOne && day <= dayCurrentMount ){
           return  {...element, day : day}
         }
@@ -62,7 +62,7 @@ export default function EstadDolar() {
     let arrayTrancIn = transations.map(element => {
       let dateSet = new Date( element.date )
       let day = dateSet.getDate()
-      console.log(dayOne)
+
       if(day >= dayOne && day <= dayCurrentMount && element.type === 'In' ){
         return  {...element, day : day}
       }
@@ -71,7 +71,7 @@ export default function EstadDolar() {
     let arrayTrancOut = transations.map(element => {
       let dateSet = new Date( element.date )
       let day = dateSet.getDate()
-      console.log(dayOne)
+
       if(day >= dayOne && day <= dayCurrentMount && element.type === 'Out' ){
         return  {...element, day : day}
       }
@@ -80,8 +80,7 @@ export default function EstadDolar() {
     let arrayFechCurrentTwo = arrayFechCurrent.filter(x => x !== undefined)
     let arrayTrancInSuccess = arrayTrancIn.filter(x => x !== undefined)
     let arrayTrancOutSuccess = arrayTrancOut.filter(x => x !== undefined)
-    console.log('*****Array IN ****')
-    console.log(arrayTrancOutSuccess)
+
 
     
     let daysAv = []
@@ -124,7 +123,7 @@ export default function EstadDolar() {
                               /*Calcular trancciones por dia*/
   /******************************************************************************************* */
 
-  console.log(sixDayOut)
+
   // /*************Valor por dia General****************** */
   let vDayOne = oneDay.length < 1 ? 0 : oneDay.map((x) => x.amount).reduce((ac, x) =>  ac + x)
   let vDayTwo = twoDay.length < 1 ? 0 : twoDay.map((x) => x.amount).reduce((ac, x) =>  ac + x)
@@ -150,7 +149,7 @@ export default function EstadDolar() {
     let vDaySixOut = sixDayOut.length < 1 ? 0 : sixDayOut.map((x) => x.amount).reduce((ac, x) =>  ac + x)
     let vDaySevenOut = sevenDayOut.length < 1 ? 0 : sevenDayOut.map((x) => x.amount).reduce((ac, x) =>  ac + x)
 
-  console.log(vDaySixOut)
+
 
   /***************************************Array para  eje y************************************************ */
   let arrayGen = [vDayOne/1000, vDayTwo/1000, vDayThree/1000, vDayFour/1000, vDayFive/1000, vDaySix/1000, vDaySeven/1000]

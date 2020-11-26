@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState,useCallback } from "react";
+
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Modal, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { theme } from "../../core/theme";
@@ -9,7 +10,12 @@ import CustomInput from '../../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { transferMoney, getTransactions } from '../../store/actions/acountActions'
 import Toast from "react-native-toast-message";
-
+import Spinner from "react-native-loading-spinner-overlay";
+import {
+    getAccount,
+    getDollarsTransactions,
+    getPesosTransactions,
+  } from "../../store/actions/acountActions";
 const { width, height } = Dimensions.get('window');
 
 const ModalSelector = ({ show, control, setter }) => {
@@ -49,7 +55,8 @@ export default function SelectContact({ navigation, route }) {
     const dollarsBalance = dollarsAccount && dollarsAccount.balance;
     const loggedUser = useSelector((state) => state.session.userDetail);
     const dispatch = useDispatch();
-
+    const cvuP = pesosAccount && pesosAccount.cvu;
+	const cvuD = dollarsAccount && dollarsAccount.cvu;
     const [showModalFrom, setShowModalFrom] = React.useState(false);
     const [showModalTo, setShowModalTo] = React.useState(false);
     const [fromAcc, setFromAcc] = React.useState({
@@ -57,6 +64,26 @@ export default function SelectContact({ navigation, route }) {
         type: 'pesos',
         pos: 0
     })
+
+    const [loading, setLoading] = useState(false);
+
+    const startLoading = () => {
+      setLoading(true);
+      setTimeout(() => {
+
+        dispatch(getDollarsTransactions(cvuD));
+        dispatch(getPesosTransactions(cvuP));
+
+        setLoading(false);
+      }, 4000);
+    };
+
+    useEffect(() => {
+
+        dispatch(getDollarsTransactions(cvuD));
+        dispatch(getPesosTransactions(cvuP));
+
+      }, []);
 
     const [toAcc, setToAcc] = React.useState({
         title: 'dólares',
@@ -82,7 +109,7 @@ export default function SelectContact({ navigation, route }) {
             description: values.description,
         }
 
-        dispatch(transferMoney(send));
+        dispatch(transferMoney(send,cvuP,cvuD));
 
         Toast.show({
             type: "success",
@@ -94,12 +121,11 @@ export default function SelectContact({ navigation, route }) {
             topOffset: 30,
             bottomOffset: 40,
         });
-
+        // startLoading();
         setTimeout(function () {
 
             dispatch(getTransactions(loggedUser.accounts[fromAcc.pos].cvu));
-            navigation.navigate('Inicio');
-
+            
             Toast.show({
                 type: "success",
                 position: "top",
@@ -110,6 +136,7 @@ export default function SelectContact({ navigation, route }) {
                 topOffset: 30,
                 bottomOffset: 40,
             });
+            startLoading()
         }, 3000);
         
     }
@@ -117,7 +144,14 @@ export default function SelectContact({ navigation, route }) {
     return (
         <ScrollView backgroundColor={'white'}>
             <View>
-
+        <Spinner
+                //visibility of Overlay Loading Spinner
+                visible={loading}
+                //Text with the Spinner
+                textContent={"Cargando..."}
+                //Text style of the Spinner Text
+                textStyle={styles.spinnerTextStyle}
+              />
                 <View style={styles.header}>
                     <Image source={require('../../assets/background2.png')} style={{ position: 'absolute' }} />
                     <View style={styles.rowII}>
