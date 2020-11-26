@@ -1,36 +1,30 @@
-import React, { useState} from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-} from "react-native";
-import { Formik} from "formik";
-import * as Yup from "yup";
-import * as Animatable from "react-native-animatable";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, Picker, View, ScrollView, ImageBackground, Image, Dimensions } from 'react-native';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { Link } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import { completeUserRegister } from "../store/actions/userActions";
+import { completeUserRegister } from '../store/actions/userActions';
 
-import Button from "../components/Button";
-import CustomInput from "../components/CustomInput";
-import { theme } from "../core/theme";
-import axios from "axios";
+import Background from '../components/Background';
+import Logo from '../components/Logo';
+import Button from '../components/Button';
+import Header from '../components/Header';
+import CustomInput from '../components/CustomInput';
+import { theme } from '../core/theme';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
+import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
-import Spinner from "react-native-loading-spinner-overlay";
-const AltaUser = ({
-  id,
-  name,
-  lastname,
-  dni,
-  phone,
-  address,
-  dob,
-  province,
-  city,
-  navigation,
-}) => {
+const { width, height } = Dimensions.get('window');
+const background = require('../assets/WelcomeBackground.png');
+const logo = require('../assets/logo.png');
+
+import Spinner from 'react-native-loading-spinner-overlay';
+const AltaUser = ({ id, name, lastname, dni, phone, address, dob, navigation }) => {
   const dispatch = useDispatch();
   const stateUser = useSelector((state) => state.userUp);
   console.log("*************userUp***************");
@@ -151,6 +145,8 @@ const AltaUser = ({
   }
 
   return (
+
+	<ImageBackground source={background} style={styles.image}>
     <ScrollView backgroundColor={"white"}>
 
         <View style={styles.container}>
@@ -348,11 +344,9 @@ const AltaUser = ({
                   value={values.dob}
                   style={styles.input}
                 />
-
                 {values.dob.length >= 4 && !errors.phone && (
                   <Icon name="check" size={40} color="green" />
                 )}
-
                 {errors.dob && (
                   <Text style={{ fontSize: 10, color: "red" }}>
                     {errors.dob}
@@ -394,50 +388,62 @@ const AltaUser = ({
           </Formik>
         </View>
     </ScrollView>
+	</ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  title: {
-    textAlign: "center",
-    paddingTop: 120,
-    fontSize: 30,
-    paddingBottom: 20,
-    fontWeight: "bold",
-    color: theme.colors.primary,
-  },
-  label: {
-    color: theme.colors.secondary,
-  },
-  form_container: {
-    width: "70%",
-  },
-  button: {
-    marginTop: 20,
-    marginBottom: 30,
-    backgroundColor: theme.colors.primary,
-  },
-  row: {
-    flexDirection: "row",
-    marginTop: 4,
-  },
-  link: {
-    fontWeight: "bold",
-    color: theme.colors.primary,
-  },
-  input: {
-    height: 40,
-    backgroundColor: "white",
-  },
-  error: {
-    fontSize: 10,
-    color: "red",
-  },
+	image: {
+		flex: 1,
+		resizeMode: 'cover',
+		justifyContent: 'center',
+		alignItems: 'center',
+		// backgroundColor: 'blue',
+	},
+	container: {
+		alignItems: 'center',
+		// backgroundColor: 'blue',
+		width: 0.8 * width,
+	},
+	title: {
+		textAlign: 'center',
+		// paddingTop: 120,
+		fontSize: 30,
+		paddingBottom: 5,
+		fontWeight: 'bold',
+		color: theme.colors.primary,
+	},
+	label: {
+		color: theme.colors.secondary,
+	},
+	form_container: {
+		width: '70%',
+	},
+	button: {
+		marginTop: 10,
+		// marginBottom: 10,
+		backgroundColor: theme.colors.primary,
+	},
+	row: {
+		flexDirection: 'row',
+		marginTop: 4,
+	},
+	link: {
+		fontWeight: 'bold',
+		color: theme.colors.primary,
+	},
+	input: {
+		height: 40,
+		backgroundColor: 'white',
+	},
+	error: {
+		fontSize: 10,
+		color: 'red',
+	},
+	picker: {
+		color: 'grey',
+		height: 40,
+	},
 });
 
 export default AltaUser;
