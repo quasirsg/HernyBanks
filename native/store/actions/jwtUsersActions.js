@@ -36,7 +36,7 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
         dispatch({
           type: actionTypes.USER_LOGIN,
         });
-        dispatch(getCurrentUser(token));
+        dispatch(getCurrentUser(token,true));
         setTimeout(function () {
           onSuccess();
         }, 1500);
@@ -59,7 +59,7 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
 };
 
 //obtener información del usuario logueado
-export const getCurrentUser = (token) => async (dispatch) => {
+export const getCurrentUser = (token,login) => async (dispatch) => {
   //Headers con Token
   var decoded = jwt_decode(token);
   // console.log(typeof decoded.id);
@@ -74,21 +74,22 @@ export const getCurrentUser = (token) => async (dispatch) => {
         type: actionTypes.CURRENT_USER,
         user: res.data,
       });
+      if(login){
+        setTimeout(function () {
+          Toast.show({
+            type: "success",
+            position: "top",
+            text1: `Bienvenido ${res.data.username} `,
+            visibilityTime: 2000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+          });
+        }, 1500);
+      }
       dispatch(getDollarsTransactions(res.data.accounts[1].cvu));
       dispatch(getPesosTransactions(res.data.accounts[0].cvu));
-      setTimeout(function () {
-
-        Toast.show({
-          type: "success",
-          position: "top",
-          text1: `Bienvenido ${res.data.username} `,
-          visibilityTime: 2000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
-      }, 1500);
-
+      
     })
     .catch((error) => {
       setTimeout(function () {
@@ -106,11 +107,12 @@ export const getCurrentUser = (token) => async (dispatch) => {
     });
 };
 
-export const verifySession = () => (dispatch) => {
-	const { token } = AsyncStorage;
+export const verifySession = () => async (dispatch) => {
+  //const { token } = AsyncStorage;
+  const token = await AsyncStorage.getItem("@token");
 	if (token) {
-		alert('usuario logeado');
-		dispatch(getCurrentUser(token));
+		//alert('usuario logeado');
+		dispatch(getCurrentUser(token,false));
 	} else {
 		dispatch({
 			type: actionTypes.NOT_CURRENT_USER,

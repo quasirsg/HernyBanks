@@ -17,13 +17,23 @@ function wait(timeout) {
 	});
 }
 export default function PosConsolidada({ navigation }) {
-	const dispatch = useDispatch();
-	const session = useSelector((state) => state.session.userDetail);
-	const accounts = useSelector((state) => state.acoount.account);
-	// const transactions = useSelector((state) => state.acoount.transactions);
+  const dispatch = useDispatch();
+  const session = useSelector((state) => state.session.userDetail);
+  const accounts = useSelector((state) => state.acoount.account);
+  // const transactions = useSelector((state) => state.acoount.transactions);
 
-	const bal = session.balance;
-	const id = session._id;
+  const bal = session.balance;
+  const id = session._id;
+  // const bal1 = accounts ? accounts[0].balance : 0
+  // const bal2 = accounts ? accounts[1].balance : 0
+
+  // console.log('****Cuentas****');
+  const accountPesos = accounts[0];
+  const accountDolares = accounts[1];
+  const balancePesos = accountPesos && accountPesos.balance;
+  const balanceDolares = accountDolares && accountDolares.balance;
+  // console.log(accounts);
+
 	// const bal1 = accounts ? accounts[0].balance : 0
 	// const bal2 = accounts ? accounts[1].balance : 0
 

@@ -25,6 +25,7 @@ import { verifySession, logoutUser } from './store/actions/jwtUsersActions';
 import SelectContact from './screens/sendMoneyFlow/SelectContact';
 import FinishSend from './screens/sendMoneyFlow/FinishSend';
 import Card from './screens/Card';
+import MisDatos from './screens/MisDatos';
 import TransactionDetails from './screens/TransactionDetails';
 import ResetPass from './screens/ResetPass';
 import Cuentas from './screens/Cuentas';
@@ -54,6 +55,7 @@ function LoginStack() {
 				headerShown: false,
 			}}
 		>
+			
 			<Stack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
 			<Stack.Screen name='WelcomeRecharge' component={WelcomeRecharge} options={{ headerShown: false }} />
 			<Stack.Screen name='Login' component={Login} options={{ title: 'Iniciar sesión' }} options={{ headerShown: false }} />
@@ -89,6 +91,9 @@ function MainStack() {
 			<Drawer.Screen name='Ultimos Movimientos' component={Transactions} options={{ title: '' }} />
 			<Drawer.Screen name='FAQ' component={FAQ} />
 			<Drawer.Screen name='Recargar Dinero' component={Recharge} />
+			<Drawer.Screen name='Mis Datos' component={MisDatos} />
+			{/* <Drawer.Screen name='Card' component={Card} /> */}
+
 			<Stack.Screen name='SelectContact' component={SelectContact} options={{ title: '' }} />
 			<Stack.Screen name='FinishSend' component={FinishSend} options={{ title: '' }} />
 			<Stack.Screen name='ContactCard' component={ContactCard} />
