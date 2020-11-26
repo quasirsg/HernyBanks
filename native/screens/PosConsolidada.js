@@ -258,15 +258,15 @@ export default function PosConsolidada({ navigation }) {
 								{/* Pagar */}
 								<TouchableOpacity
 									onPress={() => {
-										alert('Pagar');
+										navigation.navigate('Contactos');
 									}}
 									style={{ width: '30%' }}
 								>
 									<View style={{ alignItems: 'center' }}>
 										<View style={styles.mainActionIconContainer}>
-											<Ionicons name='ios-cart' color='indigo' size={35}></Ionicons>
+											<Ionicons name='ios-contact' color='indigo' size={35}></Ionicons>
 										</View>
-										<Text style={styles.text_acciones}>Pagar</Text>
+										<Text style={styles.text_acciones}>Contactos</Text>
 									</View>
 								</TouchableOpacity>
 							</View>
