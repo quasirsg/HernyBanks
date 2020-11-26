@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { theme } from '../core/theme';
@@ -31,11 +31,21 @@ export default function Transactions({ navigation }) {
 
     const dispatch = useDispatch();
     const session = useSelector((state) => state.session.userDetail);
-    const cvuPesos = {} || session.accounts[0].cvu;
-    const cvuDollars = {} || session.accounts[1].cvu || '';
     const transactions = useSelector((state) => state.acoount.transactions) || ['jaja'];
 
-    console.log('ULTIMA TRANSACCION', transactions[transactions.length - 1]);
+    const today = new Date();
+    const milisecondsOneDay = 1000 * 60 * 60 * today.getHours();
+    const milisecondsWeek = 1000 * 60 * 60 * 24 * 7;
+    const milisecondsTwoWeek = 1000 * 60 * 60 * 24 * 15;
+    const aDayAgo = today.getTime() - milisecondsOneDay;
+    const aWeekAgo = today.getTime() - milisecondsWeek;
+    const fifteenDaysAgo = today.getTime() - milisecondsTwoWeek;
+
+    const oneDayTransactions = transactions.filter(transact => new Date(transact.date) > new Date(aDayAgo));
+    const weeklyTransactions = transactions.filter(transact => new Date(transact.date) > new Date(aWeekAgo));
+    const FifteenTransactions = transactions.filter(transact => new Date(transact.date) > new Date(fifteenDaysAgo));
+
+    console.log('HOY', today.getHours());
 
     const [tabState, setTabState] = useState({
         all: true,
@@ -44,20 +54,22 @@ export default function Transactions({ navigation }) {
         custom: false,
     });
 
+    const [show, setShow] = useState(transactions);
+
     const pressedTab = (key) => {
         if (key === 'A') {
             setTabState({ all: true, first: false, second: false, custom: false });
-            console.log('TODAS' )
+            setFlag(true);
         } else if (key === 'B') {
             setTabState({ all: false, first: true, second: false, custom: false });
-            console.log('7 DIAS' )
+            setFlag(true);
         } else if (key === 'C') {
             setTabState({ all: false, first: false, second: true, custom: false });
-            console.log('15 DIAS' )
+            setFlag(true);
         }
         else {
             setTabState({ all: false, first: false, second: false, custom: true });
-            console.log('FILTRAR')
+            setFlag(true);
         }
     };
 
@@ -65,7 +77,24 @@ export default function Transactions({ navigation }) {
         let x = session.accounts[0].cvu
         dispatch(getTransactions(x));
         //dispatch(getTransactions(cvuDollars));
-    }, []);
+        setShow(transactions);
+    }, [transactions.length]);
+
+    const [flag, setFlag] = useState(true)
+
+    if (tabState.all && flag) {
+        setShow(transactions);
+        setFlag(false);
+    } else if (tabState.first && flag) {
+        setShow(oneDayTransactions);
+        setFlag(false);
+    } else if (tabState.second && flag) {
+        setShow(weeklyTransactions);
+        setFlag(false);
+    } else if (tabState.custom && flag) {
+        setShow(FifteenTransactions);
+        setFlag(false);
+    }
 
     return (
 
@@ -88,22 +117,22 @@ export default function Transactions({ navigation }) {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('B')}>
-                    <Tab title='7 días' active={tabState.first} />
+                    <Tab title='Hoy' active={tabState.first} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('C')}>
-                    <Tab title='15 días' active={tabState.second} />
+                    <Tab title='7 días' active={tabState.second} />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.rowII} onPress={() => pressedTab('D')}>
-                    <Tab title='Filtrar' active={tabState.custom} />
+                    <Tab title='15 días' active={tabState.custom} />
                 </TouchableOpacity>
             </Tabs>
 
             <ScrollView>
                 <View style={{ marginBottom: 250 }}>
                     {
-                        transactions.length > 0 ? transactions.map((transaction, i) => (
+                        show.length > 0 ? show.map((transaction, i) => (
                             <TouchableOpacity
                                 key={i}
                                 onPress={() => navigation.navigate('TransactionDetails', transaction)}>
@@ -114,19 +143,19 @@ export default function Transactions({ navigation }) {
                                         {
                                             transaction.by === 'QR' ?
                                                 <Icon name={'qrcode'} color={theme.colors.secondary} size={20} /> :
-                                            transaction.by === 'Credit Card' || transaction.by === 'Debit Card' ?
-                                                <Icon name={'credit-card'} color={theme.colors.secondary} size={15} /> :
-                                                <Icon name={'location-arrow'} color={theme.colors.secondary} size={20} />
+                                                transaction.by === 'Credit Card' || transaction.by === 'Debit Card' ?
+                                                    <Icon name={'credit-card'} color={theme.colors.secondary} size={15} /> :
+                                                    <Icon name={'location-arrow'} color={theme.colors.secondary} size={20} />
                                         }
 
                                         <View>
                                             {
                                                 transaction.by === 'QR' ?
                                                     <Text style={styles.firstItemData}>QR</Text> :
-                                                transaction.by === 'Credit Card' || transaction.by === 'Debit Card' ?
-                                                    <Text style={styles.firstItemData}>Tarjeta</Text> :
-                                                    <Text style={styles.firstItemData}>Transferencia</Text> 
-                                   
+                                                    transaction.by === 'Credit Card' || transaction.by === 'Debit Card' ?
+                                                        <Text style={styles.firstItemData}>Tarjeta</Text> :
+                                                        <Text style={styles.firstItemData}>Transferencia</Text>
+
                                             }
                                             <Text style={styles.date}>{(new Date(transaction.date)).toDateString().substring(4, 15) + ' - ' + (new Date(transaction.date)).toLocaleTimeString()}</Text>
                                         </View>
@@ -149,6 +178,7 @@ export default function Transactions({ navigation }) {
 
                             </TouchableOpacity>
                         )) :
+
                             <View style={styles.loading}>
                                 <Icon name={'download'} color={theme.colors.secondary} size={55} />
                                 <Text style={{ color: theme.colors.secondary, paddingTop: 20 }}>Descargando...</Text>
