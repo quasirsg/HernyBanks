@@ -34,6 +34,7 @@
 		"react-native-easy-grid": "^0.2.2",
 		"react-native-expo-viewport-units": "0.0.8",
 		"react-native-gesture-handler": "~1.7.0",
+		"react-native-intl": "^1.0.0",
 		"react-native-image-avatars": "^1.1.6",
 		"react-native-loading-spinner-overlay": "^2.0.0",
 		"react-native-modal": "^11.5.6",
