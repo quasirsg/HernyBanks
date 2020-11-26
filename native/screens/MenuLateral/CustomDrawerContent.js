@@ -9,6 +9,9 @@ import {
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { verifySession, logoutUser } from "../../store/actions/jwtUsersActions";
 import Spinner from "react-native-loading-spinner-overlay";
+import { Avatar } from 'react-native-image-avatars'
+
+
 // Icons
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Drawer } from "react-native-paper";
@@ -34,11 +37,15 @@ export default function CustomDrawerContent(props) {
 
   // console.log('soy el user logeado', session);
 
-  const logoutHandler = () => {
-    dispatch(logoutUser());
-    props.navigation.navigate("Login");
-    return;
-  };
+	const logoutHandler = () => {
+		dispatch(logoutUser());
+		props.navigation.navigate('Login');
+		return;
+	};
+
+
+  var name = (session.name) ? (session.name) :"User Name Here"
+	var lastname = (session.lastname) ? (session.lastname) :"User Name Here"
 
   return (
     <View style={{ flex: 1 }}>
@@ -69,28 +76,27 @@ export default function CustomDrawerContent(props) {
           ></Ionicons>
         </View>
         {/* Informacion del Ususario */}
-        <View style={styles.userInfoContainer}>
-          <View>
-            <View style={styles.avatarContainer}>
-              {session.image ? (
-                <Image
-                  source={session.image}
-                  style={{ height: 50, width: 50 }}
-                ></Image>
-              ) : (
-                <Ionicons
-                  name="ios-person"
-                  color="indigo"
-                  size={25}
-                  style={{ marginHorizontal: 0 }}
-                ></Ionicons>
-              )}
-            </View>
-          </View>
-          <View style={styles.userNameContainer}>
-            <Text>{session.name || "User Name Here"}</Text>
-          </View>
-        </View>
+		<View style={styles.userInfoContainer}>
+		 <View>
+			<View>
+				<Ionicons 
+				color='indigo' style={{ left: 10 }}>
+					<Avatar
+					imageUrl={session.avatar}
+					size="x-small"
+					borderColor="#f2f2f2"
+					shadow
+					/>
+				</Ionicons>
+			</View>
+		 </View>
+		 <View style={styles.userNameContainer}>
+			<Text style={styles.nombre}>
+			  {(session) ? (name.replace(/\b\w/g, l => l.toUpperCase()) + " " + lastname.replace(/\b\w/g, l => l.toUpperCase())) : 'User Name Here'}
+			</Text>
+
+		 </View>
+		</View>
         {/* .map de las secciones */}
         {EnlacesMenuLateral ? (
           EnlacesMenuLateral.map((seccion, key) => (

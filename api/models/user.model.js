@@ -45,6 +45,16 @@ let UserSchema = new Schema(
 			lowercase: true,
 			trim: true,
 		},
+		province: {
+			type: String,
+			lowercase: true,
+			trim: true,
+		},
+		city: {
+			type: String,
+			lowercase: true,
+			trim: true,
+		},
 		dob: {
 			type: Date,
 			trim: true,
@@ -56,6 +66,10 @@ let UserSchema = new Schema(
 		verified: {
 			type: Boolean,
 			default: false,
+		},
+		avatar:{
+			type: String,
+			default: "https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_960_720.png"
 		},
 		contacts : [
 			{

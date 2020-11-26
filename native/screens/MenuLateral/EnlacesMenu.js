@@ -14,6 +14,7 @@ export const EnlacesMenuLateral = [
 		sectionTitle: 'Resumen de la cuenta',
 		links: [
 			{ label: 'Inicio', icon: 'ios-home', screen: 'Inicio' },
+			{ label: 'Ver Perfil', icon: 'ios-contact', screen: 'Mis Datos' },
 			{ label: 'Ultimos movimientos', icon: 'ios-swap', screen: 'Ultimos Movimientos' },
 			{ label: 'Cuentas', icon: 'md-wallet', screen: 'Cuentas' },
 			{ label: 'Estadisticas', icon: 'ios-stats', screen: 'Estadisticas' },

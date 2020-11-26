@@ -25,302 +25,365 @@ const logo = require('../assets/logo.png');
 
 import Spinner from 'react-native-loading-spinner-overlay';
 const AltaUser = ({ id, name, lastname, dni, phone, address, dob, navigation }) => {
-	const dispatch = useDispatch();
-	const stateUser = useSelector((state) => state.userUp);
-	console.log('*************userUp***************');
-	console.log(stateUser.userUp);
-	const userUp = stateUser.userUp;
-	const [provinces, setProvinces] = useState([]);
-	const [selectedProvince, setSelectedProvince] = useState('');
-	const [departamentos, setDepartamentos] = useState([]);
-	const [selectedDepartamento, setSelectedDepartamento] = useState(departamentos[0]);
-	const [localidades, setLocalidades] = useState([]);
-	const [selectedLocalidad, setSelectedLocalidad] = useState(localidades[0]);
+  const dispatch = useDispatch();
+  const stateUser = useSelector((state) => state.userUp);
+  console.log("*************userUp***************");
+  console.log(stateUser.userUp);
+  const userUp = stateUser.userUp;
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedCity,setSelectedCity] =useState("");
+  const [loading, setLoading] = useState(false);
 
-	const [loading, setLoading] = useState(false);
+  const startLoading = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  };
 
-	const startLoading = () => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 1500);
-	};
+  var normalize = (function() {
+    var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
+        to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+        mapping = {};
+   
+    for(var i = 0, j = from.length; i < j; i++ )
+        mapping[ from.charAt( i ) ] = to.charAt( i );
+   
+    return function( str ) {
+        var ret = [];
+        for( var i = 0, j = str.length; i < j; i++ ) {
+            var c = str.charAt( i );
+            if( mapping.hasOwnProperty( str.charAt( i ) ) )
+                ret.push( mapping[ c ] );
+            else
+                ret.push( c );
+        }      
+        return ret.join( '' );
+    }
+   
+  })();
 
-	//const userId = useSelector(state => state.users[0]._id);
 
-	useEffect(() => {
-		getProvinces();
-	}, []);
+ async function handleProvince  (province){
+    var result = await axios
+      .get(
+        `https://apis.datos.gob.ar/georef/api/provincias?nombre=${province}`
+      )
+      .then((res) => {
+        //console.log("provincias", res.data.provincias)
+        for(let i=0;i<res.data.provincias.length;i++){
+          var provinceLowCase=res.data.provincias[i].nombre.toLowerCase();
+          //console.log("Provincia en array",res.data.provincias[i].nombre)
+          //console.log("PROVINCIAS includes",provinceLowCase.includes(province.toLowerCase()))
+          if(normalize(provinceLowCase) === normalize(province.toLowerCase()) ){
+            return true;
+          }
+        }
 
-	const getProvinces = () => {
-		axios.get('https://apis.datos.gob.ar/georef/api/provincias?orden=nombre&max=30').then((res) => {
-			setProvinces(res.data.provincias);
-			setSelectedProvince(res.data.provincias[0].nombre);
-			getDepartamentos(res.data.provincias[0].nombre);
-		});
-	};
+        return false;
+        
+      });
 
-	const getDepartamentos = (province) => {
-		axios.get(`https://apis.datos.gob.ar/georef/api/departamentos?provincia=${province}&max=1000&orden=nombre`).then((res) => {
-			setDepartamentos(res.data.departamentos);
-			setSelectedDepartamento(res.data.departamentos[0].nombre);
-			getLocalidades(province, res.data.departamentos[0].nombre);
-		});
-	};
+      if(result) setSelectedProvince(province);
 
-	const getLocalidades = (province, departamento) => {
-		console.log('DEPARTAMENTO', departamento);
-		axios.get(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&departamento=${departamento}&max=1000&orden=nombre`).then((res) => {
-			setLocalidades(res.data.localidades);
-			setSelectedLocalidad(res.data.localidades[0].nombre);
-		});
-	};
+      return result
+  };
 
-	async function handleAddress(add) {
-		var result = await axios.get(`https://apis.datos.gob.ar/georef/api/calles?provincia=${selectedProvince}&departamento=${selectedDepartamento}&localidad_censal=${selectedLocalidad}&nombre=${add} `).then((res) => {
-			//console.log('res',res)
-			if (res.data.calles[0]) {
-				if (res.data.calles[0].nombre) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-		});
+  async function handleCity (city,province){
 
-		return result;
-	}
+    //console.log("PROVINCIA",province,"CIUDAD",city)
+    var result;
+    if(!province){
+      return false
+    }else{
+     result = await axios
+      .get(
+        `https://apis.datos.gob.ar/georef/api/localidades?provincia=${province}&nombre=${city}`
+      )
+      .then((res) => {
+        //console.log("CIUDADES",res.data.localidades)
+        for(let i=0;i<res.data.localidades.length;i++){
+          var cityLowCase=res.data.localidades[i].nombre.toLowerCase();
+          //console.log("Ciudades en array",res.data.localidades[i].nombre)
+          //console.log("Ciudades includes",cityLowCase.includes(city.toLowerCase()))
+          if(normalize(cityLowCase) === normalize(city.toLowerCase()) ){
+            return true;
+          }
+        }
 
-	return (
-		<ImageBackground source={background} style={styles.image}>
-			<View style={styles.container}>
-				<Text style={styles.title}>Darse de alta</Text>
-				<Formik
-					initialValues={{
-						name: '',
-						lastname: '',
-						phone: '',
-						address: '',
-						// dob: "",
-						_id: userUp._id,
-					}}
-					validationSchema={Yup.object({
-						name: Yup.string().min(4, 'Debe tener al menos 4 caracteres').max(50, 'Debe tener 50 caracteres o menos').required('Debes completar este campo'),
-						lastname: Yup.string().min(4, 'Debe tener al menos 4 caracteres').max(50, 'Debe tener 50 caracteres o menos').required('Debes completar este campo'),
-						phone: Yup.string()
-							.required('Please Enter your Phone Number')
-							.matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Phone number is not valid'),
-						address: Yup.string()
-							.min(6, 'Debe tener al menos 6 caracteres')
-							.max(50, 'Debe tener 50 caracteres o menos')
-							.required('Debes completar este campo')
-							.test('verifyAddress', 'Domicilio inexistente en esa Provincia, Departamento o localidad', (address) => {
-								return handleAddress(address);
-							}),
-						// dob: Yup.string()
-						//   .min(4, "Debe tener al menos 4 caracteres")
-						//   .max(50, "Debe tener 50 caracteres o menos")
-						//   .required("Debes completar este campo"),
-					})}
-					onSubmit={async (values, action) => {
-						action.resetForm();
-						values.address = values.address + ', ' + selectedProvince + ', ' + selectedDepartamento + ', ' + selectedLocalidad;
-						//console.log('VALORES SUBMIT',values)
-						startLoading();
-						dispatch(completeUserRegister(values, () => navigation.navigate('Login')));
-					}}
-				>
-					{({ handleChange, handleSubmit, values, errors }) => (
-						<View style={styles.form_container}>
-							<Spinner
-								//visibility of Overlay Loading Spinner
-								visible={loading}
-								//Text with the Spinner
-								textContent={'Loading...'}
-								//Text style of the Spinner Text
-								textStyle={styles.spinnerTextStyle}
-							/>
+        return false;
+      });
+    }
 
-							<Animatable.View animation='bounceInUp' delay={500}>
-								<Text
-									style={{
-										marginBottom: -2,
-										marginTop: -6,
-									}}
-								>
-									Nombre
-								</Text>
-								<CustomInput label='Nombre' name='name' onChangeText={handleChange('name')} value={values.name} style={styles.input} />
-								{errors.name ? <Text style={styles.error}>{errors.name}</Text> : values.name.length >= 4 ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> : <Text style={{ fontSize: 10 }}></Text>}
+    if(result) setSelectedCity(city);
 
-								{/*  */}
-								<Text
-									style={{
-										marginBottom: -2,
-										marginTop: -12,
-									}}
-								>
-									Apellido
-								</Text>
-								<CustomInput label='Apellido' name='lastname' onChangeText={handleChange('lastname')} value={values.lastname} style={styles.input} />
+      return result
+  };
 
-								{errors.lastname ? <Text style={styles.error}>{errors.lastname}</Text> : values.lastname.length >= 4 ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> : <Text style={{ fontSize: 10 }}></Text>}
+  async function handleAddress(address) {
+   
+    var result;
+    if(!address){
+      return false
+    }else{
+      var addressWithNoDigits = address.replace(/[0-9]/g, '');
+      result = await axios
+      .get(
+        `https://apis.datos.gob.ar/georef/api/calles?provincia=${selectedProvince}&localidad_censal=${selectedCity}&nombre=${addressWithNoDigits} `
+      )
+      .then((res) => {
+        //console.log('res',res.data.calles)
+        if (res.data.calles.length === 1) {
+          return true
+        } else {
+          return false;
+        }
+      });
+    }
 
-								{/*  */}
-								<Text
-									style={{
-										marginBottom: -2,
-										marginTop: -12,
-									}}
-								>
-									Teléfono
-								</Text>
-								<CustomInput placeholder='Teléfono' name='phone' onChangeText={handleChange('phone')} value={values.phone} style={styles.input} keyboardType={'phone-pad'} />
+    return result;
+  }
 
-								{errors.phone ? <Text style={styles.error}>{errors.phone}</Text> : values.phone.length >= 4 ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> : <Text style={{ fontSize: 10 }}></Text>}
-								{/*  */}
+  return (
 
-								<Text
-									style={{
-										marginBottom: 5,
-										marginTop: -12,
-									}}
-								>
-									Provincias
-								</Text>
-								{provinces && (
-									<View
-										style={{
-											borderColor: 'grey',
-											borderWidth: 1,
-											height: 40,
-											borderRadius: 4,
-										}}
-									>
-										<Picker
-											style={styles.picker}
-											selectedValue={selectedProvince}
-											onValueChange={(itemValue, itemIndex) => {
-												setSelectedProvince(itemValue);
-												console.log(itemValue);
-												getDepartamentos(itemValue);
-											}}
-										>
-											{provinces &&
-												provinces.map((province, i) => {
-													return <Picker.Item key={i} label={province.nombre} value={province.nombre}></Picker.Item>;
-												})}
-										</Picker>
-									</View>
-								)}
-								<Text
-									style={{
-										marginBottom: 5,
-										marginTop: 5,
-									}}
-								>
-									Departamentos
-								</Text>
-								{departamentos && (
-									<View
-										style={{
-											borderColor: 'grey',
-											borderWidth: 1,
-											height: 40,
-											borderRadius: 4,
-										}}
-									>
-										<Picker
-											style={styles.picker}
-											selectedValue={selectedDepartamento}
-											onValueChange={(itemValue, itemIndex) => {
-												setSelectedDepartamento(itemValue);
-												getLocalidades(selectedProvince, itemValue);
-											}}
-										>
-											{departamentos &&
-												departamentos.map((departamento, i) => {
-													return <Picker.Item key={i} label={departamento.nombre} value={departamento.nombre}></Picker.Item>;
-												})}
-										</Picker>
-									</View>
-								)}
-								<Text
-									style={{
-										marginBottom: 5,
-										marginTop: 5,
-									}}
-								>
-									Localidad
-								</Text>
-								{localidades && (
-									<View
-										style={{
-											borderColor: 'grey',
-											borderWidth: 1,
-											height: 40,
-											borderRadius: 4,
-										}}
-									>
-										<Picker
-											style={styles.picker}
-											selectedValue={selectedLocalidad}
-											onValueChange={(itemValue, itemIndex) => {
-												setSelectedLocalidad(itemValue);
-												console.log(selectedLocalidad);
-											}}
-										>
-											{localidades &&
-												localidades.map((localidad, i) => {
-													return <Picker.Item key={i} label={localidad.nombre} value={localidad.nombre}></Picker.Item>;
-												})}
-										</Picker>
-									</View>
-								)}
+	<ImageBackground source={background} style={styles.image}>
+    <ScrollView backgroundColor={"white"}>
 
-								{/* <CustomInput
+        <View style={styles.container}>
+          <Text style={styles.title}>Darse de alta</Text>
+          <Formik
+            initialValues={{
+              name: "",
+              lastname: "",
+              phone: "",
+              address: "",
+              province:"",
+              city:"",
+              // dob: "",
+              _id: userUp._id,
+            }}
+            validationSchema={Yup.object({
+              name: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo"),
+              lastname: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo"),
+              phone: Yup.string()
+                .required("Please Enter your Phone Number")
+                .matches(
+                  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                  "Phone number is not valid"
+                ),
+              address: Yup.string()
+                .min(6, "Debe tener al menos 6 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo")
+                .test(
+                  "verifyAddress",
+                  "Domicilio inexistente en esa Localidad",
+                  (address) => {
+                    return handleAddress(address);
+                  }
+                ),
+                province: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo")
+                .test(
+                  "verifyProvince",
+                  "Provincia inexistente en el pais",
+                  (province) => {
+                    return handleProvince(province);
+                  }
+                ),
+                city: Yup.string()
+                .min(4, "Debe tener al menos 4 caracteres")
+                .max(50, "Debe tener 50 caracteres o menos")
+                .required("Debes completar este campo")
+                .test(
+                  "verifyCity",
+                  "Ciudad inexistente en esa Provincia",
+                  (city) => {
+                    return handleCity(city,selectedProvince);
+                  }
+                ),
+              // dob: Yup.string()
+              //   .min(4, "Debe tener al menos 4 caracteres")
+              //   .max(50, "Debe tener 50 caracteres o menos")
+              //   .required("Debes completar este campo"),
+            })}
+            onSubmit={async (values, action) => {
+              action.resetForm();
+              //console.log('VALORES SUBMIT',values)
+              startLoading();
+              dispatch(
+                completeUserRegister(values, () => navigation.navigate("Login"))
+              );
+            }}
+          >
+            {({ handleChange, handleSubmit, values, errors }) => (
+              <View style={styles.form_container}>
+                <Spinner
+                  //visibility of Overlay Loading Spinner
+                  visible={loading}
+                  //Text with the Spinner
+                  textContent={"Loading..."}
+                  //Text style of the Spinner Text
+                  textStyle={styles.spinnerTextStyle}
+                />
+
+                <Animatable.View animation="bounceInUp" delay={500}>
+                  <CustomInput
+                    label="Nombre"
+                    name="name"
+                    onChangeText={handleChange("name")}
+                    value={values.name}
+                    style={styles.input}
+                  />
+                  {errors.name ? (
+                    <Text style={styles.error}>{errors.name}</Text>
+                  ) : values.name.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
+
+                  {/*  */}
+                  <CustomInput
+                    label="Apellido"
+                    name="lastname"
+                    onChangeText={handleChange("lastname")}
+                    value={values.lastname}
+                    style={styles.input}
+                  />
+
+                  {errors.lastname ? (
+                    <Text style={styles.error}>{errors.lastname}</Text>
+                  ) : values.lastname.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
+
+                  {/*  */}
+
+                  <CustomInput
+                    placeholder="Teléfono"
+                    name="phone"
+                    onChangeText={handleChange("phone")}
+                    value={values.phone}
+                    style={styles.input}
+                    keyboardType={"phone-pad"}
+                  />
+
+                  {errors.phone ? (
+                    <Text style={styles.error}>{errors.phone}</Text>
+                  ) : values.phone.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
+                  {/*  */}
+
+
+                  <CustomInput
+                    placeholder="Provincia"
+                    name="province"
+                    onChangeText={handleChange("province")}
+                    value={values.province}
+                    style={styles.input}
+                  />
+
+                {errors.province ? (
+                  <Text style={styles.error}>{errors.province}</Text>
+                ) : values.province.length >= 4 ? (
+                  <Text style={{ fontSize: 10, color: "green" }}>
+                    Correcto
+                  </Text>
+                ) : (
+                      <Text style={{ fontSize: 10 }}></Text>
+                    )}
+
+                    {/*  */}
+
+                <CustomInput
+                  placeholder="Ciudad"
+                  name="city"
+                  onChangeText={handleChange("city")}
+                  value={values.city}
+                  style={styles.input}
+                />
+
+                {errors.city ? (
+                  <Text style={styles.error}>{errors.city}</Text>
+                ) : values.city.length >= 4 ? (
+                  <Text style={{ fontSize: 10, color: "green" }}>
+                    Correcto
+                  </Text>
+                ) : (
+                      <Text style={{ fontSize: 10 }}></Text>
+                    )}
+
+
+                    {/*  */}
+
+                 
+                  {/* <CustomInput
                   placeholder="Fecha de nacimiento"
                   name="dob"
                   onChangeText={handleChange("dob")}
                   value={values.dob}
                   style={styles.input}
                 />
-
                 {values.dob.length >= 4 && !errors.phone && (
                   <Icon name="check" size={40} color="green" />
                 )}
-
                 {errors.dob && (
                   <Text style={{ fontSize: 10, color: "red" }}>
                     {errors.dob}
                   </Text>
                 )} */}
-								{/*  */}
-								<Text
-									style={{
-										marginBottom: -2,
-										marginTop: 5,
-									}}
-								>
-									Dirección
-								</Text>
-								<CustomInput label='Dirección' name='address' onChangeText={handleChange('address')} value={values.address} style={styles.input} />
+                  {/*  */}
 
-								{errors.address ? <Text style={styles.error}>{errors.address}</Text> : values.address.length >= 4 ? <Text style={{ fontSize: 10, color: 'green' }}>Correcto</Text> : <Text style={{ fontSize: 10 }}></Text>}
-								{/*  */}
+                  <CustomInput
+                    label="Dirección"
+                    name="address"
+                    onChangeText={handleChange("address")}
+                    value={values.address}
+                    style={styles.input}
+                  />
 
-								<Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
+                  {errors.address ? (
+                    <Text style={styles.error}>{errors.address}</Text>
+                  ) : values.address.length >= 4 ? (
+                    <Text style={{ fontSize: 10, color: "green" }}>
+                      Correcto
+                    </Text>
+                  ) : (
+                    <Text style={{ fontSize: 10 }}></Text>
+                  )}
+                  {/*  */}
+
+                  <Button mode='contained' secureTextEntry={true} title='Register' style={styles.button} onPress={handleSubmit}>
 									Enviar
 								</Button>
-							</Animatable.View>
-						</View>
-					)}
-				</Formik>
-			</View>
-		</ImageBackground>
-	);
+                </Animatable.View>
+              </View>
+            )}
+          </Formik>
+        </View>
+    </ScrollView>
+	</ImageBackground>
+  );
 };
 
 const styles = StyleSheet.create({
