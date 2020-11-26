@@ -30,6 +30,8 @@ export default function CustomDrawerContent(props) {
 		props.navigation.navigate('Login');
 		return;
 	};
+	var name = (session.name) ? (session.name) :"User Name Here"
+	var lastname = (session.lastname) ? (session.lastname) :"User Name Here"
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -50,7 +52,7 @@ export default function CustomDrawerContent(props) {
 						/></Ionicons></View>
 					</View>
 					<View style={styles.userNameContainer}>
-						<Text style={styles.nombre}>{(session)?(session.name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ session.lastname.replace(/\b\w/g, l => l.toUpperCase())):'User Name Here'}</Text>
+						<Text style={styles.nombre}>{(session)?(name.replace(/\b\w/g, l => l.toUpperCase()) + " "+ lastname.replace(/\b\w/g, l => l.toUpperCase())):'User Name Here'}</Text>
 
 					</View>
 				</View>

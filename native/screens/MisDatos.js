@@ -18,6 +18,8 @@ export default function MisDatos(props) {
     const session = useSelector((state) => state.session.userDetail);
     const [image, setImage] = useState(null);
     const [avatar,setAvatar] =useState(session.avatar)
+    const {name,lastname,username,province,city,phone,address,dni} = (session)?(session):"placeholder"
+
 
     const updateAvatar = (avatar)=>{
         return axios.post("https://api.imgur.com/3/image",
@@ -52,8 +54,9 @@ export default function MisDatos(props) {
         }
       })();
     }, []);
+    
 
-    console.log("SESSION avatar",session.avatar)
+    //console.log("SESSION avatar",session.avatar)
 
     const pickImage = async () => {
         /* let result = await ImagePicker.launchCameraAsync({
@@ -101,8 +104,8 @@ export default function MisDatos(props) {
                             <Text style={styles.plus}><Ionicons name="ios-camera" size={40} onPress={pickImage}></Ionicons></Text>
                         </View> 
                 <View style={styles.text}>
-                    <Text style={styles.nombre}>{(session)?session.name.replace(/\b\w/g, l => l.toUpperCase()):""} {(session)?session.lastname.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
-                    <Text style={styles.usuario}>@{(session)?session.username:""}</Text>
+                    <Text style={styles.nombre}>{(name)?(name.replace(/\b\w/g, l => l.toUpperCase())):"Name Placeholder"} {(lastname)?(lastname.replace(/\b\w/g, l => l.toUpperCase())):"LastName Placeholder"}</Text>
+                    <Text style={styles.usuario}>@{username}</Text>
 
                 </View>  
 
@@ -117,22 +120,22 @@ export default function MisDatos(props) {
             </View>
             <View style={styles.divider}>  
                 <View>
-                 <Text style={styles.datosEntry}>Provincia:  {(session)?session.province.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
+                 <Text style={styles.datosEntry}>Provincia:  {(province)?(province.replace(/\b\w/g, l => l.toUpperCase())):"Province Placeholder"}</Text>
                 </View>          
 
             </View>
 
             <View style={styles.divider}>
-                <Text style={styles.datosEntry}>Ciudad:   {(session)?session.city.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
+                <Text style={styles.datosEntry}>Ciudad:   {(city)?(city.replace(/\b\w/g, l => l.toUpperCase())):"Ciudad Placeholder"}</Text>
             </View>
             <View style={styles.divider}>
-                <Text style={styles.datosEntry}>Direccion:   {(session)?session.address.replace(/\b\w/g, l => l.toUpperCase()):""}</Text>
+                <Text style={styles.datosEntry}>Direccion:   {(address)?(address.replace(/\b\w/g, l => l.toUpperCase())):"Direccion Placeholder"}</Text>
             </View>
             <View style={styles.divider}>  
-                <Text style={styles.datosEntry}>Telefono:   {(session)?session.phone:""}</Text>             
+                <Text style={styles.datosEntry}>Telefono:   {phone}</Text>             
             </View>
             <View style={styles.divider}>  
-            <Text style={styles.datosEntry}>DNI:   {(session)?session.dni:""}</Text>               
+            <Text style={styles.datosEntry}>DNI:   {dni}</Text>               
             </View> 
            
                
