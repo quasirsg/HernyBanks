@@ -23,6 +23,7 @@ const cvuP = accountP && accountP.cvu;
 const cvuD = accountD && accountD.cvu;
 const [selectedValue, setSelectedValue] = useState(cvuP);
 const [show, setShow] = useState(false);
+const [value, setValue] = useState();
 const [inputText, setInputText] = useState({
  		cvu: "",
  		amount: '',
@@ -40,7 +41,7 @@ const handlerSubmit = () => {
 		amount:inputText.amount
 	}
 		dispatch(getTransactions(selectedValue));
-  		 dispatch(rechargeByCard(obj, () => navigation.goBack()));
+  		 dispatch(rechargeByCard(obj, cvuD,cvuP));
 	return;
  };
   
@@ -75,6 +76,8 @@ return (
 					returnKeyType='done'
 					onChangeText={(value)=>handleChange(value)}
 					style={styles.inputCantidadDinero}
+					onFocus={()=>setValue()}
+					value={value}
 				/>
 			</View>
 			<View style={styles.textSeleccionarContainer}>
@@ -94,7 +97,10 @@ return (
 				{/* <TouchableOpacity style={styles.buttonStyle} onPress={handlerSubmit}>
 					<Text style={styles.buttonTextStyle}>Recargar</Text>
 				</TouchableOpacity> */}
-				<Button mode='contained' secureTextEntry={true} style={styles.buttonStyle} onPress={handlerSubmit}>
+				<Button mode='contained' secureTextEntry={true} style={styles.buttonStyle} onPress={()=>{
+					handlerSubmit();
+					setValue('');
+				} }>
 					Recargar
 				</Button>
 			</View>

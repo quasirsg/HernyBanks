@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState,useCallback } from "react";
+
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Modal, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { theme } from "../../core/theme";
@@ -9,7 +10,11 @@ import CustomInput from '../../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { transferMoney, getTransactions } from '../../store/actions/acountActions'
 import Toast from "react-native-toast-message";
-
+import {
+    getAccount,
+    getDollarsTransactions,
+    getPesosTransactions,
+  } from "../../store/actions/acountActions";
 const { width, height } = Dimensions.get('window');
 
 const ModalSelector = ({ show, control, setter }) => {
@@ -49,7 +54,8 @@ export default function SelectContact({ navigation, route }) {
     const dollarsBalance = dollarsAccount && dollarsAccount.balance;
     const loggedUser = useSelector((state) => state.session.userDetail);
     const dispatch = useDispatch();
-
+    const cvuP = pesosAccount && pesosAccount.cvu;
+	const cvuD = dollarsAccount && dollarsAccount.cvu;
     const [showModalFrom, setShowModalFrom] = React.useState(false);
     const [showModalTo, setShowModalTo] = React.useState(false);
     const [fromAcc, setFromAcc] = React.useState({
@@ -57,6 +63,13 @@ export default function SelectContact({ navigation, route }) {
         type: 'pesos',
         pos: 0
     })
+
+    useEffect(() => {
+
+        dispatch(getDollarsTransactions(cvuD));
+        dispatch(getPesosTransactions(cvuP));
+
+      }, []);
 
     const [toAcc, setToAcc] = React.useState({
         title: 'dólares',
@@ -82,7 +95,7 @@ export default function SelectContact({ navigation, route }) {
             description: values.description,
         }
 
-        dispatch(transferMoney(send));
+        dispatch(transferMoney(send,cvuP,cvuD));
 
         Toast.show({
             type: "success",
@@ -98,8 +111,10 @@ export default function SelectContact({ navigation, route }) {
         setTimeout(function () {
 
             dispatch(getTransactions(loggedUser.accounts[fromAcc.pos].cvu));
-            navigation.navigate('Inicio');
-
+            navigation.reset({
+                index:0,
+                routes : [{name:'SelectContact'}],
+            })
             Toast.show({
                 type: "success",
                 position: "top",

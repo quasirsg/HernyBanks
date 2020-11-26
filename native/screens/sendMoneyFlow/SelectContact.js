@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState,useCallback } from "react";
+import {
+    getAccount,
+    getDollarsTransactions,
+    getPesosTransactions,
+  } from "../../store/actions/acountActions";
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { theme } from '../../core/theme';
@@ -30,11 +35,19 @@ export default function SelectContact({ navigation }) {
 
 	const dispatch = useDispatch();
 	const session = useSelector((state) => state.session.userDetail);
+	const accounts = useSelector((state) => state.acoount.account);
 	const contacts = useSelector((state) => state.contacts.contacts);
+    const pesosAccount = accounts[0];
+	const dollarsAccount = accounts[1];
+	
+	const cvuP = pesosAccount && pesosAccount.cvu;
+	const cvuD = dollarsAccount && dollarsAccount.cvu;
 
 	useEffect(() => {
 		let id = session._id
 		dispatch(getContacts(id))
+		dispatch(getDollarsTransactions(cvuD));
+        dispatch(getPesosTransactions(cvuP));
 	}, []);
 
 	const [selected, setSelected] = useState({
