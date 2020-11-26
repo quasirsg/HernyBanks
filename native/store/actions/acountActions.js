@@ -160,6 +160,7 @@ export function transferMoney(data, cvuDollars, cvuPesos) {
           topOffset: 30,
           bottomOffset: 40,
         });
+        // onSuccess();
       });
   };
 }

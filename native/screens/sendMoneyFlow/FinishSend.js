@@ -10,6 +10,7 @@ import CustomInput from '../../components/CustomInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { transferMoney, getTransactions } from '../../store/actions/acountActions'
 import Toast from "react-native-toast-message";
+import Spinner from "react-native-loading-spinner-overlay";
 import {
     getAccount,
     getDollarsTransactions,
@@ -64,6 +65,19 @@ export default function SelectContact({ navigation, route }) {
         pos: 0
     })
 
+    const [loading, setLoading] = useState(false);
+
+    const startLoading = () => {
+      setLoading(true);
+      setTimeout(() => {
+
+        dispatch(getDollarsTransactions(cvuD));
+        dispatch(getPesosTransactions(cvuP));
+
+        setLoading(false);
+      }, 4000);
+    };
+
     useEffect(() => {
 
         dispatch(getDollarsTransactions(cvuD));
@@ -107,14 +121,11 @@ export default function SelectContact({ navigation, route }) {
             topOffset: 30,
             bottomOffset: 40,
         });
-
+        // startLoading();
         setTimeout(function () {
 
             dispatch(getTransactions(loggedUser.accounts[fromAcc.pos].cvu));
-            navigation.reset({
-                index:0,
-                routes : [{name:'SelectContact'}],
-            })
+            
             Toast.show({
                 type: "success",
                 position: "top",
@@ -125,6 +136,7 @@ export default function SelectContact({ navigation, route }) {
                 topOffset: 30,
                 bottomOffset: 40,
             });
+            startLoading()
         }, 3000);
         
     }
@@ -132,7 +144,14 @@ export default function SelectContact({ navigation, route }) {
     return (
         <ScrollView backgroundColor={'white'}>
             <View>
-
+        <Spinner
+                //visibility of Overlay Loading Spinner
+                visible={loading}
+                //Text with the Spinner
+                textContent={"Cargando..."}
+                //Text style of the Spinner Text
+                textStyle={styles.spinnerTextStyle}
+              />
                 <View style={styles.header}>
                     <Image source={require('../../assets/background2.png')} style={{ position: 'absolute' }} />
                     <View style={styles.rowII}>
