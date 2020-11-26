@@ -30,18 +30,18 @@ export function getAccount(id) {
         });
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
       });
   };
 }
 
 export function rechargeByQr(data, cvuDollars, cvuPesos) {
   return (dispatch) => {
-    console.log(data);
+    // console.log(data);
     axios
       .post(`${BACK_URL}/api/accounts/rechargebyqr/`, data)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch({
           type: RECHARGE_QR,
           data: res.data || {},
@@ -86,12 +86,12 @@ export function rechargeByQr(data, cvuDollars, cvuPesos) {
 
 export function rechargeByCard(data, cvuDollars, cvuPesos) {
   return (dispatch) => {
-    console.log("***est este***");
-    console.log(data);
+    // console.log("***est este***");
+    // console.log(data);
     axios
       .post(`${BACK_URL}/api/accounts/rechargebycard`, data)
       .then((res) => {
-        console.log("*****res card recharse***");
+        // console.log("*****res card recharse***");
         dispatch({
           type: RECHARGE_CARD,
           data: res.data || {},
@@ -142,7 +142,7 @@ export function transferMoney(data, cvuDollars, cvuPesos) {
     axios
       .post(`${BACK_URL}/api/accounts/transfer`, data)
       .then((res) => {
-        console.log("Transferencia exitosa", res.data);
+        // console.log("Transferencia exitosa", res.data);
         dispatch({
           type: TRANSFER_MONEY,
           data: res.data || {},
@@ -166,8 +166,8 @@ export function transferMoney(data, cvuDollars, cvuPesos) {
 
 export function getTransactions(data) {
   return (dispatch) => {
-    console.log("Get transactions");
-    console.log(data);
+    // console.log("Get transactions");
+    // // console.log(data);
 
     axios
       .get(`${BACK_URL}/api/accounts/transactions`, {
@@ -176,7 +176,7 @@ export function getTransactions(data) {
         },
       })
       .then((res) => {
-        console.log("Estas son las transacciones", res.data);
+        // console.log("Estas son las transacciones", res.data);
         dispatch({
           type: GET_TRANSACTIONS,
           data: res.data || [],
@@ -197,7 +197,7 @@ export function getTransactionsDolar(data) {
         },
       })
       .then((res) => {
-        console.log("Estas son las transacciones dolar", res.data);
+        // console.log("Estas son las transacciones dolar", res.data);
         dispatch({
           type: GET_TRANSACTIONS_DOLAR,
           data: res.data || [],
@@ -218,7 +218,7 @@ export function getTransactionsPesos(data) {
         },
       })
       .then((res) => {
-        console.log("Estas son las transacciones Pesos", res.data);
+        // console.log("Estas son las transacciones Pesos", res.data);
         dispatch({
           type: GET_TRANSACTIONS_PESOS_GRAP,
           data: res.data || [],

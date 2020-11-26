@@ -99,7 +99,7 @@ const ContactList = ({ navigation }) => {
             }}
           >
             {item.address ? (
-              setBool(true) && (
+               (
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text style={styles.text_contactsInfo}>
                     {item.name.charAt(0).toUpperCase()}
@@ -213,6 +213,7 @@ const ContactList = ({ navigation }) => {
                   onFocus={() => {
                     setVisible(true);
                     setValue();
+                    setBool(true);
                   }}
                   value={value}
                 />

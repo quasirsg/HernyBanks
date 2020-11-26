@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { theme } from "../../core/theme";
 import { deleteContact } from "../../store/actions/contactsAction";
+import Spinner from "react-native-loading-spinner-overlay";
 // Dimensions
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -18,9 +19,15 @@ const deviceHeight = Dimensions.get("window").height;
 export default function ContactCard({ props, route, navigation }) {
   const dispatch = useDispatch();
   const session = useSelector((state) => state.session.userDetail);
+  const [loading, setLoading] = useState(false);
 
+  const startLoading = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  };
   if (route.params) {
-
     var user = route.params.item;
   }
 
@@ -31,6 +38,14 @@ export default function ContactCard({ props, route, navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View>
+        <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={loading}
+          //Text with the Spinner
+          textContent={"Cargando..."}
+          //Text style of the Spinner Text
+          textStyle={styles.spinnerTextStyle}
+        />
         <Text style={styles.title}>{user.email}</Text>
         <Text style={styles.title}>{user.name}</Text>
 
@@ -48,13 +63,16 @@ export default function ContactCard({ props, route, navigation }) {
               title="Borrar contacto"
               color="red"
               onPress={() => {
-                console.log(user);
+                startLoading();
+                dispatch(
+                  deleteContact(user.email, session._id, () =>
+                    navigation.reset({
+                      index: 0,
+                      routes: [{ name: "Contactos" }],
+                    })
+                  )
+                );
               }}
-            ></Button>
-            <Text></Text>
-            <Button
-              title="Transferir Dinero"
-              onPress={() => navigation.navigate("FinishSend")}
             ></Button>
           </View>
         </View>

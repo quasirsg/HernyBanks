@@ -62,7 +62,7 @@ export const loguinUser = (email, password, onSuccess) => (dispatch) => {
 export const getCurrentUser = (token) => async (dispatch) => {
   //Headers con Token
   var decoded = jwt_decode(token);
-  console.log(typeof decoded.id);
+  // console.log(typeof decoded.id);
   axios
     .get(`${BACK_URL}/api/users/by-id`, {
       params: {
