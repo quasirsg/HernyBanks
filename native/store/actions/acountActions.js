@@ -9,6 +9,9 @@ import {
   GET_TRANSACTIONS_PESOS,
   GET_TRANSACTIONS_DOLLARS,
   GET_TRANSACTIONS_PESOS_GRAP,
+  BALANCE_PESOS_EGRESOS,
+  BALANCE_PESOS_INGRESOS
+
 } from "../constans/constans";
 
 import { BACK_URL } from "../../env";
@@ -281,3 +284,29 @@ export function getDollarsTransactions(data) {
       });
   };
 }
+
+export function balancePesosIn(data) {
+  return (dispatch) => {
+    // console.log('Get transactions');
+    console.log(data);
+    dispatch({
+      type:BALANCE_PESOS_INGRESOS,
+      payload:data
+    })
+
+  };
+}
+
+export function balancePesosOut(data) {
+  return (dispatch) => {
+    // console.log('Get transactions');
+    console.log(data);
+    dispatch({
+      type:BALANCE_PESOS_EGRESOS,
+      payload:data
+    })
+
+  };
+}
+
+

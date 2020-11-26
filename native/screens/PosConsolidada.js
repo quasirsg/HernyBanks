@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as Animatable from 'react-native-animatable';
 import { getAccount, getDollarsTransactions, getPesosTransactions } from '../store/actions/acountActions';
 import { getContacts } from '../store/actions/contactsAction';
+import {formatCurrency} from '../core/utils'
 // Dimensions
 const deviceWidth = Dimensions.get('window').width;
 const deviceHeight = Dimensions.get('window').height;
@@ -169,7 +170,7 @@ export default function PosConsolidada({ navigation }) {
 															justifyContent: 'center',
 														}}
 													>
-														<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' + cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
+														<Text style={styles.text_saldoCuenta2}> {cuenta.type == 'Pesos' ? '$ ' +  cuenta.balance || 0 : 'u$d ' + cuenta.balance || 0}</Text>
 													</View>
 													{/* Separador Vertical */}
 													<View
@@ -179,7 +180,7 @@ export default function PosConsolidada({ navigation }) {
 															marginVertical: 5,
 														}}
 													/>
-													<Text style={styles.text_body}>xxxxxxxxxxxxxxxxxxx</Text>
+													<Text style={styles.text_body}>Este es tu balance hasta la fecha</Text>
 													<TouchableOpacity
 														style={{ alignItems: 'flex-end', marginTop: 0 }}
 														onPress={() => {

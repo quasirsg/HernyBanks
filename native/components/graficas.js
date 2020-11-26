@@ -13,10 +13,10 @@ import {
 import {getTransactions} from '../store/actions/acountActions'
 import { theme } from '../core/theme';
 
- const Grafica  = ({text, data})=>{
+ const Grafica  = ({ data })=>{
      return (
                 <View >
-                <Text>{text}</Text>
+                
                     <LineChart
                         data={{
                         labels: ["1", "2", "3", "4", "5", "6", "7"],
@@ -27,7 +27,7 @@ import { theme } from '../core/theme';
                         ]
                         }}
                         width={Dimensions.get("window").width} // from react-native
-                        height={350}
+                        height={300}
                         yAxisLabel="$"
                         xAxisLabel = 'Dia '
                         yAxisSuffix="k"
@@ -53,7 +53,6 @@ import { theme } from '../core/theme';
                         marginVertical: 15,
                         borderRadius: 16,
                         margin:10,
-
                         
                         }}
                     />
