@@ -108,34 +108,45 @@ export default function MisDatos(props) {
                     <Text style={styles.usuario}>@{username}</Text>
 
                 </View>  
-
-
-            <View style={{                
-                borderBottomColor: 'black', 
-                borderBottomWidth: 2, 
-                width:  250,
-                marginBottom: 25,
-                alignItems:'center'}}>
-                <Text style={styles.datos}>Datos Personales</Text>
-            </View>
-            <View style={styles.divider}>  
-                <View>
-                 <Text style={styles.datosEntry}>Provincia:  {(province)?(province.replace(/\b\w/g, l => l.toUpperCase())):"Province Placeholder"}</Text>
-                </View>          
-
-            </View>
-
-            <View style={styles.divider}>
-                <Text style={styles.datosEntry}>Ciudad:   {(city)?(city.replace(/\b\w/g, l => l.toUpperCase())):"Ciudad Placeholder"}</Text>
+            <View style={styles.divider}>                 
+                    <View style={styles.left}>
+                        <Text style={styles.datosEntry1}>Provincia:</Text>
+                    </View>
+                    <View style={styles.right}>
+                        <Text style={styles.datosEntry}>{(province)?(province.replace(/\b\w/g, l => l.toUpperCase())):"Province Placeholder"}</Text>  
+                    </View>                          
             </View>
             <View style={styles.divider}>
-                <Text style={styles.datosEntry}>Direccion:   {(address)?(address.replace(/\b\w/g, l => l.toUpperCase())):"Direccion Placeholder"}</Text>
+                <View style={styles.left}>
+                    <Text style={styles.datosEntry1}>Ciudad:</Text>
+                </View>
+                <View style={styles.right}>
+                    <Text style={styles.datosEntry}>{(city)?(city.replace(/\b\w/g, l => l.toUpperCase())):"Ciudad Placeholder"}</Text>
+                </View>
             </View>
-            <View style={styles.divider}>  
-                <Text style={styles.datosEntry}>Telefono:   {phone}</Text>             
+            <View style={styles.divider}>
+                <View style={styles.left}>
+                    <Text style={styles.datosEntry1}>Direccion:</Text>
+                </View>
+                <View style={styles.right}>
+                    <Text style={styles.datosEntry}>{(address)?(address.replace(/\b\w/g, l => l.toUpperCase())):"Direccion Placeholder"}</Text>
+                </View>
             </View>
-            <View style={styles.divider}>  
-            <Text style={styles.datosEntry}>DNI:   {dni}</Text>               
+            <View style={styles.divider}> 
+                <View style={styles.left}>
+                    <Text style={styles.datosEntry1}>Telefono:</Text>             
+                </View>
+                <View style={styles.right}>
+                    <Text style={styles.datosEntry}>{phone}</Text>
+                </View> 
+            </View>
+            <View style={styles.divider}> 
+                <View style={styles.left}>
+                    <Text style={styles.datosEntry1}>DNI:</Text>               
+                </View>
+                <View style={styles.right}>
+                   <Text style={styles.datosEntry}>{dni}</Text> 
+                </View> 
             </View> 
            
                
@@ -145,6 +156,15 @@ export default function MisDatos(props) {
 }
 
 const styles = StyleSheet.create({
+    left: {
+     width: 80,
+     left: -180
+    },
+    right: {
+        width: 100,
+        right: -10,
+        top: -20
+       },
     avatar: {              
         top: 0,        
         alignItems:'center'
@@ -180,28 +200,28 @@ const styles = StyleSheet.create({
     usuario: {
         color: 'white',
         fontSize: 17,
-        fontStyle: 'italic',      
+        fontStyle: 'italic',
+        marginBottom:50      
     },
-    datos: {      
-        marginTop: 20,
-        color: 'indigo',
-        fontSize: 30,
-        fontWeight: 'bold',
-        fontStyle: 'italic', 
-        alignItems:'center'
-    },
+
     datosEntry: {  
         color: 'white',
         fontSize: 15,
         fontWeight: 'bold',
-        fontStyle: 'italic', 
-        alignItems:'center'
+        fontStyle: 'italic'  
+    },
+    datosEntry1: {  
+        color: 'black',
+        fontSize: 18,
+        fontWeight: 'bold',
+        fontStyle: 'italic'
     },
     divider: {
         height:50,
-        width:"80%",
+        width:"50%",
         backgroundColor:"white",
         borderRadius:15,
+        left: 80,
         padding:10,
         elevation:15,
         shadowColor: '#000',
