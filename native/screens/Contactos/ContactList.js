@@ -133,11 +133,10 @@ const ContactList = ({ navigation }) => {
 									name='user-plus'
 									backgroundColor='#3b5998'
 									onPress={() => {
-										dispatch(addContact(session._id, item.email));
+										dispatch(addContact(session._id, item.email,id));
 										setResults([]);
 										setValue('');
 										setBool(false);
-										dispatch(getContacts(id ? id : null));
 										navigation.reset({
 											index: 0,
 											routes: [{ name: 'Contactos' }],
