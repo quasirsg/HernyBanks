@@ -28,7 +28,7 @@ export function getContacts(id) {
   };
 }
 
-export function addContact(currentId, email) {
+export function addContact(currentId, email,id) {
   return (dispatch) => {
     axios
       .post(`${BACK_URL}/api/contacts/`, { _id: currentId, email: email })
@@ -37,6 +37,7 @@ export function addContact(currentId, email) {
           type: ADD_CONTACT_EMAIL,
           contact: res.data || [],
         });
+        dispatch(getContacts(id ? id : null));
         Toast.show({
           type: "success",
           position: "top",

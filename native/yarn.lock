@@ -2620,7 +2620,7 @@ expo-asset@~8.2.0:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-constants@~9.2.0:
+expo-constants@^9.2.0, expo-constants@~9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.2.0.tgz#e86a38793deaff9018878afac65bce2543c80a4c"
   integrity sha512-WKwiEMvBgPrEPEyZKm21UUB2KWQux9OCWf6ZDORLTln7kO3rsbaJEprfWUWTP7AxyaLMYfN+/0WFHjZc25SZWQ==
@@ -2657,6 +2657,14 @@ expo-font@~8.3.0:
     fbjs "1.0.0"
     fontfaceobserver "^2.1.0"
 
+expo-image-picker@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-9.1.1.tgz#42abe9deb595fa9f9d8ac0d2ba8aad2cd6f69581"
+  integrity sha512-Etz2OQhRflfx+xFbSdma8QLZsnV/yq0M/yqYlsi3/RLiWAQYM/D/VmRfDDPiG10gm+KX3Xb5iKplNjPrWeTuQg==
+  dependencies:
+    expo-permissions "~9.3.0"
+    uuid "7.0.2"
+
 expo-keep-awake@~8.3.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-8.3.0.tgz#11bb8073dfe453259926855c81d9f35db03a79b9"
@@ -2681,7 +2689,7 @@ expo-location@~9.0.0:
   resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-9.0.1.tgz#adf93b8adf5e9dcf9570cba1d66c8e3831329156"
   integrity sha512-yl4V2IelxrjG1h3nshkyILwghysNJvvEuR4Of0U7oYAsBrT0cq8NxFuaDemRvqt9Yb19wVFNMoVtYFNpthcqpQ==
 
-expo-permissions@~9.3.0:
+expo-permissions@^9.3.0, expo-permissions@~9.3.0:
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-9.3.0.tgz#b90c7e9e411d306c1c7ba2bae18d5c53c201affd"
   integrity sha512-ylSJZVvEGJVFTKsFrUL2S6gCvFt+/o8TJ3xT4WaMjHe2/2Z7R8ng6NR47Kt54t7XBIV/SZ7DIY9uRiR7TPuNYA==
@@ -3855,7 +3863,7 @@ lodash@3.10.1:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.6.0:
+lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.5.0, lodash@^4.6.0:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
@@ -4704,6 +4712,11 @@ path-parse@^1.0.6:
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
 
+paths-js@^0.4.10:
+  version "0.4.11"
+  resolved "https://registry.yarnpkg.com/paths-js/-/paths-js-0.4.11.tgz#b2a9d5f94ee9949aa8fee945f78a12abff44599e"
+  integrity sha512-3mqcLomDBXOo7Fo+UlaenG6f71bk1ZezPQy2JCmYHy2W2k5VKpP+Jbin9H0bjXynelTbglCqdFhSEkeIkKTYUA==
+
 pify@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
@@ -4759,6 +4772,11 @@ pngjs@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-5.0.0.tgz#e79dd2b215767fd9c04561c01236df960bce7fbb"
   integrity sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==
+
+point-in-polygon@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/point-in-polygon/-/point-in-polygon-1.0.1.tgz#d59b64e8fee41c49458aac82b56718c5957b2af7"
+  integrity sha1-1Ztk6P7kHElFiqyCtWcYxZV7Kvc=
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -4916,6 +4934,15 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-chart-kit@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-chart-kit/-/react-native-chart-kit-6.7.0.tgz#2cecdf8cb74a7da88304d7b1e1c5ac1f81e59ca5"
+  integrity sha512-1MF7pwnPVXTh7ohEa42NHGJoCcjLWTpXkPdv3WcV+qWFrcMR6jHigEKGR3hfMWOcVRCR+2/MY/7mX/WXcZMs1g==
+  dependencies:
+    lodash "^4.17.13"
+    paths-js "^0.4.10"
+    point-in-polygon "^1.0.1"
+
 react-native-credit-card-input@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/react-native-credit-card-input/-/react-native-credit-card-input-0.4.1.tgz#e62dd1a9beeab6787e5373ba23b93831cbf5f3de"
@@ -4958,6 +4985,19 @@ react-native-gesture-handler@~1.7.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-image-avatars@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-image-avatars/-/react-native-image-avatars-1.1.6.tgz#e605b70a98c732de14e9de18745114443c67caf7"
+  integrity sha512-rSZmGUIuvYtzSYz+pZehdn7RqP4S3b7KEPknUn3oZGRoEq7sN2ms6FciqQbvW5d2yaRbjPUJn2777DQsHGRyTQ==
+  dependencies:
+    lodash "^4.17.11"
+    prop-types "^15.6.2"
+
+react-native-intl@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-intl/-/react-native-intl-1.0.0.tgz#c1e2281125f925b323d1c8837586774876abe703"
+  integrity sha1-weIoESX5JbMj0ciDdYZ3SHar5wM=
+
 react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
@@ -4978,7 +5018,7 @@ react-native-modal@^11.5.6:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
-react-native-paper@^4.4.0:
+react-native-paper@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.4.1.tgz#b2fb7c0889fd15d52d6fd5c27df13075104ef911"
   integrity sha512-c2+0XsTg6aAwyJNwumtZLPuFw72/kYyFS2vXDzWZddx5OYF052DbPPUhX4SVom2jxVaI1y9izx88RO5c4hGJEA==
@@ -6042,6 +6082,11 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
+
+uuid@7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.2.tgz#7ff5c203467e91f5e0d85cfcbaaf7d2ebbca9be6"
+  integrity sha512-vy9V/+pKG+5ZTYKf+VcphF5Oc6EFiu3W8Nv3P3zIh0EqVI80ZxOzuPfe9EHjkFNvf8+xuTHVeei4Drydlx4zjw==
 
 uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
