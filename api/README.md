@@ -4,6 +4,9 @@
 
 Este es un proyecto de microservicios basado en [Moleculer](https://moleculer.services/). Generado con [Moleculer CLI](https://moleculer.services/docs/0.14/moleculer-cli.html).
 
+# ORM
+Utilizamos [Mongoose](https://mongoosejs.com/). 
+
 ## Uso
 
 Asegurarse de correr el comando `npm i moleculer-cli -g` para tener **moleculer-cli** de manera global.
